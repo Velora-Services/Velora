@@ -1434,6 +1434,29 @@ footer {
    ============================================================ -->
 <script>
 // ─── DATA ────────────────────────────────────────────────────
+// ── SUPABASE CONNECTION ──────────────────────────
+const SUPA_URL = 'https://bzamelajpbiurfgazgop.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6YW1lbGFqcGJpdXJmZ2F6Z29wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNTA0NDIsImV4cCI6MjA4OTYyNjQ0Mn0.lm5FB3R6ZXx5SJMn7MdY8rTKQ46_P5CX0aPFWq8ekqM';
+
+async function saveToSupabase(table, data) {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.ok;
+  } catch (err) {
+    console.error('Supabase error:', err);
+    return false;
+  }
+}
+// ─────────────────────────────────────────────────
 const PROVIDERS = [
   { id:1, name:'Ahmed Hassan Photography', type:'Photographer', city:'Cairo', spec:'Weddings & Portraits', tags:['Weddings','Corporate','Portraits'], icon:'📸', stars:4.9, reviews:47, badge:'Featured' },
   { id:2, name:'Layla Studios',            type:'Photographer', city:'Cairo', spec:'Luxury Events & Editorial', tags:['Events','Editorial','Fashion'], icon:'📷', stars:5.0, reviews:32, badge:'Top Rated' },
@@ -1771,7 +1794,25 @@ async function submitBook(e) {
   //   provider:     document.getElementById('b-provider').value,
   //   notes:        document.getElementById('b-notes').value,
   // });
-  await new Promise(r => setTimeout(r, 1100)); // demo only — remove this line
+  const saved = await saveToSupabase('bookings', {
+  client_name:    document.getElementById('b-name').value,
+  client_email:   document.getElementById('b-email').value,
+  client_phone:   document.getElementById('b-phone').value,
+  event_type:     document.getElementById('b-event').value,
+  event_date:     document.getElementById('b-date').value,
+  event_location: document.getElementById('b-location').value,
+  provider:       document.getElementById('b-provider').value,
+  notes:          document.getElementById('b-notes').value,
+  status:         'new',
+  created_at:     new Date().toISOString()
+});
+
+if (!saved) {
+  alert('Something went wrong. Please email us directly at hello@velora.studio');
+  btn.querySelector('span').textContent = 'Submit Booking Request';
+  btn.disabled = false;
+  return;
+}
 
   document.getElementById('book-success').classList.add('show');
   e.target.reset();
@@ -1782,7 +1823,34 @@ async function submitJoin(e) {
   e.preventDefault();
   const btn = document.getElementById('join-submit');
   btn.querySelector('span').textContent = 'Sending...'; btn.disabled = true;
-  await new Promise(r => setTimeout(r, 1100)); // demo only — remove this line
+  const saved = await saveToSupabase('applications', {
+  business_name:  document.getElementById('j-name').value,
+  email:          document.getElementById('j-email').value,
+  phone:          document.getElementById('j-phone').value,
+  service_type:   document.getElementById('j-service').value,
+  portfolio_link: document.getElementById('j-portfolio').value,
+  city:           document.getElementById('j-city').value,
+  country:        document.getElementById('j-country').value,
+  bio:            document.getElementById('j-bio').value,
+  status:         'pending',
+  created_at:     new Date().toISOString()
+});
+
+if (!saved) {
+  alert('Something went wrong. Please email us directly at hello@velora.studio');
+  btn.querySelector('span').textContent = 'Submit Application';
+  btn.disabled = false;
+  return;
+}
+```
+
+---
+
+**Step 12 — Save everything on GitHub**
+
+Scroll all the way to the bottom of the GitHub editor → you will see a box that says "Commit changes" → in the small text field type:
+```
+connect Supabase to booking and join forms
   document.getElementById('join-success').classList.add('show');
   e.target.reset();
   btn.querySelector('span').textContent = 'Submit Application'; btn.disabled = false;
