@@ -1232,7 +1232,7 @@ footer {
         <div class="form-submit">
           <button type="submit" class="btn btn-gold btn-xl" id="join-submit"><span>Submit Application</span></button>
         </div>
-        <p class="form-note">Applications are reviewed within 24–48 hours. If approved, your profile goes live and booking requests start arriving immediately. No payment required at this stage.</p>
+        <p class="form-note">Application are reviewed within 24–48 hours. If approved, your profile goes live and booking requests start arriving immediately. No payment required at this stage.</p>
         <div class="success-msg" id="join-success">
           <h3>Application Received</h3>
           <p>We'll review your portfolio and reach out within 24–48 hours. Welcome to VELORA.</p>
@@ -1803,7 +1803,7 @@ if (joinForm) {
         created_at: new Date().toISOString()
       };
       
-      const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
+      const res = await fetch(`${SUPA_URL}/rest/v1/Application`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1972,7 +1972,7 @@ document.addEventListener('DOMContentLoaded', function() {
           created_at: new Date().toISOString()
         };
         
-        const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
+        const res = await fetch(`${SUPA_URL}/rest/v1/Application`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
