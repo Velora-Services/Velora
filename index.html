@@ -1777,62 +1777,7 @@ if (trustSect) statsObs.observe(trustSect);
 // 4. Replace the demo delay blocks below with emailjs.send(...)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-// Book Now Form Handler
-const bookForm = document.getElementById('book-form');
-if (bookForm) {
-  bookForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('book-submit');
-    const originalText = btn.querySelector('span').textContent;
-    btn.querySelector('span').textContent = 'Sending...';
-    btn.disabled = true;
 
-    try {
-      const bookingData = {
-        client_name: document.getElementById('b-name').value,
-        client_email: document.getElementById('b-email').value,
-        client_phone: document.getElementById('b-phone').value,
-        event_type: document.getElementById('b-event').value,
-        event_date: document.getElementById('b-date').value,
-        event_location: document.getElementById('b-location').value,
-        provider: document.getElementById('b-provider').value,
-        notes: document.getElementById('b-notes').value,
-        status: 'new',
-        created_at: new Date().toISOString()
-      };
-      
-      const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': 'Bearer ' + SUPA_KEY,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(bookingData)
-      });
-
-      if (res.ok) {
-        const successMsg = document.getElementById('book-success');
-        if (successMsg) successMsg.classList.add('show');
-        bookForm.reset();
-        setTimeout(() => {
-          if (successMsg) successMsg.classList.remove('show');
-        }, 5000);
-      } else {
-        const err = await res.text();
-        console.error('Error:', err);
-        alert('Error: ' + err);
-      }
-    } catch (err) {
-      console.error('Error:', err);
-      alert('Connection failed. Please try again.');
-    } finally {
-      btn.querySelector('span').textContent = originalText;
-      btn.disabled = false;
-    }
-  });
-}
 
 // Join Us Form Handler
 const joinForm = document.getElementById('join-form');
@@ -1938,5 +1883,129 @@ function submitContact(e) {
      ADD PROVIDERS:
      Find const PROVIDERS = [...] and add entries matching the schema
 ═══════════════════════════════════════════════════════════ -->
+<script>
+// Wait for page to fully load
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Setting up forms...');
+  
+  // Fix Booking Form
+  const bookForm = document.getElementById('book-form');
+  if (bookForm) {
+    bookForm.onsubmit = null;
+    bookForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('book-submit');
+      const originalText = btn.querySelector('span').textContent;
+      btn.querySelector('span').textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        const bookingData = {
+          client_name: document.getElementById('b-name').value,
+          client_email: document.getElementById('b-email').value,
+          client_phone: document.getElementById('b-phone').value,
+          event_type: document.getElementById('b-event').value,
+          event_date: document.getElementById('b-date').value,
+          event_location: document.getElementById('b-location').value,
+          provider: document.getElementById('b-provider').value,
+          notes: document.getElementById('b-notes').value,
+          status: 'new',
+          created_at: new Date().toISOString()
+        };
+        
+        const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(bookingData)
+        });
+
+        if (res.ok) {
+          const successMsg = document.getElementById('book-success');
+          if (successMsg) successMsg.classList.add('show');
+          bookForm.reset();
+          setTimeout(() => {
+            if (successMsg) successMsg.classList.remove('show');
+          }, 5000);
+        } else {
+          const err = await res.text();
+          console.error('Error:', err);
+          alert('Error: ' + err);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Connection failed. Please try again.');
+      } finally {
+        btn.querySelector('span').textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+    console.log('✅ Booking form handler attached');
+  }
+  
+  // Fix Join Form
+  const joinForm = document.getElementById('join-form');
+  if (joinForm) {
+    joinForm.onsubmit = null;
+    joinForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('join-submit');
+      const originalText = btn.querySelector('span').textContent;
+      btn.querySelector('span').textContent = 'Sending...';
+      btn.disabled = true;
+
+      try {
+        const applicationData = {
+          business_name: document.getElementById('j-name').value,
+          email: document.getElementById('j-email').value,
+          phone: document.getElementById('j-phone').value,
+          service_type: document.getElementById('j-service').value,
+          portfolio_link: document.getElementById('j-portfolio').value,
+          city: document.getElementById('j-city').value,
+          country: document.getElementById('j-country').value,
+          bio: document.getElementById('j-bio').value,
+          status: 'pending',
+          created_at: new Date().toISOString()
+        };
+        
+        const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(applicationData)
+        });
+
+        if (res.ok) {
+          const successMsg = document.getElementById('join-success');
+          if (successMsg) successMsg.classList.add('show');
+          joinForm.reset();
+          setTimeout(() => {
+            if (successMsg) successMsg.classList.remove('show');
+          }, 5000);
+        } else {
+          const err = await res.text();
+          console.error('Error:', err);
+          alert('Error: ' + err);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Connection failed. Please try again.');
+      } finally {
+        btn.querySelector('span').textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+    console.log('✅ Join form handler attached');
+  }
+});
+</script>
 </body>
 </html>
