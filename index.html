@@ -1435,7 +1435,7 @@ footer {
 <script>
 // ─── DATA ────────────────────────────────────────────────────
 // ── SUPABASE CONNECTION ──────────────────────────
-   const SUPA_URL = 'https://bzamelajpbiurfgazgop.supabase.co';
+   const SUPA_URL = 'https://bzamelajpbiiurfgazgop.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6YW1lbGFqcGJpdXJmZ2F6Z29wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNTA0NDIsImV4cCI6MjA4OTYyNjQ0Mn0.lm5FB3R6ZXx5SJMn7MdY8rTKQ46_P5CX0aPFWq8ekqM';
 
 async function saveToSupabase(table, data) {
@@ -2003,6 +2003,71 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.disabled = false;
       }
     });
+    console.log('✅ Join form handler attached');
+  }
+});
+</script>
+<script>
+// Fix Join Form Only
+document.addEventListener('DOMContentLoaded', function() {
+  const joinForm = document.getElementById('join-form');
+  if (joinForm) {
+    console.log('Setting up join form...');
+    
+    joinForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('join-submit');
+      const originalText = btn.querySelector('span').textContent;
+      btn.querySelector('span').textContent = 'Sending...';
+      btn.disabled = true;
+      
+      try {
+        const applicationData = {
+          business_name: document.getElementById('j-name').value,
+          email: document.getElementById('j-email').value,
+          phone: document.getElementById('j-phone').value,
+          service_type: document.getElementById('j-service').value,
+          portfolio_link: document.getElementById('j-portfolio').value,
+          city: document.getElementById('j-city').value,
+          country: document.getElementById('j-country').value,
+          bio: document.getElementById('j-bio').value,
+          status: 'pending',
+          created_at: new Date().toISOString()
+        };
+        
+        console.log('Submitting application for:', applicationData.business_name);
+        
+        const res = await fetch(`${SUPA_URL}/rest/v1/Application`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(applicationData)
+        });
+        
+        if (res.ok) {
+          const successMsg = document.getElementById('join-success');
+          successMsg.classList.add('show');
+          joinForm.reset();
+          console.log('✅ Application saved successfully!');
+          setTimeout(() => successMsg.classList.remove('show'), 5000);
+        } else {
+          const err = await res.text();
+          console.error('Error:', err);
+          alert('Error: ' + err);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('Error: ' + err.message);
+      } finally {
+        btn.querySelector('span').textContent = originalText;
+        btn.disabled = false;
+      }
+    });
+    
     console.log('✅ Join form handler attached');
   }
 });
