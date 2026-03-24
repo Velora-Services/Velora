@@ -1773,7 +1773,6 @@ if (trustSect) statsObs.observe(trustSect);
 // 1. Sign up free at emailjs.com
 // 2. Create a service (use Gmail) + two templates
 // 3. Add this before </body>:
-//    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 //    <script>emailjs.init('YOUR_PUBLIC_KEY')</script>
 // 4. Replace the demo delay blocks below with emailjs.send(...)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1781,37 +1780,47 @@ if (trustSect) statsObs.observe(trustSect);
 async function submitBook(e) {
   e.preventDefault();
   const btn = document.getElementById('book-submit');
-  btn.querySelector('span').textContent = 'Sending...'; btn.disabled = true;
+  btn.querySelector('span').textContent = 'Sending...';
+  btn.disabled = true;
 
-  // ── Replace with real emailjs.send() call ──
-  // await emailjs.send('SERVICE_ID', 'TEMPLATE_BOOKING', {
-  //   client_name:  document.getElementById('b-name').value,
-  //   client_email: document.getElementById('b-email').value,
-  //   client_phone: document.getElementById('b-phone').value,
-  //   event_type:   document.getElementById('b-event').value,
-  //   event_date:   document.getElementById('b-date').value,
-  //   location:     document.getElementById('b-location').value,
-  //   provider:     document.getElementById('b-provider').value,
-  //   notes:        document.getElementById('b-notes').value,
-  // });
-  const saved = await saveToSupabase('bookings', {
-  client_name:    document.getElementById('b-name').value,
-  client_email:   document.getElementById('b-email').value,
-  client_phone:   document.getElementById('b-phone').value,
-  event_type:     document.getElementById('b-event').value,
-  event_date:     document.getElementById('b-date').value,
-  event_location: document.getElementById('b-location').value,
-  provider:       document.getElementById('b-provider').value,
-  notes:          document.getElementById('b-notes').value,
-  status:         'new',
-  created_at:     new Date().toISOString()
-});
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        client_name:    document.getElementById('b-name').value,
+        client_email:   document.getElementById('b-email').value,
+        client_phone:   document.getElementById('b-phone').value,
+        event_type:     document.getElementById('b-event').value,
+        event_date:     document.getElementById('b-date').value,
+        event_location: document.getElementById('b-location').value,
+        provider:       document.getElementById('b-provider').value,
+        notes:          document.getElementById('b-notes').value,
+        status:         'new',
+        created_at:     new Date().toISOString()
+      })
+    });
 
-if (!saved) {
-  alert('Something went wrong. Please email us directly at hello@velora.studio');
+    if (res.ok) {
+      document.getElementById('book-success').classList.add('show');
+      e.target.reset();
+    } else {
+      const err = await res.text();
+      console.error('Supabase error:', err);
+      alert('Error: ' + err);
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Connection failed. Please try again.');
+  }
+
   btn.querySelector('span').textContent = 'Submit Booking Request';
   btn.disabled = false;
-  return;
 }
 
   document.getElementById('book-success').classList.add('show');
@@ -1822,25 +1831,47 @@ if (!saved) {
 async function submitJoin(e) {
   e.preventDefault();
   const btn = document.getElementById('join-submit');
-  btn.querySelector('span').textContent = 'Sending...'; btn.disabled = true;
-  const saved = await saveToSupabase('applications', {
-  business_name:  document.getElementById('j-name').value,
-  email:          document.getElementById('j-email').value,
-  phone:          document.getElementById('j-phone').value,
-  service_type:   document.getElementById('j-service').value,
-  portfolio_link: document.getElementById('j-portfolio').value,
-  city:           document.getElementById('j-city').value,
-  country:        document.getElementById('j-country').value,
-  bio:            document.getElementById('j-bio').value,
-  status:         'pending',
-  created_at:     new Date().toISOString()
-});
+  btn.querySelector('span').textContent = 'Sending...';
+  btn.disabled = true;
 
-if (!saved) {
-  alert('Something went wrong. Please email us directly at hello@velora.studio');
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/applications`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        business_name:  document.getElementById('j-name').value,
+        email:          document.getElementById('j-email').value,
+        phone:          document.getElementById('j-phone').value,
+        service_type:   document.getElementById('j-service').value,
+        portfolio_link: document.getElementById('j-portfolio').value,
+        city:           document.getElementById('j-city').value,
+        country:        document.getElementById('j-country').value,
+        bio:            document.getElementById('j-bio').value,
+        status:         'pending',
+        created_at:     new Date().toISOString()
+      })
+    });
+
+    if (res.ok) {
+      document.getElementById('join-success').classList.add('show');
+      e.target.reset();
+    } else {
+      const err = await res.text();
+      console.error('Supabase error:', err);
+      alert('Error: ' + err);
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Connection failed. Please try again.');
+  }
+
   btn.querySelector('span').textContent = 'Submit Application';
   btn.disabled = false;
-  return;
 }
 ```
 
