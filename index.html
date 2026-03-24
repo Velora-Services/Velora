@@ -1784,7 +1784,7 @@ async function submitBook(e) {
   btn.disabled = true;
 
   try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/bookings`, {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1830,7 +1830,7 @@ async function submitJoin(e) {
   btn.disabled = true;
 
   try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/applications`, {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
