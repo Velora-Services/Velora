@@ -766,105 +766,93 @@ const SERVICE_TYPES = [
 ];
 
 // ========== 4.4: PROVIDERS DATA ==========
-let providers = [
-  { 
-    id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", 
-    rating: 4.9, reviews: 47, badge: "Featured", price: 5000, 
-    locations: ["Cairo", "Giza", "Alexandria"], 
-    services: ["Photography", "Videography"], 
-    bio: "Award-winning wedding photographer with 12+ years of experience. Capturing timeless moments with an artistic eye. Featured in Bridal Magazine 2024.",
-    since: "2018", 
-    images: ["📸", "🎥", "🏆", "💍", "✨", "📷"],
-    portfolio: "https://instagram.com/ahmedhassanphoto",
-    testimonials: [
-      { name: "Sarah & Omar", text: "Ahmed captured our wedding perfectly! Every moment was beautifully documented. Highly recommend!", rating: 5 },
-      { name: "Nadia K.", text: "Professional, creative, and so easy to work with. The photos exceeded our expectations!", rating: 5 }
-    ]
-  },
-  { 
-    id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", 
-    rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, 
-    locations: ["Cairo", "Alexandria", "Giza"], 
-    services: ["Makeup Artist", "Spa & Henna"], 
-    bio: "Bridal and event makeup specialist. Creating flawless looks that last all day. Certified by MAC Cosmetics.",
-    since: "2019", 
-    images: ["💄", "✨", "💋", "👰", "🌸", "💅"],
-    portfolio: "https://instagram.com/nourbeauty",
-    testimonials: [
-      { name: "Laila M.", text: "Nour made me look like a princess on my wedding day! So professional and talented.", rating: 5 },
-      { name: "Heba R.", text: "Best makeup artist in Cairo! My makeup lasted all night.", rating: 5 }
-    ]
-  },
-  { 
-    id: 3, name: "Elite Events Egypt", type: "Event Planner", icon: "🎪", 
-    rating: 4.8, reviews: 19, badge: "", price: 15000, 
-    locations: ["Cairo", "Giza", "Alexandria", "Luxor", "Aswan", "Hurghada", "Sharm El Sheikh"], 
-    services: ["Event Planner"], 
-    bio: "Full-service event planning company. From intimate gatherings to grand weddings. We handle everything from A to Z.",
-    since: "2015", 
-    images: ["🎪", "🎉", "✨", "💒", "🍽️", "🎈"],
-    portfolio: "https://eliteevents.com",
-    testimonials: [
-      { name: "Amr & Dina", text: "Elite Events made our wedding stress-free and absolutely perfect!", rating: 5 },
-      { name: "Mohamed T.", text: "Professional team, excellent coordination. Highly recommended.", rating: 4.5 }
-    ]
-  },
-  { 
-    id: 4, name: "Grand Ballrooms", type: "Wedding Venue", icon: "🏨", 
-    rating: 4.9, reviews: 44, badge: "Featured", price: 50000, 
-    locations: ["Cairo", "Giza", "Alexandria"], 
-    services: ["Wedding Venue", "Catering"], 
-    bio: "Luxury ballrooms with capacity up to 500 guests. All-inclusive packages available. 5-star service guaranteed.",
-    since: "2010", 
-    images: ["🏨", "🍽️", "💒", "🎊", "✨", "🥂"],
-    portfolio: "https://grandballrooms.com",
-    testimonials: [
-      { name: "Khaled & Mona", text: "The venue was stunning! Perfect location for our dream wedding.", rating: 5 },
-      { name: "Yasmine A.", text: "Excellent service, delicious food, beautiful decor.", rating: 5 }
-    ]
-  },
-  { 
-    id: 5, name: "Marco Vision Films", type: "Videography", icon: "🎥", 
-    rating: 5.0, reviews: 28, badge: "Featured", price: 8000, 
-    locations: ["Cairo", "Alexandria", "Giza"], 
-    services: ["Videography", "Photography"], 
-    bio: "Cinematic wedding films that tell your love story. 8+ years of experience. Award-winning videographer.",
-    since: "2019", 
-    images: ["🎥", "🎬", "📹", "💍", "✨", "🎞️"],
-    portfolio: "https://marcovision.com",
-    testimonials: [
-      { name: "Nour & Ahmed", text: "Our wedding video is breathtaking! Marco captured every moment beautifully.", rating: 5 },
-      { name: "Sara E.", text: "Professional, creative, and the final product exceeded expectations.", rating: 5 }
-    ]
-  },
-  { 
-    id: 6, name: "Hana Florals", type: "Florist", icon: "💐", 
-    rating: 5.0, reviews: 33, badge: "Top Rated", price: 2500, 
-    locations: ["Cairo", "Giza"], 
-    services: ["Florist"], 
-    bio: "Wedding and event florals. Creating stunning arrangements that transform any venue into a magical space.",
-    since: "2018", 
-    images: ["💐", "🌹", "🌸", "🌺", "🌿", "✨"],
-    portfolio: "https://hanaflorals.com",
-    testimonials: [
-      { name: "Dalia F.", text: "The flowers were absolutely stunning! Exactly what I dreamed of.", rating: 5 },
-      { name: "Mona L.", text: "Beautiful arrangements, professional service.", rating: 5 }
-    ]
-  },
-  { 
-    id: 7, name: "Royal Rides Egypt", type: "Car Rental", icon: "🚗", 
-    rating: 4.7, reviews: 22, badge: "", price: 3000, 
-    locations: ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Hurghada"], 
-    services: ["Car Rental"], 
-    bio: "Luxury and classic car rentals for weddings and special events. Fleet includes Mercedes, BMW, and classic Rolls Royce.",
-    since: "2017", 
-    images: ["🚗", "🚙", "🏎️", "✨", "🎩", "🥂"],
-    portfolio: "https://royalrides.com",
-    testimonials: [
-      { name: "Hossam K.", text: "Amazing cars and professional service! Highly recommend.", rating: 5 },
-      { name: "Rania S.", text: "The classic car was perfect for our wedding photos.", rating: 4.5 }
-    ]
+// ========== LOAD PROFESSIONALS FROM SUPABASE ==========
+let providers = [];
+
+async function loadProvidersFromSupabase() {
+  try {
+    // Fetch approved applications from Supabase
+    const response = await fetch(`${SUPA_URL}/rest/v1/Applications?status=eq.approved&select=*`, {
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      }
+    });
+    
+    const data = await response.json();
+    
+    // Convert each application to a provider object
+    providers = data.map(app => ({
+      id: app.id,
+      name: app.business_name,
+      type: app.service_type,
+      icon: getIconForService(app.service_type),
+      rating: app.rating || 4.5,
+      reviews: app.reviews || 0,
+      badge: app.booking_count > 10 ? "Popular" : (app.badge || ""),
+      price: app.price || 0,
+      phone: app.phone_number || app.professional_phone || app.phone || "", // ← PHONE FROM DATABASE
+      email: app.email,
+      locations: app.locations || [app.city || "Cairo"],
+      services: app.services || [app.service_type],
+      bio: app.bio || "Professional service provider",
+      since: new Date(app.created_at).getFullYear().toString(),
+      portfolio: app.portfolio_link || "",
+      images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
+      booking_count: app.booking_count || 0,
+      testimonials: []
+    }));
+    
+    // Refresh the page with loaded providers
+    if (typeof renderFilters === 'function') renderFilters();
+    if (typeof renderProviders === 'function') renderProviders();
+    if (typeof renderTrustStats === 'function') renderTrustStats();
+    
+    console.log(`✅ Loaded ${providers.length} professionals from Supabase`);
+    
+  } catch (error) {
+    console.error('Error loading professionals:', error);
+    // If loading fails, use fallback demo providers
+    loadDemoProviders();
   }
+}
+
+// Helper function to get icon based on service type
+function getIconForService(serviceType) {
+  const icons = {
+    'Photography': '📸',
+    'Videography': '🎥',
+    'Makeup Artist': '💄',
+    'Event Planner': '🎪',
+    'Wedding Venue': '🏨',
+    'Car Rental': '🚗',
+    'DJ & Zaffa': '🎵',
+    'Florist': '💐',
+    'Catering': '🍽️',
+    'Spa & Henna': '💆',
+    'Bridal Shop': '👗',
+    'Accessories': '💍',
+    'Other': '✨'
+  };
+  return icons[serviceType] || '✨';
+}
+
+// Fallback demo providers (for when Supabase is unavailable)
+function loadDemoProviders() {
+  providers = [
+    { id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", rating: 4.9, reviews: 47, badge: "Featured", price: 5000, phone: "+20 100 123 4567", locations: ["Cairo", "Giza"], services: ["Photography"], bio: "Professional photographer", since: "2018", images: ["📸"], booking_count: 0, testimonials: [] },
+    { id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, phone: "+20 122 345 6789", locations: ["Cairo", "Alexandria"], services: ["Makeup Artist"], bio: "Bridal makeup specialist", since: "2019", images: ["💄"], booking_count: 0, testimonials: [] },
+    { id: 3, name: "Elite Events Egypt", type: "Event Planner", icon: "🎪", rating: 4.8, reviews: 19, badge: "", price: 15000, phone: "+20 111 222 3333", locations: ["Cairo", "Giza", "Alexandria"], services: ["Event Planner"], bio: "Event planning company", since: "2015", images: ["🎪"], booking_count: 0, testimonials: [] },
+    { id: 4, name: "Grand Ballrooms", type: "Wedding Venue", icon: "🏨", rating: 4.9, reviews: 44, badge: "Featured", price: 50000, phone: "+20 100 987 6543", locations: ["Cairo", "Giza"], services: ["Wedding Venue"], bio: "Luxury ballrooms", since: "2010", images: ["🏨"], booking_count: 0, testimonials: [] },
+    { id: 5, name: "Marco Vision Films", type: "Videography", icon: "🎥", rating: 5.0, reviews: 28, badge: "Featured", price: 8000, phone: "+20 122 888 7777", locations: ["Cairo", "Alexandria"], services: ["Videography"], bio: "Cinematic wedding films", since: "2019", images: ["🎥"], booking_count: 0, testimonials: [] },
+    { id: 6, name: "Hana Florals", type: "Florist", icon: "💐", rating: 5.0, reviews: 33, badge: "Top Rated", price: 2500, phone: "+20 155 444 3333", locations: ["Cairo", "Giza"], services: ["Florist"], bio: "Wedding florals", since: "2018", images: ["💐"], booking_count: 0, testimonials: [] },
+    { id: 7, name: "Royal Rides Egypt", type: "Car Rental", icon: "🚗", rating: 4.7, reviews: 22, badge: "", price: 3000, phone: "+20 100 555 6666", locations: ["Cairo", "Alexandria", "Giza"], services: ["Car Rental"], bio: "Luxury car rentals", since: "2017", images: ["🚗"], booking_count: 0, testimonials: [] }
+  ];
+  renderFilters();
+  renderProviders();
+  renderTrustStats();
+  console.log('⚠️ Using demo providers (Supabase connection may have issues)');
+}
 ];
 
 // ========== 4.5: HOW IT WORKS DATA ==========
@@ -1448,11 +1436,11 @@ async function submitJoin(e) {
   try {
     const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
     const selectedLocations = Array.from(document.querySelectorAll('input[name="locations"]:checked')).map(cb => cb.value);
-   const data = {
+  const data = {
   business_name: document.getElementById('j-business')?.value || '',
   email: document.getElementById('j-email')?.value || '',
   phone: document.getElementById('j-phone')?.value || '',
-  professional_phone: document.getElementById('j-professional-phone')?.value || '', // ← NEW FIELD
+  phone_number: document.getElementById('j-professional-phone')?.value || '', // ← THIS SAVES TO DATABASE
   service_type: document.getElementById('j-service')?.value || '',
   services: selectedServices,
   locations: selectedLocations,
@@ -1608,6 +1596,7 @@ function closeMobileMenu() { document.getElementById('mobile-menu')?.classList.r
 
 // ========== 4.19: INITIALIZATION ==========
 function init() {
+  loadProvidersFromSupabase();
   renderCategories();
   renderFilters();
   renderProviders();
