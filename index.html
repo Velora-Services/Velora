@@ -1826,7 +1826,7 @@ if (bookForm) {
   console.log('✅ Booking form ready');
 }
 
-// Join Form Handler
+// Join Form Handler - Improved with Auto-Retry
 const joinForm = document.getElementById('join-form');
 if (joinForm) {
   joinForm.addEventListener('submit', async function(e) {
@@ -1836,60 +1836,83 @@ if (joinForm) {
     btn.querySelector('span').textContent = 'Sending...';
     btn.disabled = true;
 
-    try {
-      const applicationData = {
-        business_name: document.getElementById('j-name').value,
-        email: document.getElementById('j-email').value,
-        phone: document.getElementById('j-phone').value,
-        service_type: document.getElementById('j-service').value,
-        portfolio_link: document.getElementById('j-portfolio').value,
-        city: document.getElementById('j-city').value,
-        country: document.getElementById('j-country').value,
-        bio: document.getElementById('j-bio').value,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      };
-      
-      const res = await fetch(`${SUPA_URL}/rest/v1/Application`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPA_KEY,
-          'Authorization': 'Bearer ' + SUPA_KEY,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(applicationData)
-      });
+    // Try up to 3 times if it fails
+    let retries = 3;
+    let success = false;
+    
+    while (retries > 0 && !success) {
+      try {
+        const applicationData = {
+          business_name: document.getElementById('j-name').value,
+          email: document.getElementById('j-email').value,
+          phone: document.getElementById('j-phone').value,
+          service_type: document.getElementById('j-service').value,
+          portfolio_link: document.getElementById('j-portfolio').value,
+          city: document.getElementById('j-city').value,
+          country: document.getElementById('j-country').value,
+          bio: document.getElementById('j-bio').value,
+          status: 'pending',
+          created_at: new Date().toISOString()
+        };
+        
+        const res = await fetch(`${SUPA_URL}/rest/v1/Application`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify(applicationData)
+        });
 
-      if (res.ok) {
-        const successMsg = document.getElementById('join-success');
-        if (successMsg) {
-          successMsg.innerHTML = '<h3>Application Received!</h3><p>Thank you for applying! We\'ll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.</p>';
+        if (res.ok) {
+          success = true;
+          const successMsg = document.getElementById('join-success');
+          successMsg.innerHTML = '<h3>✅ Application Received!</h3><p>Thank you for applying! We\'ll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.</p>';
           successMsg.classList.add('show');
+          joinForm.reset();
+          setTimeout(() => successMsg.classList.remove('show'), 5000);
+        } else if (res.status === 409) {
+          // Email already exists - no retry needed
+          success = true;
+          const errorMsg = document.getElementById('join-success');
+          errorMsg.innerHTML = '<h3>📧 Email Already Registered</h3><p>This email has already applied. Please <a href="#" onclick="nav(\'contact\')" style="color: var(--gold);">contact us</a> for assistance.</p>';
+          errorMsg.classList.add('show');
+          setTimeout(() => errorMsg.classList.remove('show'), 5000);
+        } else {
+          const err = await res.text();
+          console.error('Error:', err);
+          retries--;
+          if (retries === 0) {
+            const errorMsg = document.getElementById('join-success');
+            errorMsg.innerHTML = '<h3>⏳ Server Busy</h3><p>Your application is being processed. Please wait a moment and try again. If the problem persists, <a href="#" onclick="nav(\'contact\')" style="color: var(--gold);">contact us</a>.</p>';
+            errorMsg.classList.add('show');
+            setTimeout(() => errorMsg.classList.remove('show'), 5000);
+          } else {
+            // Wait 1 second before retry
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         }
-        joinForm.reset();
-        setTimeout(() => {
-          if (successMsg) successMsg.classList.remove('show');
-        }, 5000);
-      } else if (res.status === 409) {
-        const errorMsg = document.getElementById('join-success');
-        errorMsg.innerHTML = '<h3>Email Already Registered</h3><p>This email has already applied to join VELORA. Please check your email for updates or <a href="#" onclick="nav(\'contact\')" style="color: var(--gold);">contact us</a> for assistance.</p>';
-        errorMsg.classList.add('show');
-        setTimeout(() => errorMsg.classList.remove('show'), 5000);
-      } else {
-        const err = await res.text();
+      } catch (err) {
         console.error('Error:', err);
-        alert('Error: ' + err);
+        retries--;
+        if (retries === 0) {
+          const errorMsg = document.getElementById('join-success');
+          errorMsg.innerHTML = '<h3>🌐 Connection Issue</h3><p>We\'re experiencing high traffic. Please wait a moment and try again. Your application is important to us!</p>';
+          errorMsg.classList.add('show');
+          setTimeout(() => errorMsg.classList.remove('show'), 5000);
+        } else {
+          // Wait before retry
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
       }
-    } catch (err) {
-      console.error('Error:', err);
-      alert('Connection failed. Please try again.');
-    } finally {
-      btn.querySelector('span').textContent = originalText;
-      btn.disabled = false;
     }
+    
+    btn.querySelector('span').textContent = originalText;
+    btn.disabled = false;
   });
-  console.log('✅ Join form ready');
+  console.log('✅ Join form ready with auto-retry');
 }
 
 // Contact Form Handler
