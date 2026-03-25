@@ -2121,38 +2121,32 @@ async function loadProvidersFromSupabase() {
       return;
     }
     
-    // Convert to providers format - FIX locations to handle both array and string
+    // Convert to providers format
     providers = approvedData.map(app => {
-      // Handle locations - could be array or string
-      let locationsArray = [];
-      if (Array.isArray(app.locations)) {
-        locationsArray = app.locations;
-      } else if (typeof app.locations === 'string') {
-        // Try to parse JSON string
-        try {
-          locationsArray = JSON.parse(app.locations);
-        } catch(e) {
-          // If not JSON, split by comma
+      // Handle locations - if NULL, use default
+      let locationsArray = ["Cairo"];
+      if (app.locations) {
+        if (typeof app.locations === 'string') {
           locationsArray = app.locations.split(',').map(l => l.trim());
+        } else if (Array.isArray(app.locations)) {
+          locationsArray = app.locations;
         }
-      } else if (app.city) {
-        locationsArray = [app.city];
-      } else {
-        locationsArray = ["Cairo"];
       }
       
-      // Handle services similarly
-      let servicesArray = [];
-      if (Array.isArray(app.services)) {
-        servicesArray = app.services;
-      } else if (typeof app.services === 'string') {
-        try {
-          servicesArray = JSON.parse(app.services);
-        } catch(e) {
+      // Handle services - if NULL, use service_type
+      let servicesArray = [app.service_type || "Professional"];
+      if (app.services) {
+        if (typeof app.services === 'string') {
           servicesArray = app.services.split(',').map(s => s.trim());
+        } else if (Array.isArray(app.services)) {
+          servicesArray = app.services;
         }
-      } else {
-        servicesArray = [app.service_type || "Professional"];
+      }
+      
+      // Handle price - convert to number
+      let priceValue = 0;
+      if (app.price) {
+        priceValue = parseInt(app.price) || 0;
       }
       
       return {
@@ -2163,13 +2157,13 @@ async function loadProvidersFromSupabase() {
         rating: 4.5,
         reviews: 0,
         badge: "",
-        price: app.price || 0,
+        price: priceValue,
         phone: app.phone_number || app.phone || "",
         email: app.email,
         locations: locationsArray,
         services: servicesArray,
         bio: app.bio || "Professional service provider",
-        since: new Date(app.created_at).getFullYear().toString(),
+        since: app.created_at ? new Date(app.created_at).getFullYear().toString() : "2025",
         portfolio: app.portfolio_link || "",
         images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
         testimonials: []
@@ -2177,6 +2171,7 @@ async function loadProvidersFromSupabase() {
     });
     
     console.log('🎉 Providers loaded:', providers.length);
+    console.log('📋 First provider:', providers[0]);
     
     // Refresh the page
     renderFilters();
@@ -2259,16 +2254,17 @@ function renderProviders(filter = 'all') {
   const container = document.getElementById('providers-grid');
   if (!container) return;
   const filtered = filter === 'all' ? providers : providers.filter(p => p.type === filter);
+  
   container.innerHTML = filtered.map(p => {
-    // Safely get locations
-    let locationsDisplay = "";
-    if (p.locations && Array.isArray(p.locations)) {
-      locationsDisplay = p.locations.slice(0, 2).join(', ');
-      if (p.locations.length > 2) locationsDisplay += ' +';
-    } else if (typeof p.locations === 'string') {
-      locationsDisplay = p.locations;
-    } else {
-      locationsDisplay = "Cairo";
+    // Safely get locations for display
+    let locationsDisplay = "Cairo";
+    if (p.locations) {
+      if (Array.isArray(p.locations)) {
+        locationsDisplay = p.locations.slice(0, 2).join(', ');
+        if (p.locations.length > 2) locationsDisplay += ' +';
+      } else if (typeof p.locations === 'string') {
+        locationsDisplay = p.locations;
+      }
     }
     
     return `<div class="provider-card" onclick="openProviderModal(${p.id})">
