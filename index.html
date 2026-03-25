@@ -2098,11 +2098,13 @@ window.addEventListener('scroll', () => { if (window.scrollY > 50) navbar.classL
 // ========== LOAD PROVIDERS FROM SUPABASE ==========
 async function loadProvidersFromSupabase() {
   try {
-    const response = await fetch(`${SUPA_URL}/rest/v1/Applications?status=eq.approved&select=*`, {
+    const response = await fetch(`${SUPA_URL}/rest/v1/Applications?select=*`, {
       headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
     });
     const data = await response.json();
-    providers = data.map(app => ({
+// Only show professionals with status = 'approved'
+const approvedProfessionals = data.filter(app => app.status === 'approved');
+providers = approvedProfessionals.map(app => ({
       id: app.id,
       name: app.business_name,
       type: app.service_type,
