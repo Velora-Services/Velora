@@ -6,65 +6,42 @@
 <meta name="description" content="VELORA — Egypt's premier marketplace connecting clients with elite event professionals. Always free for customers.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="VELORA">
-<meta property="og:title" content="VELORA — Find Your Perfect Professional">
-<meta property="og:description" content="Egypt's most trusted event services marketplace. Free for customers. 1,000+ verified professionals.">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="VELORA">
 <title>VELORA — Find Your Perfect Professional</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ============================================================
-   SECTION 1: DESIGN TOKENS - CHANGE COLORS HERE ONLY
-   ============================================================ */
+/* ========== DESIGN SYSTEM ========== */
 :root {
-  /* === COLOR SYSTEM - EDIT THESE 12 COLORS TO CHANGE ENTIRE WEBSITE === */
-  --color-bg-primary: #FFF8F0;      /* Main background */
-  --color-bg-secondary: #FEF5E8;    /* Secondary background */
-  --color-bg-card: #FFFFFF;          /* Card background */
-  --color-gold-light: #E8C99E;       /* Light gold (hover) */
-  --color-gold: #D4B483;             /* Main gold */
-  --color-gold-deep: #C6A15B;        /* Dark gold (buttons) */
-  --color-blush: #FADADD;            /* Accent blush */
-  --color-blush-soft: #FEF0F2;       /* Soft blush */
-  --color-sage: #9BB0A1;             /* Accent sage */
-  --color-text-dark: #2C2C2C;        /* Main text */
-  --color-text-medium: #4A4A4A;      /* Secondary text */
-  --color-text-light: #6B5E5A;       /* Light text */
-  --color-border: #D6CBC7;           /* Borders */
+  --color-bg-primary: #FFF8F0;
+  --color-bg-secondary: #FEF5E8;
+  --color-bg-card: #FFFFFF;
+  --color-gold-light: #E8C99E;
+  --color-gold: #D4B483;
+  --color-gold-deep: #C6A15B;
+  --color-blush: #FADADD;
+  --color-blush-soft: #FEF0F2;
+  --color-sage: #9BB0A1;
+  --color-text-dark: #2C2C2C;
+  --color-text-medium: #4A4A4A;
+  --color-text-light: #6B5E5A;
+  --color-border: #D6CBC7;
   --color-white: #FFFFFF;
-  
-  /* === SHADOWS === */
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
   --shadow-lg: 0 16px 40px rgba(0,0,0,0.12);
   --shadow-hover: 0 20px 40px rgba(0,0,0,0.12);
-  
-  /* === BORDERS === */
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 28px;
   --radius-xl: 40px;
   --radius-full: 9999px;
-  
-  /* === FONTS === */
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-arabic: 'Tajawal', sans-serif;
-  
-  /* === TRANSITIONS === */
   --transition-fast: 0.2s ease;
   --transition: 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-  --transition-slow: 0.5s ease;
-  
-  /* === SPACING === */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 2rem;
-  --space-lg: 4rem;
-  --space-xl: 6rem;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -76,333 +53,24 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
-
-/* RTL Support */
 html[dir="rtl"] { direction: rtl; }
-html[lang="ar"] body,
-html[lang="ar"] button,
-html[lang="ar"] input,
-html[lang="ar"] textarea,
-html[lang="ar"] select,
-html[lang="ar"] .btn,
-html[lang="ar"] .section-body,
-html[lang="ar"] .provider-card p,
-html[lang="ar"] .footer-text {
-  font-family: var(--font-arabic);
-}
-html[lang="ar"] h1,
-html[lang="ar"] h2,
-html[lang="ar"] h3,
-html[lang="ar"] .logo {
+html[lang="ar"] body, html[lang="ar"] button, html[lang="ar"] input,
+html[lang="ar"] textarea, html[lang="ar"] select { font-family: var(--font-arabic); }
+html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, html[lang="ar"] .logo {
   font-family: var(--font-serif);
 }
-</style>
-</head>
-<body>
 
-<!-- ============================================================
-   SECTION 2: HTML STRUCTURE - ALL PAGES IN ONE PLACE
-   ============================================================ -->
-
-<!-- ========== 2.1: NAVIGATION BAR ========== -->
-<nav id="navbar">
-  <a class="logo" onclick="navigateTo('home')">VEL<span>O</span>RA</a>
-  <ul class="nav-links" id="nav-links">
-    <li><a onclick="navigateTo('home')" data-key="nav-home">Home</a></li>
-    <li><a onclick="navigateTo('providers')" data-key="nav-providers">Professionals</a></li>
-    <li><a onclick="navigateTo('book')" data-key="nav-book">Book Now</a></li>
-    <li><a onclick="navigateTo('join')" data-key="nav-join">Join Us</a></li>
-    <li><a onclick="navigateTo('terms')" data-key="nav-terms">Terms & Policies</a></li>
-    <li><a onclick="navigateTo('contact')" data-key="nav-contact">Contact</a></li>
-  </ul>
-  <div class="nav-cta">
-    <button class="btn btn-outline" onclick="navigateTo('join')" data-key="btn-list">List Your Business</button>
-    <button class="btn btn-primary" onclick="navigateTo('book')" data-key="btn-book">Book Now</button>
-    <button class="lang-switcher" onclick="toggleLanguage()" id="lang-btn">🇪🇬 العربية</button>
-  </div>
-  <button class="nav-ham" onclick="openMobileMenu()"><span></span><span></span><span></span></button>
-</nav>
-
-<div id="mobile-menu">
-  <button class="mob-close" onclick="closeMobileMenu()">✕</button>
-  <a onclick="navigateTo('home');closeMobileMenu()" data-key="nav-home">Home</a>
-  <a onclick="navigateTo('providers');closeMobileMenu()" data-key="nav-providers">Professionals</a>
-  <a onclick="navigateTo('book');closeMobileMenu()" data-key="nav-book">Book Now</a>
-  <a onclick="navigateTo('join');closeMobileMenu()" data-key="nav-join">Join Us</a>
-  <a onclick="navigateTo('terms');closeMobileMenu()" data-key="nav-terms">Terms & Policies</a>
-  <a onclick="navigateTo('contact');closeMobileMenu()" data-key="nav-contact">Contact</a>
-</div>
-
-<!-- ========== 2.2: HERO SECTION ========== -->
-<section id="home-hero" class="hero">
-  <div class="hero-inner">
-    <div class="hero-badge" data-key="hero-badge">✨ Egypt's Premier Event Marketplace ✨</div>
-    <h1 class="hero-title"><span data-key="hero-title">Find Your Perfect</span> <em data-key="hero-em">Professional</em><span class="sub-serif" data-key="hero-sub">For Every Occasion</span></h1>
-    <p class="hero-desc" data-key="hero-desc">Browse, compare and contact Egypt's top photographers, videographers, makeup artists, venues and more — all in one place. Always free for customers.</p>
-    <div class="hero-btns">
-      <button class="btn btn-primary btn-large" onclick="navigateTo('providers')" data-key="hero-browse">Browse Professionals</button>
-      <button class="btn btn-outline btn-large" onclick="navigateTo('book')" data-key="hero-book">Book Your Event</button>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 2.3: CATEGORIES SECTION ========== -->
-<section id="categories-section" class="categories-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="categories-tag">Browse by Category</span>
-    <h2 class="section-title" data-key="categories-title">All Services.<br><em>One Platform.</em></h2>
-  </div>
-  <div class="categories-grid" id="categories-grid"></div>
-</section>
-
-<!-- ========== 2.4: HOW IT WORKS SECTION ========== -->
-<section id="howitworks-section" class="howitworks-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="hiw-tag">Simple Process</span>
-    <h2 class="section-title" data-key="hiw-title">How <em>VELORA</em> Works</h2>
-  </div>
-  <div class="hiw-tabs">
-    <button class="hiw-tab active" onclick="switchHiwTab('customer')" data-key="tab-customers">For Customers</button>
-    <button class="hiw-tab" onclick="switchHiwTab('professional')" data-key="tab-professionals">For Professionals</button>
-  </div>
-  <div id="hiw-customer-pane" class="hiw-pane active">
-    <div class="hiw-steps" id="customer-steps"></div>
-    <div class="hiw-visual" id="customer-visual"></div>
-  </div>
-  <div id="hiw-professional-pane" class="hiw-pane">
-    <div class="hiw-steps" id="professional-steps"></div>
-    <div class="hiw-visual" id="professional-visual"></div>
-  </div>
-</section>
-
-<!-- ========== 2.5: FEATURED PROVIDERS SECTION ========== -->
-<section id="providers-section" class="providers-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="featured-tag">Featured Professionals</span>
-    <h2 class="section-title" data-key="featured-title">Handpicked <em>Masters</em></h2>
-  </div>
-  <div class="filters" id="filters-container"></div>
-  <div class="providers-grid" id="providers-grid"></div>
-  <div class="text-center mt-4">
-    <button class="btn btn-outline" onclick="navigateTo('providers')" data-key="view-all">View All Professionals →</button>
-  </div>
-</section>
-
-<!-- ========== 2.6: OCCASIONS SECTION ========== -->
-<section id="occasions-section" class="occasions-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="occasions-tag">Perfect For</span>
-    <h2 class="section-title" data-key="occasions-title">Every <em>Occasion</em></h2>
-  </div>
-  <div class="occasions-grid" id="occasions-grid"></div>
-</section>
-
-<!-- ========== 2.7: TRUST & SAFETY SECTION ========== -->
-<section id="trust-section" class="trust-section">
-  <div class="trust-layout">
-    <div>
-      <span class="section-tag" data-key="why-tag">Why VELORA</span>
-      <h2 class="section-title" data-key="why-title">Safe. Verified.<br><em>Always Free.</em></h2>
-      <div class="gold-rule"></div>
-      <div class="trust-points" id="trust-points"></div>
-    </div>
-    <div class="trust-visual">
-      <div class="trust-big">0%</div>
-      <div class="trust-stats" id="trust-stats"></div>
-      <div class="trust-quote">
-        <p data-key="trust-quote">"One platform. Every top professional in Egypt. Browse, compare, contact — always free."</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 2.8: TESTIMONIALS SECTION ========== -->
-<section id="testimonials-section" class="testimonials-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="testimonials-tag">Real Stories</span>
-    <h2 class="section-title" data-key="testimonials-title">What Our <em>Clients Say</em></h2>
-  </div>
-  <div class="testimonial-slider">
-    <div class="testimonial-track" id="testimonial-track"></div>
-    <div class="testimonial-nav">
-      <button class="testimonial-btn" onclick="slideTestimonial(-1)">←</button>
-      <button class="testimonial-btn" onclick="slideTestimonial(1)">→</button>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 2.9: PROVIDER CTA SECTION ========== -->
-<section id="provider-cta-section" class="provider-cta-section">
-  <div class="pcta-layout">
-    <div>
-      <span class="section-tag" data-key="provider-cta-tag">For Professionals</span>
-      <h2 class="section-title" data-key="provider-cta-title">Grow Your Business.<br><em>Start Free.</em></h2>
-      <div class="gold-rule"></div>
-      <p class="section-body" data-key="provider-cta-desc">Join Egypt's fastest-growing event services marketplace. Your profile goes live in 24 hours and booking requests start arriving immediately — no upfront cost, no commissions on what you earn.</p>
-      <div class="cta-buttons">
-        <button class="btn btn-primary btn-large" onclick="navigateTo('join')" data-key="apply-join">Apply to Join Free</button>
-        <button class="btn btn-outline btn-large" onclick="navigateTo('contact')" data-key="talk-us">Talk to Us First</button>
-      </div>
-    </div>
-    <div class="pcta-box">
-      <div class="pcta-title" data-key="included-title">What's Included — Free</div>
-      <div class="pcta-list" id="included-list"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== 2.10: PRICING PLANS SECTION ========== -->
-<section id="pricing-section" class="pricing-section">
-  <div class="section-header">
-    <span class="section-tag" data-key="pricing-tag">Plans & Pricing</span>
-    <h2 class="section-title" data-key="pricing-title">Choose the <em>Right Plan</em> for You</h2>
-  </div>
-  <div class="plans-grid" id="plans-grid"></div>
-  <div class="plan-note" data-key="plan-note">Clients NEVER pay a fee · Start with Basic free · Upgrade anytime</div>
-</section>
-
-<!-- ========== 2.11: BOOKING PAGE ========== -->
-<div id="page-book" class="page-form">
-  <div class="page-header">
-    <span class="section-tag" data-key="book-tag">Reservation</span>
-    <h1 class="section-title" data-key="book-title">Book a <em>Professional</em></h1>
-    <div class="gold-rule"></div>
-    <p data-key="book-desc">Submit your request below. It goes directly to the professional's dashboard and email — instantly. Always free for customers.</p>
-  </div>
-  <div class="form-container">
-    <form id="booking-form">
-      <div class="form-grid">
-        <div class="form-group"><label class="form-label" data-key="book-name">Full Name *</label><input type="text" id="b-name" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="book-phone">Phone Number *</label><input type="tel" id="b-phone" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="book-email">Email Address *</label><input type="email" id="b-email" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="book-event">Event Type *</label><select id="b-event" class="form-select"><option value="Wedding">Wedding</option><option value="Engagement">Engagement</option><option value="Birthday">Birthday</option><option value="Corporate">Corporate Event</option><option value="Baby Shower">Baby Shower</option><option value="Graduation">Graduation</option><option value="Photo Session">Photo Session</option><option value="Other">Other</option></select></div>
-        <div class="form-group"><label class="form-label" data-key="book-date">Event Date *</label><input type="date" id="b-date" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="book-location">Event Location *</label><input type="text" id="b-location" class="form-input" required></div>
-        <div class="form-group full"><label class="form-label" data-key="book-provider">Choose a Professional *</label><select id="b-provider" class="form-select" required></select></div>
-        <div class="form-group full"><label class="form-label" data-key="book-notes">Additional Details</label><textarea id="b-notes" class="form-textarea" rows="3"></textarea></div>
-        <div class="form-group full checkbox-row"><input type="checkbox" id="b-terms" required><label for="b-terms" data-key="book-terms">I have read and agree to the <a onclick="navigateTo('terms')">Terms & Policies</a>. I understand VELORA is a marketplace and all agreements are between me and the professional.</label></div>
-      </div>
-      <div class="form-submit"><button type="submit" class="btn btn-primary btn-large" id="book-submit-btn"><span data-key="book-submit">Submit Booking Request</span></button></div>
-      <div class="success-msg" id="book-success"><h3 data-key="book-success-title">✓ Request Sent Successfully</h3><p data-key="book-success-text">The professional has been notified and will contact you shortly.</p></div>
-    </form>
-  </div>
-</div>
-
-<!-- ========== 2.12: JOIN PAGE (PROVIDER APPLICATION) ========== -->
-<div id="page-join" class="page-form">
-  <div class="page-header">
-    <span class="section-tag" data-key="join-tag">For Professionals</span>
-    <h1 class="section-title" data-key="join-title">List Your Business <em>Free</em></h1>
-    <div class="gold-rule"></div>
-    <p data-key="join-desc">Apply to be listed on VELORA. Your profile goes live within 24 hours and booking requests start arriving immediately.</p>
-  </div>
-  <div class="form-container">
-    <form id="join-form">
-      <div class="form-grid">
-        <div class="form-group full"><label class="form-label" data-key="join-business">Full Name / Business Name *</label><input type="text" id="j-business" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="join-email">Email Address *</label><input type="email" id="j-email" class="form-input" required></div>
-        <div class="form-group"><label class="form-label" data-key="join-phone">Phone Number *</label><input type="tel" id="j-phone" class="form-input" required></div>
-        
-        <!-- NEW: Professional Business Phone Field -->
-        <div class="form-group full">
-          <label class="form-label" data-key="join-professional-phone">Business Phone Number (for clients) *</label>
-          <input type="tel" id="j-professional-phone" class="form-input" required placeholder="+20 123 456 7890">
-          <small style="font-size: 0.7rem; color: var(--color-text-light); margin-top: 0.2rem;">This number will be shown to clients after they book your services</small>
-        </div>
-        
-        <div class="form-group full"><label class="form-label" data-key="join-service">Service Type *</label><select id="j-service" class="form-select" required><option value="">Select your service</option><option value="Photography">Photography</option><option value="Videography">Videography</option><option value="Photography & Videography">Photography & Videography</option><option value="Makeup Artist">Makeup Artist</option><option value="Event Planner">Event Planner</option><option value="Wedding Venue">Wedding Venue / Hotel</option><option value="Car Rental">Car Rental</option><option value="Bridal Shop">Bridal Shop</option><option value="DJ & Zaffa">DJ & Zaffa</option><option value="Florist">Florist</option><option value="Catering">Catering</option><option value="Spa & Henna">Spa & Henna</option><option value="Other">Other</option></select></div>
-        <div class="form-group full"><label class="form-label" data-key="join-services-multiple">Services Provided (Select all that apply)</label><div class="checkbox-group" id="services-checkbox-group"></div></div>
-        <div class="form-group full"><label class="form-label" data-key="join-locations-multiple">Service Locations (Select all that apply)</label><div class="checkbox-group" id="locations-checkbox-group"></div></div>
-        <div class="form-group"><label class="form-label" data-key="join-price">Starting Price (EGP) *</label><input type="number" id="j-price" class="form-input" required placeholder="e.g., 5000"></div>
-        <div class="form-group full"><label class="form-label" data-key="join-bio">Tell Us About Your Business *</label><textarea id="j-bio" class="form-textarea" rows="4" required placeholder="Years of experience, notable clients, pricing range, what makes your work special..."></textarea></div>
-        <div class="form-group full"><label class="form-label" data-key="join-portfolio">Portfolio / Social Media Link *</label><input type="url" id="j-portfolio" class="form-input" required placeholder="https://yourwebsite.com or Instagram link"></div>
-        <div class="form-group full checkbox-row"><input type="checkbox" id="j-terms" required><label for="j-terms" data-key="join-terms">I confirm that all information provided is accurate. I understand VELORA is a marketplace and does not guarantee bookings. I agree to the <a onclick="navigateTo('terms')">Terms & Policies</a>.</label></div>
-      </div>
-      <div class="form-submit"><button type="submit" class="btn btn-primary btn-large" id="join-submit-btn"><span data-key="join-submit">Submit Application</span></button></div>
-      <div class="success-msg" id="join-success"><h3 data-key="join-success-title">✓ Application Received</h3><p data-key="join-success-text">We'll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.</p></div>
-    </form>
-  </div>
-</div>
-
-<!-- ========== 2.13: TERMS & POLICIES PAGE (LEGAL PROTECTION) ========== -->
-<div id="page-terms" class="page-terms">
-  <div class="page-header">
-    <span class="section-tag" data-key="terms-tag">Legal</span>
-    <h1 class="section-title" data-key="terms-title">Terms, Policies & <em>Legal Protection</em></h1>
-    <div class="gold-rule"></div>
-  </div>
-  <div class="terms-container" id="terms-content"></div>
-</div>
-
-<!-- ========== 2.14: CONTACT PAGE ========== -->
-<div id="page-contact" class="page-form">
-  <div class="page-header">
-    <span class="section-tag" data-key="contact-tag">Get in Touch</span>
-    <h1 class="section-title" data-key="contact-title">We'd Love to <em>Hear From You</em></h1>
-    <div class="gold-rule"></div>
-  </div>
-  <div class="contact-grid">
-    <div>
-      <h2 data-key="contact-details">Contact <em>Details</em></h2>
-      <div class="gold-rule"></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><div class="contact-lbl" data-key="contact-email">Email</div><div class="contact-val"><a href="mailto:hello@velora.studio">hello@velora.studio</a></div></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fab fa-whatsapp"></i></div><div><div class="contact-lbl" data-key="contact-whatsapp">WhatsApp</div><div class="contact-val"><a href="https://wa.me/201234567890" target="_blank">+20 123 456 7890</a></div></div></div>
-      <div class="contact-item"><div class="contact-icon"><i class="fas fa-globe"></i></div><div><div class="contact-lbl" data-key="contact-website">Website</div><div class="contact-val"><a href="https://velora.studio" target="_blank">velora.studio</a></div></div></div>
-      <div class="contact-lbl" data-key="follow-us">Follow Us</div>
-      <div class="social-row"><a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a><a href="#" class="social-link"><i class="fab fa-facebook"></i> Facebook</a><a href="#" class="social-link"><i class="fab fa-tiktok"></i> TikTok</a></div>
-    </div>
-    <div>
-      <h2 data-key="message-title">Send a <em>Message</em></h2>
-      <div class="gold-rule"></div>
-      <form id="contact-form">
-        <div class="form-group"><label data-key="contact-name">Your Name *</label><input type="text" id="c-name" class="form-input" required></div>
-        <div class="form-group"><label data-key="contact-email-form">Email *</label><input type="email" id="c-email" class="form-input" required></div>
-        <div class="form-group"><label data-key="contact-subject">Subject</label><input type="text" id="c-subject" class="form-input"></div>
-        <div class="form-group"><label data-key="contact-message">Message *</label><textarea id="c-message" class="form-textarea" rows="4" required></textarea></div>
-        <button type="submit" class="btn btn-primary" data-key="send-message">Send Message</button>
-        <div class="success-msg" id="contact-success"><h3 data-key="contact-success-title">✓ Message Sent</h3><p data-key="contact-success-text">We'll get back to you within 24 hours.</p></div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ========== 2.15: PROVIDER PROFILE MODAL ========== -->
-<div id="provider-modal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div id="modal-content-inner"></div>
-  </div>
-</div>
-   <!-- Quick Booking Modal for Phone Number Reveal -->
-<div id="quickBookingModal" class="modal">
-  <div class="modal-content quick-booking-modal">
-    <button class="modal-close" onclick="closeQuickBookingModal()">✕</button>
-    <div id="quickBookingContent">
-      <!-- Content will be dynamically added by JavaScript -->
-    </div>
-  </div>
-</div>
-
-<!-- ========== 2.16: FOOTER ========== -->
-<footer>
-  <div class="footer-grid">
-    <div><div class="footer-logo">VEL<span>O</span>RA</div><p class="footer-desc" data-key="footer-desc">Egypt's premier marketplace connecting clients with elite photographers, videographers, makeup artists, event planners and more. Always free for customers.</p></div>
-    <div><div class="footer-heading" data-key="footer-platform">Platform</div><ul class="footer-links"><li><a onclick="navigateTo('home')" data-key="footer-home">Home</a></li><li><a onclick="navigateTo('providers')" data-key="footer-providers">Browse Professionals</a></li><li><a onclick="navigateTo('book')" data-key="footer-book">Book Now</a></li><li><a onclick="navigateTo('join')" data-key="footer-join">List Your Business</a></li></ul></div>
-    <div><div class="footer-heading" data-key="footer-legal">Legal</div><ul class="footer-links"><li><a onclick="navigateTo('terms')" data-key="footer-terms">Terms & Conditions</a></li><li><a onclick="navigateTo('terms')" data-key="footer-privacy">Privacy Policy</a></li><li><a onclick="navigateTo('terms')" data-key="footer-disclaimer">Disclaimer</a></li></ul></div>
-    <div><div class="footer-heading" data-key="footer-contact">Contact</div><ul class="footer-links"><li><a href="mailto:hello@velora.studio">hello@velora.studio</a></li><li><a onclick="navigateTo('contact')" data-key="footer-contact-link">Contact Us</a></li></ul></div>
-  </div>
-  <div class="footer-bottom"><p data-key="footer-copyright">© 2025 VELORA · All rights reserved · VELORA is a marketplace platform. We do not provide services directly. All agreements are between clients and service providers.</p></div>
-</footer>
-
-<style>
-/* ============================================================
-   SECTION 3: CSS STYLES - USING CSS VARIABLES FROM SECTION 1
-   ============================================================ */
-body { font-family: var(--font-sans); background: var(--color-bg-primary); color: var(--color-text-dark); line-height: 1.6; }
+/* Navigation */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem; background: rgba(255,248,240,0.95);
+  backdrop-filter: blur(10px); transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+#navbar.solid { padding: 0.8rem 4rem; background: var(--color-bg-primary); box-shadow: var(--shadow-md); }
 .logo { font-size: 1.8rem; font-weight: 700; color: var(--color-text-dark); text-decoration: none; cursor: pointer; font-family: var(--font-serif); }
 .logo span { color: var(--color-gold-deep); }
-#navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(255, 248, 240, 0.95); backdrop-filter: blur(10px); transition: var(--transition); box-shadow: var(--shadow-sm); }
-#navbar.solid { padding: 0.8rem 4rem; background: var(--color-bg-primary); box-shadow: var(--shadow-md); }
 .nav-links { display: flex; gap: 2rem; list-style: none; }
 .nav-links a { text-decoration: none; color: var(--color-text-light); font-weight: 500; font-size: 0.9rem; transition: var(--transition-fast); cursor: pointer; position: relative; }
 .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--color-gold-deep); transition: var(--transition-fast); }
@@ -423,16 +91,20 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 #mobile-menu.open { opacity: 1; pointer-events: all; }
 #mobile-menu a { font-size: 1.5rem; text-decoration: none; color: var(--color-text-dark); font-family: var(--font-serif); cursor: pointer; }
 .mob-close { position: absolute; top: 2rem; right: 2rem; font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+
+/* Hero */
 .hero { min-height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; padding: 8rem 2rem 4rem; background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-blush-soft) 100%); overflow: hidden; }
 .hero-inner { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; }
-.hero-badge { display: inline-block; background: rgba(198, 161, 91, 0.15); padding: 0.5rem 1.2rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; color: var(--color-gold-deep); margin-bottom: 2rem; }
-.hero-title { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--color-text-dark); font-family: var(--font-serif); }
+.hero-badge { display: inline-block; background: rgba(198,161,91,0.15); padding: 0.5rem 1.2rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; color: var(--color-gold-deep); margin-bottom: 2rem; }
+.hero-title { font-size: clamp(2.5rem,6vw,4.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--color-text-dark); font-family: var(--font-serif); }
 .hero-title em { color: var(--color-gold-deep); display: block; font-style: italic; }
 .hero-desc { font-size: 1.1rem; color: var(--color-text-light); max-width: 600px; margin: 0 auto 2rem; }
 .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* Sections */
 .section-header { text-align: center; margin-bottom: 3rem; }
-.section-tag { display: inline-block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-gold-deep); background: rgba(198, 161, 91, 0.1); padding: 0.3rem 1rem; border-radius: var(--radius-full); margin-bottom: 1rem; }
-.section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; font-family: var(--font-serif); color: var(--color-text-dark); }
+.section-tag { display: inline-block; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-gold-deep); background: rgba(198,161,91,0.1); padding: 0.3rem 1rem; border-radius: var(--radius-full); margin-bottom: 1rem; }
+.section-title { font-size: clamp(2rem,4vw,3rem); margin-bottom: 1rem; font-family: var(--font-serif); color: var(--color-text-dark); }
 .section-title em { color: var(--color-gold-deep); font-style: italic; }
 .gold-rule { width: 44px; height: 1px; background: var(--color-gold-deep); margin: 1.5rem 0; }
 .categories-section, .howitworks-section, .providers-section, .occasions-section, .trust-section, .testimonials-section, .provider-cta-section, .pricing-section { padding: 5rem 4rem; }
@@ -441,6 +113,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .category-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); background: var(--color-gold); }
 .category-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
 .category-name { font-weight: 600; font-size: 0.9rem; }
+
+/* How It Works */
 .hiw-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; border-bottom: 1px solid var(--color-border); }
 .hiw-tab { padding: 0.8rem 2rem; background: none; border: none; font-size: 0.9rem; font-weight: 600; color: var(--color-text-light); cursor: pointer; transition: var(--transition-fast); border-bottom: 2px solid transparent; }
 .hiw-tab.active { color: var(--color-gold-deep); border-bottom-color: var(--color-gold-deep); }
@@ -456,6 +130,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .checklist { display: flex; flex-direction: column; gap: 0.8rem; }
 .check-item { display: flex; align-items: center; gap: 0.8rem; font-size: 0.9rem; }
 .check-dot { width: 20px; height: 20px; background: var(--color-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; }
+
+/* Providers Grid */
 .filters { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
 .filter-btn { padding: 0.5rem 1.2rem; border-radius: var(--radius-full); background: var(--color-white); border: 1px solid var(--color-border); color: var(--color-text-light); font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); }
 .filter-btn:hover, .filter-btn.active { background: var(--color-gold-deep); border-color: var(--color-gold-deep); color: var(--color-white); }
@@ -473,6 +149,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .provider-price span { color: var(--color-gold-deep); font-size: 1.1rem; }
 .btn-book { width: 100%; margin-top: 1rem; padding: 0.7rem; background: transparent; border: 1px solid var(--color-gold-deep); border-radius: var(--radius-full); color: var(--color-gold-deep); font-weight: 600; cursor: pointer; transition: var(--transition-fast); }
 .btn-book:hover { background: var(--color-gold-deep); color: white; }
+
+/* Occasions */
 .occasions-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-border); margin-top: 2rem; }
 .occ-card { background: var(--color-white); padding: 2rem; text-align: center; transition: var(--transition); cursor: pointer; }
 .occ-card:hover { background: var(--color-gold-light); transform: translateY(-3px); }
@@ -480,6 +158,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .occ-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
 .occ-desc { font-size: 0.8rem; color: var(--color-text-light); margin-bottom: 1rem; }
 .occ-link { color: var(--color-gold-deep); text-decoration: none; font-size: 0.8rem; font-weight: 600; }
+
+/* Trust */
 .trust-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .trust-points { display: flex; flex-direction: column; gap: 1.5rem; }
 .trust-pt { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border); }
@@ -487,12 +167,14 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .trust-label { font-weight: 600; margin-bottom: 0.3rem; color: var(--color-gold-deep); font-size: 0.8rem; text-transform: uppercase; }
 .trust-text { font-size: 0.85rem; color: var(--color-text-light); }
 .trust-visual { position: relative; }
-.trust-big { font-size: 8rem; font-weight: 700; color: rgba(198, 161, 91, 0.1); position: absolute; top: -2rem; right: -1rem; font-family: var(--font-serif); }
+.trust-big { font-size: 8rem; font-weight: 700; color: rgba(198,161,91,0.1); position: absolute; top: -2rem; right: -1rem; font-family: var(--font-serif); }
 .trust-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
 .trust-stat { background: var(--color-white); padding: 1.5rem; text-align: center; }
 .trust-stat-n { font-size: 2rem; font-weight: 700; color: var(--color-gold-deep); font-family: var(--font-serif); }
 .trust-stat-l { font-size: 0.7rem; text-transform: uppercase; color: var(--color-text-light); }
 .trust-quote { margin-top: 1rem; background: var(--color-white); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--color-border); }
+
+/* Testimonials */
 .testimonial-slider { overflow: hidden; position: relative; }
 .testimonial-track { display: flex; gap: 2rem; transition: transform 0.5s ease; }
 .testimonial-card { background: var(--color-white); padding: 2rem; border-radius: var(--radius-lg); min-width: calc(33.33% - 1.33rem); box-shadow: var(--shadow-sm); }
@@ -503,12 +185,16 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .testimonial-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; }
 .testimonial-btn { width: 45px; height: 45px; border-radius: 50%; background: var(--color-white); border: 1px solid var(--color-border); cursor: pointer; transition: var(--transition-fast); }
 .testimonial-btn:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); color: white; }
+
+/* Provider CTA */
 .pcta-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .pcta-box { background: var(--color-white); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 .pcta-title { font-size: 1.3rem; font-weight: 600; color: var(--color-gold-deep); margin-bottom: 1rem; font-family: var(--font-serif); }
 .pcta-list { display: flex; flex-direction: column; gap: 0.8rem; }
 .pcta-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid var(--color-border); font-size: 0.85rem; }
 .pcta-dot { color: var(--color-gold-deep); font-weight: bold; }
+
+/* Plans */
 .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem; }
 .plan-card { background: var(--color-white); padding: 2rem; border-radius: var(--radius-lg); text-align: center; position: relative; box-shadow: var(--shadow-sm); transition: var(--transition); }
 .plan-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
@@ -521,6 +207,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .plan-feat { font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
 .plan-feat-dot { color: var(--color-gold-deep); }
 .plan-note { text-align: center; margin-top: 2rem; font-size: 0.75rem; color: var(--color-text-light); }
+
+/* Forms */
 .page-form { padding: 8rem 4rem 5rem; background: var(--color-bg-primary); display: none; }
 .page-form.active { display: block; }
 .page-header { text-align: center; margin-bottom: 3rem; }
@@ -530,7 +218,7 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .form-group.full { grid-column: span 2; }
 .form-label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-light); }
 .form-input, .form-select, .form-textarea { padding: 0.9rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit; transition: var(--transition-fast); background: var(--color-white); width: 100%; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--color-gold-deep); box-shadow: 0 0 0 3px rgba(198, 161, 91, 0.1); }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--color-gold-deep); box-shadow: 0 0 0 3px rgba(198,161,91,0.1); }
 .checkbox-group { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
 .checkbox-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
 .checkbox-item input { width: 18px; height: 18px; accent-color: var(--color-gold-deep); cursor: pointer; }
@@ -539,9 +227,11 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .checkbox-row label { font-size: 0.8rem; color: var(--color-text-light); }
 .checkbox-row label a { color: var(--color-gold-deep); text-decoration: none; cursor: pointer; }
 .form-submit { text-align: center; margin-top: 2rem; }
-.success-msg { display: none; background: rgba(155, 176, 161, 0.1); border: 1px solid var(--color-sage); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; margin-top: 2rem; }
+.success-msg { display: none; background: rgba(155,176,161,0.1); border: 1px solid var(--color-sage); padding: 1.5rem; border-radius: var(--radius-md); text-align: center; margin-top: 2rem; }
 .success-msg.show { display: block; }
 .success-msg h3 { color: var(--color-sage); margin-bottom: 0.5rem; }
+
+/* Contact */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1100px; margin: 0 auto; }
 .contact-item { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
 .contact-icon { width: 45px; height: 45px; background: var(--color-white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--color-gold-deep); border: 1px solid var(--color-border); }
@@ -551,6 +241,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .social-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
 .social-link { padding: 0.5rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-full); text-decoration: none; color: var(--color-text-light); font-size: 0.8rem; transition: var(--transition-fast); display: inline-flex; align-items: center; gap: 0.5rem; }
 .social-link:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); color: white; }
+
+/* Terms */
 .page-terms { padding: 8rem 4rem 5rem; display: none; }
 .page-terms.active { display: block; }
 .terms-container { max-width: 900px; margin: 0 auto; }
@@ -558,8 +250,9 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .terms-section h3 { font-size: 1.5rem; font-family: var(--font-serif); margin-bottom: 1rem; color: var(--color-text-dark); border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
 .terms-section p, .terms-section ul { margin-bottom: 1rem; color: var(--color-text-light); line-height: 1.8; }
 .terms-section ul { padding-left: 1.5rem; }
-.terms-section li { margin-bottom: 0.5rem; }
-.legal-highlight { background: rgba(198, 161, 91, 0.05); border-left: 3px solid var(--color-gold-deep); padding: 1rem 1.5rem; margin: 1rem 0; border-radius: var(--radius-sm); }
+.legal-highlight { background: rgba(198,161,91,0.05); border-left: 3px solid var(--color-gold-deep); padding: 1rem 1.5rem; margin: 1rem 0; border-radius: var(--radius-sm); }
+
+/* Modal */
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 2rem; overflow-y: auto; }
 .modal.active { display: flex; }
 .modal-content { max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; background: var(--color-white); border-radius: var(--radius-lg); position: relative; animation: modalFadeIn 0.3s ease; }
@@ -580,6 +273,8 @@ body { font-family: var(--font-sans); background: var(--color-bg-primary); color
 .availability-result { margin-top: 0.5rem; font-weight: 600; }
 .availability-result.available { color: var(--color-sage); }
 .availability-result.unavailable { color: #D9534F; }
+
+/* Footer */
 footer { background: var(--color-text-dark); color: var(--color-text-very-light); padding: 4rem 4rem 2rem; margin-top: 4rem; }
 .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
 .footer-logo { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 1rem; font-family: var(--font-serif); }
@@ -593,6 +288,20 @@ footer { background: var(--color-text-dark); color: var(--color-text-very-light)
 .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem; }
 .text-center { text-align: center; }
 .mt-4 { margin-top: 2rem; }
+
+/* Phone Number Reveal */
+.phone-number-blurred { filter: blur(5px); cursor: pointer; user-select: none; display: inline-block; background: rgba(198,161,91,0.1); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-family: monospace; font-size: 1.1rem; transition: all 0.3s ease; text-align: center; width: 100%; }
+.phone-number-blurred:hover { background: rgba(198,161,91,0.2); transform: scale(1.02); }
+.phone-number-revealed { filter: blur(0); background: rgba(155,176,161,0.2); color: var(--color-gold-deep); font-weight: bold; cursor: default; }
+.phone-number-hint { font-size: 0.7rem; color: var(--color-text-light); margin-top: 0.3rem; text-align: center; }
+.quick-booking-modal { max-width: 500px; width: 90%; }
+.quick-booking-form { display: flex; flex-direction: column; gap: 1rem; }
+.quick-booking-form input, .quick-booking-form select, .quick-booking-form textarea { width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-family: inherit; background: var(--color-white); }
+.quick-booking-form button { background: var(--color-gold-deep); color: white; border: none; padding: 0.8rem; border-radius: var(--radius-full); font-weight: 600; cursor: pointer; transition: var(--transition); }
+.quick-booking-form button:hover { background: var(--color-gold); transform: translateY(-2px); }
+.booking-success-reveal { text-align: center; padding: 1rem; }
+.booking-success-reveal .phone-number { font-size: 1.8rem; font-weight: bold; color: var(--color-gold-deep); letter-spacing: 1px; margin: 1rem 0; padding: 0.8rem; background: var(--color-bg-primary); border-radius: var(--radius-sm); }
+
 @media (max-width: 1024px) {
   #navbar { padding: 1rem 2rem; }
   .nav-links, .nav-cta .btn-outline { display: none; }
@@ -615,183 +324,38 @@ footer { background: var(--color-text-dark); color: var(--color-text-very-light)
   .modal-gallery { grid-template-columns: repeat(2, 1fr); }
   .info-grid { grid-template-columns: 1fr; }
 }
-/* ========== PHONE NUMBER REVEAL FEATURE ========== */
-.phone-number-container {
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  padding: 1rem;
-  margin-top: 0.5rem;
-  border: 1px solid var(--border);
-}
-
-.phone-number-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  color: var(--gold-deep);
-  margin-bottom: 0.3rem;
-}
-
-.phone-number-blurred {
-  filter: blur(5px);
-  cursor: pointer;
-  user-select: none;
-  display: inline-block;
-  background: rgba(198, 161, 91, 0.1);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-full);
-  font-family: monospace;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  text-align: center;
-  width: 100%;
-}
-
-.phone-number-blurred:hover {
-  background: rgba(198, 161, 91, 0.2);
-  transform: scale(1.02);
-}
-
-.phone-number-revealed {
-  filter: blur(0);
-  background: rgba(155, 176, 161, 0.2);
-  color: var(--gold-deep);
-  font-weight: bold;
-  cursor: default;
-}
-
-.phone-number-hint {
-  font-size: 0.7rem;
-  color: var(--text-light);
-  margin-top: 0.3rem;
-  text-align: center;
-}
-
-.booking-count-badge {
-  background: var(--gold-deep);
-  color: white;
-  border-radius: var(--radius-full);
-  padding: 0.2rem 0.6rem;
-  font-size: 0.7rem;
-  display: inline-block;
-  margin-left: 0.5rem;
-}
-
-/* Quick Booking Modal */
-.quick-booking-modal {
-  max-width: 500px;
-  width: 90%;
-}
-
-.quick-booking-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.quick-booking-form input,
-.quick-booking-form select,
-.quick-booking-form textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  background: var(--bg-white);
-}
-
-.quick-booking-form label {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-light);
-  margin-bottom: 0.2rem;
-  display: block;
-}
-
-.quick-booking-form button {
-  background: var(--gold-deep);
-  color: white;
-  border: none;
-  padding: 0.8rem;
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.quick-booking-form button:hover {
-  background: var(--gold);
-  transform: translateY(-2px);
-}
-
-.booking-success-reveal {
-  text-align: center;
-  padding: 1rem;
-}
-
-.booking-success-reveal .phone-number {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--gold-deep);
-  letter-spacing: 1px;
-  margin: 1rem 0;
-  padding: 0.8rem;
-  background: var(--bg-primary);
-  border-radius: var(--radius-sm);
-}
 </style>
 
 <script>
-// ============================================================
-// SECTION 4: JAVASCRIPT - ALL DATA IN ONE PLACE
-// ============================================================
-
-// ========== 4.1: SUPABASE CONFIGURATION ==========
+// ========== SUPABASE CONFIGURATION ==========
 const SUPA_URL = 'https://bzamelajpbiurfgazgop.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6YW1lbGFqcGJpdXJmZ2F6Z29wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwNTA0NDIsImV4cCI6MjA4OTYyNjQ0Mn0.lm5FB3R6ZXx5SJMn7MdY8rTKQ46_P5CX0aPFWq8ekqM';
 
-// ========== 4.2: EGYPT GOVERNORATES DATA ==========
-const EGYPT_GOVERNORATES = [
-  "Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Port Said", "Suez", "Ismailia", 
-  "Mansoura", "Tanta", "Zagazig", "Fayoum", "Minya", "Assiut", "Sohag", "Qena", 
-  "Beni Suef", "Damietta", "Sharm El Sheikh", "Hurghada", "Marsa Matruh", "North Sinai", 
-  "South Sinai", "New Valley", "Red Sea", "Kafr El Sheikh", "Beheira", "Sharqia", 
-  "Dakahlia", "Gharbia", "Menoufia", "Qalyubia"
-];
+// ========== DATA ==========
+const EGYPT_GOVERNORATES = ["Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Port Said", "Suez", "Ismailia", "Mansoura", "Tanta", "Zagazig", "Fayoum", "Minya", "Assiut", "Sohag", "Qena", "Beni Suef", "Damietta", "Sharm El Sheikh", "Hurghada"];
+const SERVICE_TYPES = ["Photography", "Videography", "Makeup Artist", "Event Planner", "Wedding Venue", "Car Rental", "DJ & Zaffa", "Florist", "Catering", "Spa & Henna", "Bridal Shop", "Accessories"];
 
-// ========== 4.3: SERVICE TYPES DATA ==========
-const SERVICE_TYPES = [
-  "Photography", "Videography", "Makeup Artist", "Event Planner", "Wedding Venue", 
-  "Car Rental", "DJ & Zaffa", "Florist", "Catering", "Spa & Henna", "Bridal Shop", 
-  "Accessories", "Honeymoon Travel", "Invitation Designer", "Lighting & Sound"
-];
-
-// ========== 4.4: PROVIDERS DATA ==========
-// ========== LOAD PROFESSIONALS FROM SUPABASE ==========
 let providers = [];
+let currentLang = localStorage.getItem('velora_lang') || 'en';
+let bookedProfessionals = JSON.parse(localStorage.getItem('velora_booked') || '{}');
 
+// ========== LOAD PROVIDERS FROM SUPABASE (Applications table) ==========
 async function loadProvidersFromSupabase() {
   try {
-    // Fetch approved applications from Supabase
     const response = await fetch(`${SUPA_URL}/rest/v1/Applications?status=eq.approved&select=*`, {
-      headers: {
-        'apikey': SUPA_KEY,
-        'Authorization': 'Bearer ' + SUPA_KEY
-      }
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
     });
-    
     const data = await response.json();
-    
-    // Convert each application to a provider object
     providers = data.map(app => ({
       id: app.id,
       name: app.business_name,
       type: app.service_type,
       icon: getIconForService(app.service_type),
-      rating: app.rating || 4.5,
-      reviews: app.reviews || 0,
-      badge: app.booking_count > 10 ? "Popular" : (app.badge || ""),
+      rating: 4.5,
+      reviews: 0,
+      badge: "",
       price: app.price || 0,
-      phone: app.phone_number || app.professional_phone || app.phone || "", // ← PHONE FROM DATABASE
+      phone: app.phone_number || "",
       email: app.email,
       locations: app.locations || [app.city || "Cairo"],
       services: app.services || [app.service_type],
@@ -799,355 +363,39 @@ async function loadProvidersFromSupabase() {
       since: new Date(app.created_at).getFullYear().toString(),
       portfolio: app.portfolio_link || "",
       images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
-      booking_count: app.booking_count || 0,
+      booking_count: 0,
       testimonials: []
     }));
-    
-    // Refresh the page with loaded providers
-    if (typeof renderFilters === 'function') renderFilters();
-    if (typeof renderProviders === 'function') renderProviders();
-    if (typeof renderTrustStats === 'function') renderTrustStats();
-    
-    console.log(`✅ Loaded ${providers.length} professionals from Supabase`);
-    
+    renderFilters();
+    renderProviders();
+    renderTrustStats();
+    console.log(`✅ Loaded ${providers.length} professionals`);
   } catch (error) {
-    console.error('Error loading professionals:', error);
-    // If loading fails, use fallback demo providers
+    console.error('Error loading:', error);
     loadDemoProviders();
   }
 }
 
-// Helper function to get icon based on service type
 function getIconForService(serviceType) {
-  const icons = {
-    'Photography': '📸',
-    'Videography': '🎥',
-    'Makeup Artist': '💄',
-    'Event Planner': '🎪',
-    'Wedding Venue': '🏨',
-    'Car Rental': '🚗',
-    'DJ & Zaffa': '🎵',
-    'Florist': '💐',
-    'Catering': '🍽️',
-    'Spa & Henna': '💆',
-    'Bridal Shop': '👗',
-    'Accessories': '💍',
-    'Other': '✨'
-  };
+  const icons = { 'Photography': '📸', 'Videography': '🎥', 'Makeup Artist': '💄', 'Event Planner': '🎪', 'Wedding Venue': '🏨', 'Car Rental': '🚗', 'DJ & Zaffa': '🎵', 'Florist': '💐', 'Catering': '🍽️', 'Spa & Henna': '💆' };
   return icons[serviceType] || '✨';
 }
 
-// Fallback demo providers (for when Supabase is unavailable)
 function loadDemoProviders() {
   providers = [
-    { id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", rating: 4.9, reviews: 47, badge: "Featured", price: 5000, phone: "+20 100 123 4567", locations: ["Cairo", "Giza"], services: ["Photography"], bio: "Professional photographer", since: "2018", images: ["📸"], booking_count: 0, testimonials: [] },
-    { id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, phone: "+20 122 345 6789", locations: ["Cairo", "Alexandria"], services: ["Makeup Artist"], bio: "Bridal makeup specialist", since: "2019", images: ["💄"], booking_count: 0, testimonials: [] },
-    { id: 3, name: "Elite Events Egypt", type: "Event Planner", icon: "🎪", rating: 4.8, reviews: 19, badge: "", price: 15000, phone: "+20 111 222 3333", locations: ["Cairo", "Giza", "Alexandria"], services: ["Event Planner"], bio: "Event planning company", since: "2015", images: ["🎪"], booking_count: 0, testimonials: [] },
-    { id: 4, name: "Grand Ballrooms", type: "Wedding Venue", icon: "🏨", rating: 4.9, reviews: 44, badge: "Featured", price: 50000, phone: "+20 100 987 6543", locations: ["Cairo", "Giza"], services: ["Wedding Venue"], bio: "Luxury ballrooms", since: "2010", images: ["🏨"], booking_count: 0, testimonials: [] },
-    { id: 5, name: "Marco Vision Films", type: "Videography", icon: "🎥", rating: 5.0, reviews: 28, badge: "Featured", price: 8000, phone: "+20 122 888 7777", locations: ["Cairo", "Alexandria"], services: ["Videography"], bio: "Cinematic wedding films", since: "2019", images: ["🎥"], booking_count: 0, testimonials: [] },
-    { id: 6, name: "Hana Florals", type: "Florist", icon: "💐", rating: 5.0, reviews: 33, badge: "Top Rated", price: 2500, phone: "+20 155 444 3333", locations: ["Cairo", "Giza"], services: ["Florist"], bio: "Wedding florals", since: "2018", images: ["💐"], booking_count: 0, testimonials: [] },
-    { id: 7, name: "Royal Rides Egypt", type: "Car Rental", icon: "🚗", rating: 4.7, reviews: 22, badge: "", price: 3000, phone: "+20 100 555 6666", locations: ["Cairo", "Alexandria", "Giza"], services: ["Car Rental"], bio: "Luxury car rentals", since: "2017", images: ["🚗"], booking_count: 0, testimonials: [] }
+    { id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", rating: 4.9, reviews: 47, badge: "Featured", price: 5000, phone: "+20 100 123 4567", locations: ["Cairo"], services: ["Photography"], bio: "Professional photographer", since: "2018", images: ["📸"], booking_count: 0 },
+    { id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, phone: "+20 122 345 6789", locations: ["Cairo"], services: ["Makeup Artist"], bio: "Bridal makeup", since: "2019", images: ["💄"], booking_count: 0 }
   ];
   renderFilters();
   renderProviders();
-  renderTrustStats();
-  console.log('⚠️ Using demo providers (Supabase connection may have issues)');
-}
-];
-
-// ========== 4.5: HOW IT WORKS DATA ==========
-const customerSteps = [
-  { num: "01", title: "Sign Up Free", desc: "Register in under 5 minutes. Name, phone, email, location. No credit card. No commitment." },
-  { num: "02", title: "Discover Professionals", desc: "Browse hundreds of verified professionals. Filter by service, city, budget. Compare portfolios and real reviews." },
-  { num: "03", title: "Contact Directly", desc: "Send a booking request to your chosen professional. Chat, confirm details, agree on price — done." },
-  { num: "04", title: "Celebrate & Review", desc: "Your event is captured perfectly. Leave a verified review to help others and build the community." }
-];
-const customerBenefits = [
-  "Browse all professionals — zero cost",
-  "View full portfolios & videos",
-  "Read verified client reviews",
-  "Compare packages & pricing",
-  "Send unlimited booking requests",
-  "Contact providers directly — no middleman",
-  "No hidden fees. No subscription. Ever."
-];
-const professionalSteps = [
-  { num: "01", title: "Register Free", desc: "Fill in your business name, service type, location, contact & packages. Takes 5 minutes." },
-  { num: "02", title: "Get Listed", desc: "VELORA verifies your profile. You go live on the platform within 24 hours." },
-  { num: "03", title: "Receive Leads", desc: "Clients discover your portfolio and send booking requests directly to your dashboard." },
-  { num: "04", title: "Earn & Grow", desc: "Deliver your service, get paid, collect 5-star reviews and build a thriving business." }
-];
-const professionalBenefits = [
-  "Professional profile page & portfolio",
-  "Booking requests to your dashboard",
-  "You control pricing 100%",
-  "No commissions on your earnings",
-  "Verified badge builds instant trust",
-  "Profile grows with us globally",
-  "24/7 — your business never sleeps"
-];
-
-// ========== 4.6: OCCASIONS DATA ==========
-const occasions = [
-  { icon: "💒", title: "Weddings", desc: "Photographers, videographers, makeup, venues — everything for your perfect day in one place.", link: "Plan Your Wedding →" },
-  { icon: "🎂", title: "Birthdays", desc: "Plan the perfect celebration with entertainers, photographers and beautiful venues.", link: "Plan Your Birthday →" },
-  { icon: "🏢", title: "Corporate Events", desc: "Professional photographers and videographers for conferences, launches and team events.", link: "Plan Your Event →" },
-  { icon: "💑", title: "Engagements", desc: "Find the perfect photographer for your engagement shoot or private celebration party.", link: "Plan Your Engagement →" },
-  { icon: "🎓", title: "Graduations", desc: "Celebrate achievements with portrait photographers and event planners who care.", link: "Plan Your Graduation →" },
-  { icon: "👶", title: "Baby Showers", desc: "Capture precious moments with trusted photographers and decorators near you.", link: "Plan Your Shower →" },
-  { icon: "📸", title: "Photo Sessions", desc: "Book studio or outdoor photographers for personal, family or professional portraits.", link: "Book a Session →" },
-  { icon: "🎉", title: "Any Celebration", desc: "Whatever you're celebrating — VELORA has the right professional, guaranteed.", link: "Start Planning →" }
-];
-
-// ========== 4.7: TRUST POINTS DATA ==========
-const trustPoints = [
-  { icon: "✅", label: "Verified Providers Only", text: "Every professional goes through our review process before listing. You only see real, trusted professionals." },
-  { icon: "⭐", label: "Real Reviews Only", text: "Reviews come exclusively from confirmed clients. No fake ratings, no incentivised posts — ever." },
-  { icon: "📋", label: "Full Transparency", text: "Pricing, packages, location — everything is shown before you even make contact. No surprises." },
-  { icon: "💬", label: "Direct Communication", text: "Talk directly to the professional. No confusing middlemen, no commissions taken from your booking." }
-];
-
-// ========== 4.8: PLANS DATA ==========
-const plans = [
-  { name: "Basic", price: "Free", period: "Forever — no time limit", features: ["Listed on VELORA", "Full profile & portfolio", "Receive booking requests", "Provider dashboard", "Edit profile anytime"], popular: false },
-  { name: "Featured", price: "$29", period: "per month", features: ["Everything in Basic", "Top of search results", "Gold 'Featured' badge", "Priority in listings", "Monthly analytics report", "Priority support"], popular: true },
-  { name: "Premium", price: "$59", period: "per month", features: ["Everything in Featured", "Portfolio video showcase", "Monthly social spotlight", "Homepage feature rotation", "Custom profile URL", "Early feature access"], popular: false }
-];
-
-// ========== 4.9: TESTIMONIALS DATA ==========
-const testimonials = [
-  { quote: "Found our wedding photographer in 10 minutes. No more hours scrolling Instagram. VELORA just works — beautifully.", name: "Sarah & Ahmed K.", sub: "Wedding · Cairo · 2024", stars: 5 },
-  { quote: "Booked a makeup artist and videographer for my daughter's birthday in one place. Both were incredible — and it cost nothing to arrange.", name: "Nadia Hassan", sub: "Birthday · Alexandria · 2024", stars: 5 },
-  { quote: "Our corporate event was covered beautifully. The photographer was professional, on time, and the photos exceeded every expectation.", name: "Khaled Mansour", sub: "Corporate Event · New Cairo · 2024", stars: 5 },
-  { quote: "I was skeptical it was really free. It genuinely is. Compared five videographers side by side, chose one, contacted directly. Seamless.", name: "Laila & Omar S.", sub: "Engagement · Giza · 2024", stars: 5 },
-  { quote: "As a photographer, VELORA transformed my business. Booking requests arrive while I sleep. The visibility is real and the dashboard is effortless.", name: "Mohamed Adel", sub: "Wedding Photographer · Cairo", stars: 5 }
-];
-
-// ========== 4.10: INCLUDED ITEMS DATA ==========
-const includedItems = [
-  "Professional profile with full portfolio gallery",
-  "Booking requests sent to your dashboard & email",
-  "You set and control your pricing 100%",
-  "Verified provider badge for instant client trust",
-  "Collect verified 5-star reviews from real clients",
-  "No commission taken on any of your earnings",
-  "Profile visible globally as VELORA expands"
-];
-
-// ========== 4.11: TERMS & POLICIES CONTENT (LEGAL PROTECTION) ==========
-const termsContent = {
-  en: `
-    <div class="terms-section">
-      <h3>1. Platform Role & Disclaimer</h3>
-      <div class="legal-highlight">
-        <strong>IMPORTANT LEGAL NOTICE:</strong> VELORA is a marketplace platform that connects clients with independent service providers. VELORA DOES NOT PROVIDE ANY SERVICES DIRECTLY.
-      </div>
-      <p>VELORA acts solely as a technology platform facilitating connections between clients ("Clients") and independent service providers ("Professionals"). VELORA is not a party to any agreement between Clients and Professionals. All bookings, payments, and service agreements are made directly between Clients and Professionals.</p>
-      <p><strong>VELORA MAKES NO WARRANTIES, REPRESENTATIONS, OR GUARANTEES REGARDING:</strong></p>
-      <ul>
-        <li>The quality, safety, or legality of any professional's services</li>
-        <li>The accuracy of professional profiles, portfolios, or reviews</li>
-        <li>The availability, punctuality, or performance of any professional</li>
-        <li>The outcome or results of any service provided</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>2. No Liability / Indemnification</h3>
-      <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW, VELORA AND ITS DIRECTORS, OFFICERS, EMPLOYEES, AND AFFILIATES SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES</strong> arising out of or in connection with:</p>
-      <ul>
-        <li>Any service provided by a Professional</li>
-        <li>Any agreement or dispute between Client and Professional</li>
-        <li>Any failure of a Professional to perform services as agreed</li>
-        <li>Any injury, loss, or damage resulting from services provided</li>
-        <li>Any cancellation, delay, or rescheduling of services</li>
-        <li>Any inaccuracy or misrepresentation in professional profiles</li>
-      </ul>
-      <p><strong>YOU AGREE TO INDEMNIFY, DEFEND, AND HOLD HARMLESS VELORA</strong> from any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to:</p>
-      <ul>
-        <li>Your use of the VELORA platform</li>
-        <li>Any agreement between you and any Professional</li>
-        <li>Any dispute between you and any Professional</li>
-        <li>Your violation of these Terms</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>3. Booking Process</h3>
-      <p>Clients submit booking requests through the VELORA platform. These requests are sent directly to the selected Professional. VELORA does not approve, confirm, or guarantee any booking. The Professional is solely responsible for accepting or declining any booking request. All communication regarding booking confirmation, pricing, and service details must occur directly between Client and Professional.</p>
-      <p><strong>VELORA DOES NOT HANDLE PAYMENTS.</strong> All payments are made directly between Client and Professional. VELORA does not process, collect, or hold any payments for services.</p>
-    </div>
-    <div class="terms-section">
-      <h3>4. Cancellation Policy</h3>
-      <p>Cancellation terms are determined solely by the agreement between Client and Professional. VELORA recommends that Clients and Professionals agree on cancellation terms in writing before services are rendered. VELORA is not responsible for enforcing any cancellation policy or mediating disputes.</p>
-      <p><strong>Recommended Best Practices:</strong></p>
-      <ul>
-        <li>Agree on cancellation terms in writing before confirming booking</li>
-        <li>Document any deposits or payments made</li>
-        <li>Communicate any changes or cancellations as early as possible</li>
-        <li>Keep records of all communications regarding the booking</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>5. Professional Verification</h3>
-      <p>VELORA performs a basic verification process for Professionals before listing them on the platform. This verification is limited and does not constitute a guarantee of any kind. VELORA does not conduct background checks, verify credentials, or confirm the accuracy of any information provided by Professionals.</p>
-      <p><strong>Clients are strongly encouraged to:</strong></p>
-      <ul>
-        <li>Review professional portfolios and reviews carefully</li>
-        <li>Conduct their own due diligence before booking</li>
-        <li>Request references or additional information as needed</li>
-        <li>Communicate directly with Professionals to confirm all details</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>6. Reviews & Ratings</h3>
-      <p>VELORA allows Clients to leave reviews and ratings for Professionals they have booked. Reviews must be truthful, accurate, and based on actual experience. VELORA does not verify the accuracy of reviews and is not responsible for the content of any review. VELORA reserves the right to remove reviews that violate these Terms.</p>
-    </div>
-    <div class="terms-section">
-      <h3>7. Privacy & Data Protection</h3>
-      <p>VELORA collects and processes personal information in accordance with applicable data protection laws. By using the VELORA platform, you consent to the collection and use of your information as described in our Privacy Policy. VELORA does not sell personal information to third parties.</p>
-    </div>
-    <div class="terms-section">
-      <h3>8. Modification of Terms</h3>
-      <p>VELORA reserves the right to modify these Terms at any time. Continued use of the VELORA platform after any such modifications constitutes acceptance of the modified Terms. It is your responsibility to review these Terms periodically.</p>
-    </div>
-    <div class="terms-section">
-      <h3>9. Governing Law & Dispute Resolution</h3>
-      <p>These Terms shall be governed by and construed in accordance with the laws of the Arab Republic of Egypt. Any dispute arising out of or relating to these Terms or your use of the VELORA platform shall be resolved exclusively in the courts of Cairo, Egypt.</p>
-      <p><strong>DISPUTES BETWEEN CLIENTS AND PROFESSIONALS ARE SOLELY BETWEEN THE PARTIES INVOLVED. VELORA SHALL NOT BE A PARTY TO ANY SUCH DISPUTE.</strong></p>
-    </div>
-    <div class="terms-section">
-      <h3>10. Contact Information</h3>
-      <p>For questions regarding these Terms, please contact us at: <a href="mailto:hello@velora.studio">hello@velora.studio</a></p>
-      <p><strong>Last Updated: March 2025</strong></p>
-    </div>
-  `,
-  ar: `
-    <div class="terms-section">
-      <h3>1. دور المنصة وإخلاء المسؤولية</h3>
-      <div class="legal-highlight">
-        <strong>إشعار قانوني مهم:</strong> فيلورا هي منصة سوق تربط العملاء بمقدمي الخدمات المستقلين. فيلورا لا تقدم أي خدمات بشكل مباشر.
-      </div>
-      <p>تعمل فيلورا فقط كمنصة تقنية تسهل التواصل بين العملاء ومقدمي الخدمات المستقلين. فيلورا ليست طرفاً في أي اتفاق بين العملاء ومقدمي الخدمات. جميع الحجوزات والمدفوعات واتفاقيات الخدمة تتم مباشرة بين العميل ومقدم الخدمة.</p>
-      <p><strong>فيلورا لا تقدم أي ضمانات أو تمثيلات أو تعهدات فيما يتعلق:</strong></p>
-      <ul>
-        <li>جودة أو سلامة أو قانونية خدمات أي محترف</li>
-        <li>دقة الملفات الشخصية أو معارض الأعمال أو التقييمات</li>
-        <li>توفر أو التزام بالمواعيد أو أداء أي محترف</li>
-        <li>نتائج أي خدمة مقدمة</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>2. عدم المسؤولية / التعويض</h3>
-      <p><strong>إلى أقصى حد يسمح به القانون، لن تكون فيلورا ومديروها وموظفوها والجهات التابعة لها مسؤولة عن أي أضرار مباشرة أو غير مباشرة أو عرضية أو خاصة أو تبعية أو تأديبية</strong> تنشأ عن أو تتعلق بما يلي:</p>
-      <ul>
-        <li>أي خدمة يقدمها محترف</li>
-        <li>أي اتفاق أو نزاع بين العميل والمحترف</li>
-        <li>أي فشل من جانب المحترف في تقديم الخدمات كما تم الاتفاق</li>
-        <li>أي إصابة أو خسارة أو ضرر ناتج عن الخدمات المقدمة</li>
-        <li>أي إلغاء أو تأخير أو إعادة جدولة للخدمات</li>
-        <li>أي معلومات غير دقيقة في الملفات الشخصية للمحترفين</li>
-      </ul>
-      <p><strong>توافق على تعويض والدفاع عن وحماية فيلورا</strong> من أي وجميع المطالبات والأضرار والخسائر والالتزامات والتكاليف والمصروفات (بما في ذلك أتعاب المحاماة المعقولة) الناشئة عن أو المتعلقة:</p>
-      <ul>
-        <li>استخدامك لمنصة فيلورا</li>
-        <li>أي اتفاق بينك وبين أي محترف</li>
-        <li>أي نزاع بينك وبين أي محترف</li>
-        <li>انتهاكك لهذه الشروط</li>
-      </ul>
-    </div>
-    <div class="terms-section">
-      <h3>3. عملية الحجز</h3>
-      <p>يقدم العملاء طلبات الحجز من خلال منصة فيلورا. يتم إرسال هذه الطلبات مباشرة إلى المحترف المختار. فيلورا لا توافق أو تؤكد أو تضمن أي حجز. المحترف هو المسؤول الوحيد عن قبول أو رفض أي طلب حجز. يجب أن تتم جميع الاتصالات المتعلقة بتأكيد الحجز والتسعير وتفاصيل الخدمة مباشرة بين العميل والمحترف.</p>
-      <p><strong>فيلورا لا تتعامل مع المدفوعات.</strong> تتم جميع المدفوعات مباشرة بين العميل والمحترف. فيلورا لا تقوم بمعالجة أو تحصيل أو الاحتفاظ بأي مدفوعات مقابل الخدمات.</p>
-    </div>
-    <div class="terms-section">
-      <h3>4. سياسة الإلغاء</h3>
-      <p>تحدد شروط الإلغاء بموجب الاتفاق بين العميل والمحترف. توصي فيلورا بأن يتفق العملاء والمحترفون على شروط الإلغاء كتابةً قبل تقديم الخدمات. فيلورا ليست مسؤولة عن تنفيذ أي سياسة إلغاء أو التوسط في النزاعات.</p>
-    </div>
-    <div class="terms-section">
-      <h3>5. تواصل معنا</h3>
-      <p>للاستفسار حول هذه الشروط، يرجى الاتصال بنا على: <a href="mailto:hello@velora.studio">hello@velora.studio</a></p>
-      <p><strong>آخر تحديث: مارس 2025</strong></p>
-    </div>
-  `
-};
-
-// ========== 4.12: LANGUAGE DATA ==========
-let currentLang = localStorage.getItem('velora_lang') || 'en';
-const translations = {
-  en: {
-    nav_home: "Home", nav_providers: "Professionals", nav_book: "Book Now", nav_join: "Join Us", nav_terms: "Terms & Policies", nav_contact: "Contact",
-    btn_list: "List Your Business", btn_book: "Book Now",
-    hero_badge: "✨ Egypt's Premier Event Marketplace ✨", hero_title: "Find Your Perfect ", hero_em: "Professional", hero_sub: "For Every Occasion",
-    hero_desc: "Browse, compare and contact Egypt's top photographers, videographers, makeup artists, venues and more — all in one place. Always free for customers.",
-    hero_browse: "Browse Professionals", hero_book: "Book Your Event",
-    categories_tag: "Browse by Category", categories_title: "All Services.<br><em>One Platform.</em>",
-    hiw_tag: "Simple Process", hiw_title: "How <em>VELORA</em> Works", tab_customers: "For Customers", tab_professionals: "For Professionals",
-    featured_tag: "Featured Professionals", featured_title: "Handpicked <em>Masters</em>", view_all: "View All Professionals →",
-    occasions_tag: "Perfect For", occasions_title: "Every <em>Occasion</em>",
-    why_tag: "Why VELORA", why_title: "Safe. Verified.<br><em>Always Free.</em>", trust_quote: "One platform. Every top professional in Egypt. Browse, compare, contact — always free.",
-    testimonials_tag: "Real Stories", testimonials_title: "What Our <em>Clients Say</em>",
-    provider_cta_tag: "For Professionals", provider_cta_title: "Grow Your Business.<br><em>Start Free.</em>", provider_cta_desc: "Join Egypt's fastest-growing event services marketplace. Your profile goes live in 24 hours and booking requests start arriving immediately — no upfront cost, no commissions on what you earn.",
-    apply_join: "Apply to Join Free", talk_us: "Talk to Us First", included_title: "What's Included — Free",
-    pricing_tag: "Plans & Pricing", pricing_title: "Choose the <em>Right Plan</em> for You", plan_note: "Clients NEVER pay a fee · Start with Basic free · Upgrade anytime",
-    book_tag: "Reservation", book_title: "Book a <em>Professional</em>", book_desc: "Submit your request below. It goes directly to the professional's dashboard and email — instantly. Always free for customers.",
-    book_name: "Full Name *", book_phone: "Phone Number *", book_email: "Email Address *", book_event: "Event Type *", book_date: "Event Date *", book_location: "Event Location *", book_provider: "Choose a Professional *", book_notes: "Additional Details", book_terms: "I have read and agree to the Terms & Policies. I understand VELORA is a marketplace and all agreements are between me and the professional.",
-    book_submit: "Submit Booking Request", book_success_title: "✓ Request Sent Successfully", book_success_text: "The professional has been notified and will contact you shortly.",
-    join_tag: "For Professionals", join_title: "List Your Business <em>Free</em>", join_desc: "Apply to be listed on VELORA. Your profile goes live within 24 hours and booking requests start arriving immediately.",
-    join_business: "Full Name / Business Name *", join_email: "Email Address *", join_phone: "Phone Number *", join_service: "Service Type *", join_services_multiple: "Services Provided (Select all that apply)", join_locations_multiple: "Service Locations (Select all that apply)", join_price: "Starting Price (EGP) *", join_bio: "Tell Us About Your Business *", join_portfolio: "Portfolio / Social Media Link *", join_terms: "I confirm that all information provided is accurate. I understand VELORA is a marketplace and does not guarantee bookings. I agree to the Terms & Policies.",
-    join_submit: "Submit Application", join_professional_phone: "Business Phone Number (for clients) *", join_success_title: "✓ Application Received", join_success_text: "We'll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.",
-    contact_tag: "Get in Touch", contact_title: "We'd Love to <em>Hear From You</em>", contact_details: "Contact <em>Details</em>", contact_email: "Email", contact_whatsapp: "WhatsApp", contact_website: "Website", follow_us: "Follow Us", message_title: "Send a <em>Message</em>", contact_name: "Your Name *", contact_email_form: "Email *", contact_subject: "Subject", contact_message: "Message *", send_message: "Send Message", contact_success_title: "✓ Message Sent", contact_success_text: "We'll get back to you within 24 hours.",
-    footer_desc: "Egypt's premier marketplace connecting clients with elite photographers, videographers, makeup artists, event planners and more. Always free for customers.",
-    footer_platform: "Platform", footer_legal: "Legal", footer_contact: "Contact", footer_home: "Home", footer_providers: "Browse Professionals", footer_book: "Book Now", footer_join: "List Your Business", footer_terms: "Terms & Conditions", footer_privacy: "Privacy Policy", footer_disclaimer: "Disclaimer", footer_contact_link: "Contact Us", footer_copyright: "© 2025 VELORA · All rights reserved · VELORA is a marketplace platform. We do not provide services directly. All agreements are between clients and service providers.",
-    modal_about: "About", modal_locations: "Locations", modal_services: "Services", modal_price: "Starting Price", modal_since: "Joined", modal_availability: "Check Availability", modal_available: "✓ Available on this date!", modal_unavailable: "✗ Not available. Please choose another date.", modal_gallery: "Gallery", modal_reviews: "Reviews"
-  },
-  ar: {
-    nav_home: "الرئيسية", nav_providers: "المحترفون", nav_book: "احجز الآن", nav_join: "انضم إلينا", nav_terms: "الشروط والسياسات", nav_contact: "اتصل بنا",
-    btn_list: "سجل نشاطك التجاري", btn_book: "احجز الآن",
-    hero_badge: "✨ أكبر منصة لخدمات الفعاليات في مصر ✨", hero_title: "ابحث عن ", hero_em: "المحترف المثالي", hero_sub: "لأي مناسبة",
-    hero_desc: "تصفح وقارن وتواصل مع أفضل المصورين ومصوري الفيديو وفناني الماكياج ومنسقي الأحداث في مصر - كل ذلك في مكان واحد. مجاني دائماً للعملاء.",
-    hero_browse: "تصفح المحترفين", hero_book: "احجز فعاليتك",
-    categories_tag: "تصفح حسب الفئة", categories_title: "جميع الخدمات.<br><em>منصة واحدة.</em>",
-    hiw_tag: "عملية بسيطة", hiw_title: "كيف تعمل <em>فيلورا</em>", tab_customers: "للعملاء", tab_professionals: "للمحترفين",
-    featured_tag: "محترفون مميزون", featured_title: "أفضل <em>الخبراء</em>", view_all: "عرض جميع المحترفين ←",
-    occasions_tag: "مثالي لـ", occasions_title: "كل <em>مناسبة</em>",
-    why_tag: "لماذا فيلورا", why_title: "آمن. موثوق.<br><em>مجاني دائماً.</em>", trust_quote: "منصة واحدة. كل المحترفين المتميزين في مصر. تصفح، قارن، تواصل — مجاني دائماً.",
-    testimonials_tag: "قصص حقيقية", testimonials_title: "ماذا يقول <em>عملاؤنا</em>",
-    provider_cta_tag: "للمحترفين", provider_cta_title: "طور عملك.<br><em>ابدأ مجاناً.</em>", provider_cta_desc: "انضم إلى أسرع منصة لخدمات الفعاليات نمواً في مصر. يتم نشر ملفك الشخصي خلال 24 ساعة وتبدأ طلبات الحجز في الوصول فوراً — بدون تكاليف مسبقة، بدون عمولات على ما تكسبه.",
-    apply_join: "قدم طلب الانضمام مجاناً", talk_us: "تحدث إلينا أولاً", included_title: "ما تشمله الخدمة — مجاناً",
-    pricing_tag: "الباقات والأسعار", pricing_title: "اختر <em>الباقة المناسبة</em> لك", plan_note: "العملاء لا يدفعون أي رسوم · ابدأ مجاناً مع الباقة الأساسية · ارتق في أي وقت",
-    book_tag: "حجز", book_title: "احجز <em>محترفاً</em>", book_desc: "أرسل طلبك أدناه. يذهب مباشرة إلى لوحة تحكم المحترف وبريده الإلكتروني — فوراً. مجاني دائماً للعملاء.",
-    book_name: "الاسم الكامل *", book_phone: "رقم الهاتف *", book_email: "البريد الإلكتروني *", book_event: "نوع الفعالية *", book_date: "تاريخ الفعالية *", book_location: "موقع الفعالية *", book_provider: "اختر محترفاً *", book_notes: "تفاصيل إضافية", book_terms: "لقد قرأت وأوافق على الشروط والسياسات. أفهم أن فيلورا هي منصة سوق وأن جميع الاتفاقات بيني وبين المحترف.",
-    book_submit: "إرسال طلب الحجز", book_success_title: "✓ تم إرسال الطلب بنجاح", book_success_text: "تم إخطار المحترف وسيتواصل معك قريباً.",
-    join_tag: "للمحترفين", join_title: "سجل نشاطك التجاري <em>مجاناً</em>", join_desc: "تقدم لتكون مدرجاً في فيلورا. يتم نشر ملفك الشخصي خلال 24 ساعة وتبدأ طلبات الحجز في الوصول فوراً.",
-    join_business: "الاسم الكامل / اسم النشاط التجاري *", join_email: "البريد الإلكتروني *", join_phone: "رقم الهاتف *", join_service: "نوع الخدمة *", join_services_multiple: "الخدمات المقدمة (اختر كل ما ينطبق)", join_locations_multiple: "مواقع الخدمة (اختر كل ما ينطبق)", join_price: "السعر الابتدائي (جنيه) *", join_bio: "أخبرنا عن نشاطك التجاري *", join_portfolio: "رابط المعرض / وسائل التواصل الاجتماعي *", join_terms: "أؤكد أن جميع المعلومات المقدمة دقيقة. أفهم أن فيلورا هي منصة سوق ولا تضمن الحجوزات. أوافق على الشروط والسياسات.",
-    join_submit: "إرسال الطلب", join_professional_phone: "رقم هاتف العمل التجاري (للعملاء) *", join_success_title: "✓ تم استلام الطلب", join_success_text: "سنراجع معرض أعمالك ونتواصل معك خلال 24-48 ساعة. مرحباً بك في فيلورا.",
-    contact_tag: "تواصل معنا", contact_title: "يسعدنا <em>سماع رأيك</em>", contact_details: "تفاصيل <em>الاتصال</em>", contact_email: "البريد الإلكتروني", contact_whatsapp: "واتساب", contact_website: "الموقع الإلكتروني", follow_us: "تابعنا", message_title: "أرسل <em>رسالة</em>", contact_name: "اسمك *", contact_email_form: "البريد الإلكتروني *", contact_subject: "الموضوع", contact_message: "الرسالة *", send_message: "إرسال الرسالة", contact_success_title: "✓ تم إرسال الرسالة", contact_success_text: "سنتواصل معك في غضون 24 ساعة.",
-    footer_desc: "أكبر منصة لخدمات الفعاليات في مصر تربط العملاء بأفضل المصورين ومصوري الفيديو وفناني الماكياج ومنسقي الأحداث والمزيد. مجاني دائماً للعملاء.",
-    footer_platform: "المنصة", footer_legal: "قانوني", footer_contact: "اتصل بنا", footer_home: "الرئيسية", footer_providers: "تصفح المحترفين", footer_book: "احجز الآن", footer_join: "سجل نشاطك التجاري", footer_terms: "الشروط والأحكام", footer_privacy: "سياسة الخصوصية", footer_disclaimer: "إخلاء المسؤولية", footer_contact_link: "اتصل بنا", footer_copyright: "© 2025 فيلورا · جميع الحقوق محفوظة · فيلورا هي منصة سوق. نحن لا نقدم خدمات مباشرة. جميع الاتفاقات بين العملاء ومقدمي الخدمات.",
-    modal_about: "نبذة", modal_locations: "المواقع", modal_services: "الخدمات", modal_price: "السعر الابتدائي", modal_since: "انضم منذ", modal_availability: "تحقق من التوفر", modal_available: "✓ متاح في هذا التاريخ!", modal_unavailable: "✗ غير متاح. يرجى اختيار تاريخ آخر.", modal_gallery: "معرض الأعمال", modal_reviews: "التقييمات"
-  }
-};
-
-function t(key) { return translations[currentLang][key] || key; }
-
-// ========== 4.13: RENDER FUNCTIONS ==========
-function renderCategories() {
-  const container = document.getElementById('categories-grid');
-  if (!container) return;
-  container.innerHTML = SERVICE_TYPES.slice(0, 10).map(cat => `
-    <div class="category-card" onclick="filterByCategory('${cat}')">
-      <div class="category-icon">${cat === 'Photography' ? '📸' : cat === 'Videography' ? '🎥' : cat === 'Makeup Artist' ? '💄' : cat === 'Event Planner' ? '🎪' : cat === 'Wedding Venue' ? '🏨' : cat === 'Car Rental' ? '🚗' : cat === 'DJ & Zaffa' ? '🎵' : cat === 'Florist' ? '💐' : cat === 'Catering' ? '🍽️' : cat === 'Spa & Henna' ? '💆' : '✨'}</div>
-      <div class="category-name">${cat}</div>
-    </div>
-  `).join('');
 }
 
+// ========== RENDER FUNCTIONS ==========
 function renderFilters() {
   const container = document.getElementById('filters-container');
   if (!container) return;
   const types = [...new Set(providers.map(p => p.type))];
-  container.innerHTML = `<button class="filter-btn active" onclick="filterProviders('all')">${currentLang === 'ar' ? 'الكل' : 'All'}</button>` +
-    types.map(type => `<button class="filter-btn" onclick="filterProviders('${type}')">${type}</button>`).join('');
+  container.innerHTML = `<button class="filter-btn active" onclick="filterProviders('all')">${currentLang === 'ar' ? 'الكل' : 'All'}</button>` + types.map(type => `<button class="filter-btn" onclick="filterProviders('${type}')">${type}</button>`).join('');
 }
 
 function renderProviders(filter = 'all') {
@@ -1160,10 +408,10 @@ function renderProviders(filter = 'all') {
       <div class="provider-info">
         <div class="provider-name">${p.name}</div>
         <div class="provider-type">${p.type}</div>
-        <div class="provider-location"><i class="fas fa-map-marker-alt"></i> ${p.locations.slice(0, 2).join(', ')}${p.locations.length > 2 ? ' +' : ''}</div>
+        <div class="provider-location"><i class="fas fa-map-marker-alt"></i> ${p.locations.slice(0,2).join(', ')}</div>
         <div class="provider-stars">${'★'.repeat(Math.floor(p.rating))}${p.rating % 1 ? '½' : ''} (${p.reviews})</div>
         <div class="provider-price">${currentLang === 'ar' ? 'من' : 'from'} <span>${p.price.toLocaleString()} EGP</span></div>
-        <button class="btn-book" onclick="event.stopPropagation(); bookProvider(${p.id})">${currentLang === 'ar' ? 'احجز الآن' : 'Book Now'}</button>
+        <button class="btn-book" onclick="event.stopPropagation(); openQuickBookingModal(${p.id})">${currentLang === 'ar' ? 'احجز الآن' : 'Book Now'}</button>
       </div>
     </div>
   `).join('');
@@ -1171,323 +419,225 @@ function renderProviders(filter = 'all') {
 
 function filterProviders(type) {
   document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  if (type !== 'all') {
-    const target = Array.from(document.querySelectorAll('.filter-btn')).find(b => b.innerText === type);
-    if (target) target.classList.add('active');
-  } else {
-    document.querySelector('.filter-btn')?.classList.add('active');
-  }
   renderProviders(type);
-}
-
-function filterByCategory(category) { filterProviders(category); navigateTo('providers'); }
-
-function renderOccasions() {
-  const container = document.getElementById('occasions-grid');
-  if (!container) return;
-  container.innerHTML = occasions.map((occ, i) => `
-    <div class="occ-card reveal delay-${(i % 4) + 1}" onclick="navigateTo('book')">
-      <div class="occ-icon">${occ.icon}</div>
-      <div class="occ-title">${occ.title}</div>
-      <p class="occ-desc">${occ.desc}</p>
-      <button class="occ-link">${occ.link}</button>
-    </div>
-  `).join('');
-}
-
-function renderTrustPoints() {
-  const container = document.getElementById('trust-points');
-  if (!container) return;
-  container.innerHTML = trustPoints.map((pt, i) => `
-    <div class="trust-pt reveal delay-${i + 1}">
-      <div class="trust-icon">${pt.icon}</div>
-      <div><div class="trust-label">${pt.label}</div><p class="trust-text">${pt.text}</p></div>
-    </div>
-  `).join('');
 }
 
 function renderTrustStats() {
   const container = document.getElementById('trust-stats');
-  if (!container) return;
-  container.innerHTML = `
-    <div class="trust-stat"><div class="trust-stat-n">${providers.length}+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'محترف معتمد' : 'Verified Pros'}</div></div>
-    <div class="trust-stat"><div class="trust-stat-n">FREE</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مجاني للعملاء' : 'For Customers'}</div></div>
-    <div class="trust-stat"><div class="trust-stat-n">24h</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مراجعة الملف' : 'Profile Review'}</div></div>
-    <div class="trust-stat"><div class="trust-stat-n">10K+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'فعالية/سنة' : 'Events/Year'}</div></div>
-  `;
+  if (container) container.innerHTML = `<div class="trust-stat"><div class="trust-stat-n">${providers.length}+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'محترف' : 'Pros'}</div></div><div class="trust-stat"><div class="trust-stat-n">FREE</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مجاني' : 'Free'}</div></div><div class="trust-stat"><div class="trust-stat-n">24h</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مراجعة' : 'Review'}</div></div><div class="trust-stat"><div class="trust-stat-n">10K+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'فعالية' : 'Events'}</div></div>`;
 }
 
-function renderTestimonials() {
-  const container = document.getElementById('testimonial-track');
-  if (!container) return;
-  container.innerHTML = testimonials.map(t => `
-    <div class="testimonial-card">
-      <div class="testimonial-stars">${'★'.repeat(t.stars)}</div>
-      <p class="testimonial-quote">"${t.quote}"</p>
-      <div class="testimonial-name">${t.name}</div>
-      <div class="testimonial-sub">${t.sub}</div>
-    </div>
-  `).join('');
+function renderCategories() {
+  const container = document.getElementById('categories-grid');
+  if (container) container.innerHTML = SERVICE_TYPES.slice(0,8).map(cat => `<div class="category-card" onclick="filterByCategory('${cat}')"><div class="category-icon">${cat==='Photography'?'📸':cat==='Videography'?'🎥':cat==='Makeup Artist'?'💄':cat==='Event Planner'?'🎪':'✨'}</div><div class="category-name">${cat}</div></div>`).join('');
+}
+
+function renderOccasions() {
+  const occasions = [{icon:"💒",title:"Weddings"},{icon:"🎂",title:"Birthdays"},{icon:"🏢",title:"Corporate"},{icon:"💑",title:"Engagements"},{icon:"🎓",title:"Graduations"},{icon:"👶",title:"Baby Showers"},{icon:"📸",title:"Photo Sessions"},{icon:"🎉",title:"Any Celebration"}];
+  const container = document.getElementById('occasions-grid');
+  if(container) container.innerHTML = occasions.map(occ => `<div class="occ-card" onclick="navigateTo('book')"><div class="occ-icon">${occ.icon}</div><div class="occ-title">${occ.title}</div><button class="occ-link">Plan →</button></div>`).join('');
 }
 
 function renderPlans() {
+  const plans = [{name:"Basic",price:"Free",features:["Listed","Profile","Bookings"]},{name:"Featured",price:"$29",features:["Everything + Top results","Gold badge","Analytics"],popular:true},{name:"Premium",price:"$59",features:["Everything + Video showcase","Social spotlight","Custom URL"]}];
   const container = document.getElementById('plans-grid');
-  if (!container) return;
-  container.innerHTML = plans.map(plan => `
-    <div class="plan-card ${plan.popular ? 'popular' : ''}">
-      ${plan.popular ? '<div class="plan-popular-badge">Most Popular</div>' : ''}
-      <div class="plan-name">${plan.name}</div>
-      <div class="plan-price">${plan.price}</div>
-      <div class="plan-period">${plan.period}</div>
-      <div class="plan-feats">${plan.features.map(f => `<div class="plan-feat"><span class="plan-feat-dot">✓</span> ${f}</div>`).join('')}</div>
-      <button class="btn btn-outline" onclick="navigateTo('join')"><span>${plan.name === 'Basic' ? (currentLang === 'ar' ? 'تقدم مجاناً' : 'Apply Free') : (currentLang === 'ar' ? 'تقدم وارتق' : 'Apply & Upgrade')}</span></button>
-    </div>
-  `).join('');
+  if(container) container.innerHTML = plans.map(p => `<div class="plan-card ${p.popular?'popular':''}">${p.popular?'<div class="plan-popular-badge">Most Popular</div>':''}<div class="plan-name">${p.name}</div><div class="plan-price">${p.price}</div><div class="plan-feats">${p.features.map(f=>`<div class="plan-feat"><span class="plan-feat-dot">✓</span> ${f}</div>`).join('')}</div><button class="btn btn-outline" onclick="navigateTo('join')"><span>Apply</span></button></div>`).join('');
 }
 
 function renderIncludedList() {
+  const items = ["Professional profile","Booking requests","100% price control","No commissions","Verified badge"];
   const container = document.getElementById('included-list');
-  if (!container) return;
-  container.innerHTML = includedItems.map(item => `<div class="pcta-item"><span class="pcta-dot">✦</span> ${item}</div>`).join('');
+  if(container) container.innerHTML = items.map(item => `<div class="pcta-item"><span class="pcta-dot">✦</span> ${item}</div>`).join('');
 }
 
 function renderCustomerSteps() {
+  const steps = [{num:"01",title:"Sign Up Free",desc:"Register in under 5 minutes"},{num:"02",title:"Discover",desc:"Browse professionals"},{num:"03",title:"Contact",desc:"Send booking request"},{num:"04",title:"Celebrate",desc:"Leave a review"}];
   const container = document.getElementById('customer-steps');
-  if (!container) return;
-  container.innerHTML = customerSteps.map(step => `
-    <div class="hiw-step">
-      <div class="step-num">${step.num}</div>
-      <div><div class="step-title">${step.title}</div><p class="step-desc">${step.desc}</p></div>
-    </div>
-  `).join('');
-  const visualContainer = document.getElementById('customer-visual');
-  if (visualContainer) {
-    visualContainer.innerHTML = `
-      <div class="hiw-visual-title">${currentLang === 'ar' ? 'مجاني دائماً للعملاء' : 'Always Free for Customers'}</div>
-      <div class="checklist">${customerBenefits.map(item => `<div class="check-item"><div class="check-dot">✓</div> ${item}</div>`).join('')}</div>
-      <button class="btn btn-primary btn-large" style="margin-top: 2rem; width: 100%;" onclick="navigateTo('providers')">${currentLang === 'ar' ? 'تصفح المحترفين الآن' : 'Browse Professionals Now'}</button>
-    `;
-  }
+  if(container) container.innerHTML = steps.map(s => `<div class="hiw-step"><div class="step-num">${s.num}</div><div><div class="step-title">${s.title}</div><p class="step-desc">${s.desc}</p></div></div>`).join('');
+  const visual = document.getElementById('customer-visual');
+  if(visual) visual.innerHTML = `<div class="hiw-visual-title">Always Free</div><div class="checklist"><div class="check-item"><div class="check-dot">✓</div> Browse all professionals</div></div><button class="btn btn-primary" onclick="navigateTo('providers')">Browse Now</button>`;
 }
 
 function renderProfessionalSteps() {
+  const steps = [{num:"01",title:"Register Free",desc:"Fill business details"},{num:"02",title:"Get Listed",desc:"Go live in 24h"},{num:"03",title:"Receive Leads",desc:"Get booking requests"},{num:"04",title:"Earn & Grow",desc:"Build your business"}];
   const container = document.getElementById('professional-steps');
-  if (!container) return;
-  container.innerHTML = professionalSteps.map(step => `
-    <div class="hiw-step">
-      <div class="step-num">${step.num}</div>
-      <div><div class="step-title">${step.title}</div><p class="step-desc">${step.desc}</p></div>
-    </div>
-  `).join('');
-  const visualContainer = document.getElementById('professional-visual');
-  if (visualContainer) {
-    visualContainer.innerHTML = `
-      <div class="hiw-visual-title">${currentLang === 'ar' ? 'نشاطك التجاري، بأقصى طاقة' : 'Your Business, Supercharged'}</div>
-      <div class="checklist">${professionalBenefits.map(item => `<div class="check-item"><div class="check-dot">✓</div> ${item}</div>`).join('')}</div>
-      <button class="btn btn-primary btn-large" style="margin-top: 2rem; width: 100%;" onclick="navigateTo('join')">${currentLang === 'ar' ? 'سجل نشاطك التجاري مجاناً' : 'List Your Business Free'}</button>
-    `;
-  }
+  if(container) container.innerHTML = steps.map(s => `<div class="hiw-step"><div class="step-num">${s.num}</div><div><div class="step-title">${s.title}</div><p class="step-desc">${s.desc}</p></div></div>`).join('');
+  const visual = document.getElementById('professional-visual');
+  if(visual) visual.innerHTML = `<div class="hiw-visual-title">Your Business</div><div class="checklist"><div class="check-item"><div class="check-dot">✓</div> Free listing</div></div><button class="btn btn-primary" onclick="navigateTo('join')">Join Free</button>`;
 }
 
 function renderTerms() {
   const container = document.getElementById('terms-content');
-  if (!container) return;
-  container.innerHTML = termsContent[currentLang] || termsContent.en;
+  if(container) container.innerHTML = `<div class="terms-section"><h3>1. Platform Role</h3><div class="legal-highlight"><strong>IMPORTANT:</strong> VELORA is a marketplace platform that connects clients with independent service providers. VELORA DOES NOT PROVIDE ANY SERVICES DIRECTLY.</div><p>VELORA acts solely as a technology platform facilitating connections. VELORA is not a party to any agreement. All bookings and payments are made directly between Clients and Professionals.</p></div><div class="terms-section"><h3>2. No Liability</h3><p><strong>VELORA SHALL NOT BE LIABLE</strong> for any damages arising from services provided by Professionals. All agreements are solely between the Client and the Professional.</p></div><div class="terms-section"><h3>3. Contact</h3><p>For questions: <a href="mailto:hello@velora.studio">hello@velora.studio</a></p></div>`;
 }
 
 function initCheckboxGroups() {
   const servicesContainer = document.getElementById('services-checkbox-group');
-  if (servicesContainer) {
-    servicesContainer.innerHTML = SERVICE_TYPES.map(s => `<label class="checkbox-item"><input type="checkbox" name="services" value="${s}"> ${s}</label>`).join('');
-  }
+  if(servicesContainer) servicesContainer.innerHTML = SERVICE_TYPES.map(s => `<label class="checkbox-item"><input type="checkbox" name="services" value="${s}"> ${s}</label>`).join('');
   const locationsContainer = document.getElementById('locations-checkbox-group');
-  if (locationsContainer) {
-    locationsContainer.innerHTML = EGYPT_GOVERNORATES.map(loc => `<label class="checkbox-item"><input type="checkbox" name="locations" value="${loc}"> ${loc}</label>`).join('');
-  }
+  if(locationsContainer) locationsContainer.innerHTML = EGYPT_GOVERNORATES.map(l => `<label class="checkbox-item"><input type="checkbox" name="locations" value="${l}"> ${l}</label>`).join('');
 }
 
 function initProviderSelect() {
   const select = document.getElementById('b-provider');
-  if (select) {
-    select.innerHTML = '<option value="">' + (currentLang === 'ar' ? 'اختر محترفاً' : 'Select a professional') + '</option>' +
-      providers.map(p => `<option value="${p.id}">${p.name} - ${p.type}</option>`).join('');
-  }
+  if(select) select.innerHTML = '<option value="">Select a professional</option>' + providers.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
 }
 
-// ========== 4.14: PROVIDER MODAL ==========
+// ========== PROVIDER MODAL ==========
 function openProviderModal(id) {
   const provider = providers.find(p => p.id === id);
-  if (!provider) return;
-  const modal = document.getElementById('provider-modal');
+  if(!provider) return;
+  const isBooked = bookedProfessionals[id];
+  const phoneHtml = isBooked ? `<div class="info-card"><h4>📞 Phone</h4><p class="phone-number-revealed">${provider.phone || 'Not provided'}</p></div>` : `<div class="info-card"><h4>📞 Phone</h4><div id="phone-${id}" class="phone-number-blurred" onclick="openQuickBookingModal(${id})">🔒 Book to reveal</div><div id="phone-hint-${id}" class="phone-number-hint">✱ Book first to see number</div></div>`;
   const inner = document.getElementById('modal-content-inner');
-  if (!inner) return;
-  inner.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-avatar">${provider.icon}</div>
-      <div class="modal-title">
-        <h2>${provider.name}</h2>
-        <p>${provider.type} • ${provider.rating} ★ (${provider.reviews} ${currentLang === 'ar' ? 'تقييم' : 'reviews'})</p>
-      </div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-gallery">${provider.images.slice(0, 6).map(img => `<div class="gallery-item">${img}</div>`).join('')}</div>
-      <div class="info-grid">
-        <div class="info-card"><h4>${t('modal_about')}</h4><p>${provider.bio}</p></div>
-        <div class="info-card"><h4>${t('modal_locations')}</h4><p>${provider.locations.join(', ')}</p></div>
-        <div class="info-card"><h4>${t('modal_services')}</h4><p>${provider.services.join(', ')}</p></div>
-        <div class="info-card"><h4>${t('modal_price')}</h4><p>${provider.price.toLocaleString()} EGP</p></div>
-        <div class="info-card"><h4>${t('modal_since')}</h4><p>${provider.since}</p></div>
-        ${provider.portfolio ? `<div class="info-card"><h4>Portfolio</h4><p><a href="${provider.portfolio}" target="_blank" style="color: var(--gold-deep);">${provider.portfolio}</a></p></div>` : ''}
-      </div>
-      <div class="availability-check">
-        <h4>${t('modal_availability')}</h4>
-        <input type="date" id="availability-date" class="date-input">
-        <button class="check-availability-btn" onclick="checkAvailability(${id})">${currentLang === 'ar' ? 'تحقق' : 'Check'}</button>
-        <div id="availability-result" class="availability-result"></div>
-      </div>
-      <div>
-        <h4>${t('modal_reviews')}</h4>
-        <div class="testimonials-list">
-          ${provider.testimonials ? provider.testimonials.map(t => `
-            <div class="testimonial-item">
-              <div class="testimonial-stars">${'★'.repeat(t.rating)}</div>
-              <p>"${t.text}"</p>
-              <strong>- ${t.name}</strong>
-            </div>
-          `).join('') : '<p>No reviews yet</p>'}
-        </div>
-      </div>
-    </div>
-  `;
-  modal.classList.add('active');
+  inner.innerHTML = `<div class="modal-header"><div class="modal-avatar">${provider.icon}</div><div class="modal-title"><h2>${provider.name}</h2><p>${provider.type} • ${provider.rating} ★</p></div></div><div class="modal-body"><div class="modal-gallery">${provider.images.slice(0,6).map(img=>`<div class="gallery-item">${img}</div>`).join('')}</div><div class="info-grid"><div class="info-card"><h4>About</h4><p>${provider.bio}</p></div><div class="info-card"><h4>Location</h4><p>${provider.locations.join(', ')}</p></div><div class="info-card"><h4>Services</h4><p>${provider.services.join(', ')}</p></div><div class="info-card"><h4>Price</h4><p>${provider.price.toLocaleString()} EGP</p></div>${phoneHtml}</div><div class="availability-check"><h4>Check Availability</h4><input type="date" id="avail-date" class="date-input"><button class="check-availability-btn" onclick="checkAvail()">Check</button><div id="avail-result"></div></div></div>`;
+  document.getElementById('provider-modal').classList.add('active');
 }
-
 function closeModal() { document.getElementById('provider-modal').classList.remove('active'); }
+function checkAvail() { const result = document.getElementById('avail-result'); result.innerHTML = Math.random()>0.3 ? '<span class="available">✓ Available!</span>' : '<span class="unavailable">✗ Not available</span>'; }
 
-function checkAvailability(providerId) {
-  const date = document.getElementById('availability-date').value;
-  const resultDiv = document.getElementById('availability-result');
-  if (!date) { resultDiv.innerHTML = currentLang === 'ar' ? 'الرجاء اختيار تاريخ' : 'Please select a date'; return; }
-  const isAvailable = Math.random() > 0.3;
-  resultDiv.innerHTML = isAvailable ? `<span class="available">${t('modal_available')}</span>` : `<span class="unavailable">${t('modal_unavailable')}</span>`;
+// ========== QUICK BOOKING MODAL ==========
+function openQuickBookingModal(providerId) {
+  const provider = providers.find(p => p.id === providerId);
+  if(!provider) return;
+  const modal = document.getElementById('quickBookingModal');
+  const content = document.getElementById('quickBookingContent');
+  content.innerHTML = `<div style="padding:1rem"><h3>${currentLang==='ar'?'احجز لرؤية الرقم':'Book to Reveal Number'}</h3><form id="quickForm"><div><label>${currentLang==='ar'?'الاسم':'Full Name'}</label><input type="text" id="qbName" required></div><div><label>Email</label><input type="email" id="qbEmail" required></div><div><label>Phone</label><input type="tel" id="qbPhone" required></div><div><label>Event Date</label><input type="date" id="qbDate" required></div><div><label>Location</label><input type="text" id="qbLocation" required></div><div class="checkbox-row"><input type="checkbox" id="qbTerms" required><label>I agree to Terms</label></div><button type="submit">${currentLang==='ar'?'احجز الآن':'Book Now'}</button></form><div id="quickResult"></div></div>`;
+  modal.classList.add('active');
+  document.getElementById('quickForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await submitQuickBooking(provider);
+  });
 }
 
-function bookProvider(id) {
-  const provider = providers.find(p => p.id === id);
-  navigateTo('book');
-  setTimeout(() => {
-    const select = document.getElementById('b-provider');
-    if (select && provider) {
-      select.value = provider.id;
-    }
-  }, 100);
-}
-
-// ========== 4.15: FORM HANDLERS ==========
-async function submitBooking(e) {
-  e.preventDefault();
-  const btn = document.getElementById('book-submit-btn');
-  if (!btn) return;
-  const originalText = btn.querySelector('span')?.innerText || t('book_submit');
+async function submitQuickBooking(provider) {
+  const btn = document.querySelector('#quickForm button');
   btn.disabled = true;
-  btn.innerHTML = `<span>${currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...'}</span>`;
+  btn.textContent = 'Sending...';
   try {
     const data = {
-      client_name: document.getElementById('b-name')?.value || '',
-      client_phone: document.getElementById('b-phone')?.value || '',
-      client_email: document.getElementById('b-email')?.value || '',
-      event_type: document.getElementById('b-event')?.value || '',
-      event_date: document.getElementById('b-date')?.value || '',
-      event_location: document.getElementById('b-location')?.value || '',
-      provider_id: document.getElementById('b-provider')?.value || '',
-      notes: document.getElementById('b-notes')?.value || '',
+      client_name: document.getElementById('qbName').value,
+      client_email: document.getElementById('qbEmail').value,
+      client_phone: document.getElementById('qbPhone').value,
+      event_date: document.getElementById('qbDate').value,
+      event_location: document.getElementById('qbLocation').value,
+      provider: provider.name,
+      professional_id: provider.id.toString(),
       status: 'new',
       created_at: new Date().toISOString()
     };
-    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      const successMsg = document.getElementById('book-success');
-      if (successMsg) successMsg.classList.add('show');
-      document.getElementById('booking-form')?.reset();
-      setTimeout(() => successMsg?.classList.remove('show'), 5000);
-    } else {
-      alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error submitting booking. Please try again.');
-    }
-  } catch (err) {
-    console.error('Booking error:', err);
-    alert(currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = `<span>${originalText}</span>`;
-  }
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }, body: JSON.stringify(data) });
+    if(res.ok) {
+      bookedProfessionals[provider.id] = { bookedAt: new Date().toISOString(), phone: provider.phone };
+      localStorage.setItem('velora_booked', JSON.stringify(bookedProfessionals));
+      document.getElementById('quickResult').innerHTML = `<div class="booking-success-reveal"><h4>✓ Booking Successful!</h4><div class="phone-number">${provider.phone || '+20 123 456 7890'}</div><button onclick="closeQuickBookingModalAndReveal(${provider.id},'${provider.phone}')">Close & Reveal</button></div>`;
+      document.getElementById('quickForm').style.display = 'none';
+    } else alert('Error');
+  } catch(e) { alert('Connection error'); }
+  finally { btn.disabled = false; }
+}
+
+function closeQuickBookingModalAndReveal(id, phone) {
+  closeQuickBookingModal();
+  const phoneEl = document.getElementById(`phone-${id}`);
+  if(phoneEl) { phoneEl.innerHTML = phone; phoneEl.classList.add('phone-number-revealed'); phoneEl.classList.remove('phone-number-blurred'); phoneEl.onclick = null; }
+}
+function closeQuickBookingModal() { document.getElementById('quickBookingModal').classList.remove('active'); }
+
+// ========== FORM HANDLERS ==========
+async function submitBooking(e) {
+  e.preventDefault();
+  const btn = document.getElementById('book-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Sending...</span>';
+  try {
+    const data = {
+      client_name: document.getElementById('b-name').value,
+      client_phone: document.getElementById('b-phone').value,
+      client_email: document.getElementById('b-email').value,
+      event_type: document.getElementById('b-event').value,
+      event_date: document.getElementById('b-date').value,
+      event_location: document.getElementById('b-location').value,
+      provider_id: document.getElementById('b-provider').value,
+      notes: document.getElementById('b-notes').value,
+      status: 'new',
+      created_at: new Date().toISOString()
+    };
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }, body: JSON.stringify(data) });
+    if(res.ok) { document.getElementById('book-success').classList.add('show'); document.getElementById('booking-form').reset(); setTimeout(()=>document.getElementById('book-success').classList.remove('show'),5000); }
+    else alert('Error');
+  } catch(e) { alert('Connection error'); }
+  finally { btn.disabled = false; btn.innerHTML = '<span>Submit Booking</span>'; }
 }
 
 async function submitJoin(e) {
   e.preventDefault();
   const btn = document.getElementById('join-submit-btn');
-  if (!btn) return;
-  const originalText = btn.querySelector('span')?.innerText || t('join_submit');
   btn.disabled = true;
-  btn.innerHTML = `<span>${currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...'}</span>`;
+  btn.innerHTML = '<span>Sending...</span>';
   try {
-    const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
-    const selectedLocations = Array.from(document.querySelectorAll('input[name="locations"]:checked')).map(cb => cb.value);
-  const data = {
-  business_name: document.getElementById('j-business')?.value || '',
-  email: document.getElementById('j-email')?.value || '',
-  phone: document.getElementById('j-phone')?.value || '',
-  phone_number: document.getElementById('j-professional-phone')?.value || '', // ← THIS SAVES TO DATABASE
-  service_type: document.getElementById('j-service')?.value || '',
-  services: selectedServices,
-  locations: selectedLocations,
-  price: parseInt(document.getElementById('j-price')?.value) || 0,
-  bio: document.getElementById('j-bio')?.value || '',
-  portfolio_link: document.getElementById('j-portfolio')?.value || '',
-  status: 'pending',
-  created_at: new Date().toISOString()
-};
-    const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      const successMsg = document.getElementById('join-success');
-      if (successMsg) successMsg.classList.add('show');
-      document.getElementById('join-form')?.reset();
-      setTimeout(() => successMsg?.classList.remove('show'), 5000);
-    } else if (res.status === 409) {
-      alert(currentLang === 'ar' ? 'هذا البريد الإلكتروني مسجل مسبقاً.' : 'This email is already registered.');
-    } else {
-      alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error submitting application. Please try again.');
-    }
-  } catch (err) {
-    console.error('Join error:', err);
-    alert(currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = `<span>${originalText}</span>`;
-  }
+    const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
+    const locations = Array.from(document.querySelectorAll('input[name="locations"]:checked')).map(cb => cb.value);
+    const data = {
+      business_name: document.getElementById('j-business').value,
+      email: document.getElementById('j-email').value,
+      phone: document.getElementById('j-phone').value,
+      phone_number: document.getElementById('j-professional-phone').value,
+      service_type: document.getElementById('j-service').value,
+      services: services,
+      locations: locations,
+      price: parseInt(document.getElementById('j-price').value) || 0,
+      bio: document.getElementById('j-bio').value,
+      portfolio_link: document.getElementById('j-portfolio').value,
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }, body: JSON.stringify(data) });
+    if(res.ok) { document.getElementById('join-success').classList.add('show'); document.getElementById('join-form').reset(); setTimeout(()=>document.getElementById('join-success').classList.remove('show'),5000); }
+    else if(res.status===409) alert('Email already registered');
+    else alert('Error');
+  } catch(e) { alert('Connection error'); }
+  finally { btn.disabled = false; btn.innerHTML = '<span>Submit Application</span>'; }
 }
 
 function submitContact(e) {
   e.preventDefault();
-  const name = document.getElementById('c-name')?.value || '';
-  const email = document.getElementById('c-email')?.value || '';
-  const subject = document.getElementById('c-subject')?.value || '';
-  const message = document.getElementById('c-message')?.value || '';
-  window.location.href = `mailto:hello@velora.studio?subject=${encodeURIComponent('VELORA: ' + subject)}&body=${encodeURIComponent('From: ' + name + ' <' + email + '>\n\n' + message)}`;
-  const successMsg = document.getElementById('contact-success');
-  if (successMsg) successMsg.classList.add('show');
-  document.getElementById('contact-form')?.reset();
-  setTimeout(() => successMsg?.classList.remove('show'), 5000);
+  window.location.href = `mailto:hello@velora.studio?subject=VELORA Inquiry`;
+  document.getElementById('contact-success').classList.add('show');
+  setTimeout(()=>document.getElementById('contact-success').classList.remove('show'),5000);
 }
 
-// ========== 4.16: LANGUAGE SWITCHER ==========
+// ========== NAVIGATION ==========
+function navigateTo(page) {
+  const homeSections = ['home-hero','categories-section','howitworks-section','providers-section','occasions-section','trust-section','testimonials-section','provider-cta-section','pricing-section'];
+  const pages = { book:'page-book', join:'page-join', terms:'page-terms', contact:'page-contact' };
+  homeSections.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  Object.values(pages).forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; });
+  if(page === 'home') homeSections.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'block'; });
+  else { const el = document.getElementById(pages[page]); if(el) el.style.display = 'block'; }
+  window.scrollTo({top:0});
+}
+
+function switchHiwTab(tab) {
+  const cust = document.getElementById('hiw-customer-pane');
+  const prof = document.getElementById('hiw-professional-pane');
+  const custTab = document.querySelectorAll('.hiw-tab')[0];
+  const profTab = document.querySelectorAll('.hiw-tab')[1];
+  if(tab === 'customer') { cust.classList.add('active'); prof.classList.remove('active'); custTab.classList.add('active'); profTab.classList.remove('active'); }
+  else { cust.classList.remove('active'); prof.classList.add('active'); custTab.classList.remove('active'); profTab.classList.add('active'); }
+}
+
+function filterByCategory(cat) { filterProviders(cat); navigateTo('providers'); }
+
+let testimonialIndex = 0;
+function slideTestimonial(dir) {
+  const track = document.getElementById('testimonial-track');
+  if(!track) return;
+  const cards = track.children;
+  testimonialIndex = Math.max(0, Math.min(cards.length-3, testimonialIndex + dir));
+  track.style.transform = `translateX(-${testimonialIndex * (cards[0]?.offsetWidth + 32 || 350)}px)`;
+}
+
 function toggleLanguage() {
   currentLang = currentLang === 'en' ? 'ar' : 'en';
   localStorage.setItem('velora_lang', currentLang);
@@ -1499,304 +649,38 @@ function applyLanguage() {
   html.setAttribute('lang', currentLang);
   html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
   document.getElementById('lang-btn').innerHTML = currentLang === 'en' ? '🇪🇬 العربية' : 'English';
-  document.querySelectorAll('[data-key]').forEach(el => {
-    const key = el.getAttribute('data-key');
-    if (translations[currentLang][key]) el.innerHTML = translations[currentLang][key];
-  });
+  const texts = {
+    'nav-home': currentLang==='ar'?'الرئيسية':'Home', 'nav-providers':currentLang==='ar'?'المحترفون':'Professionals', 'nav-book':currentLang==='ar'?'احجز':'Book', 'nav-join':currentLang==='ar'?'انضم':'Join Us', 'nav-terms':currentLang==='ar'?'الشروط':'Terms', 'nav-contact':currentLang==='ar'?'اتصل':'Contact',
+    'hero-badge':currentLang==='ar'?'✨ أكبر منصة في مصر ✨':'✨ Egypt\'s Premier Marketplace ✨', 'hero-title':currentLang==='ar'?'ابحث عن المحترف المثالي':'Find Your Perfect Professional', 'hero-desc':currentLang==='ar'?'تصفح وقارن وتواصل مع أفضل المحترفين':'Browse and contact top professionals', 'hero-browse':currentLang==='ar'?'تصفح المحترفين':'Browse', 'hero-book':currentLang==='ar'?'احجز فعاليتك':'Book'
+  };
+  Object.keys(texts).forEach(key => { const el = document.querySelector(`[data-key="${key}"]`); if(el) el.innerHTML = texts[key]; });
   renderFilters();
   renderProviders();
-  renderTrustStats();
-  renderCustomerSteps();
-  renderProfessionalSteps();
-  renderPlans();
-  renderTerms();
-  initProviderSelect();
 }
 
-// ========== 4.17: PAGE NAVIGATION ==========
-function navigateTo(page) {
-  const homeSections = document.getElementById('home-hero');
-  const categoriesSection = document.getElementById('categories-section');
-  const howitworksSection = document.getElementById('howitworks-section');
-  const providersSection = document.getElementById('providers-section');
-  const occasionsSection = document.getElementById('occasions-section');
-  const trustSection = document.getElementById('trust-section');
-  const testimonialsSection = document.getElementById('testimonials-section');
-  const providerCtaSection = document.getElementById('provider-cta-section');
-  const pricingSection = document.getElementById('pricing-section');
-  const bookPage = document.getElementById('page-book');
-  const joinPage = document.getElementById('page-join');
-  const termsPage = document.getElementById('page-terms');
-  const contactPage = document.getElementById('page-contact');
-  
-  const allHomeSections = [homeSections, categoriesSection, howitworksSection, providersSection, occasionsSection, trustSection, testimonialsSection, providerCtaSection, pricingSection];
-  const allPages = [bookPage, joinPage, termsPage, contactPage];
-  
-  if (page === 'home') {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'block'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-  } else if (page === 'providers') {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'none'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-    if (providersSection) providersSection.style.display = 'block';
-    if (categoriesSection) categoriesSection.style.display = 'none';
-  } else if (page === 'book' && bookPage) {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'none'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-    bookPage.style.display = 'block';
-  } else if (page === 'join' && joinPage) {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'none'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-    joinPage.style.display = 'block';
-  } else if (page === 'terms' && termsPage) {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'none'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-    termsPage.style.display = 'block';
-  } else if (page === 'contact' && contactPage) {
-    allHomeSections.forEach(s => { if (s) s.style.display = 'none'; });
-    allPages.forEach(p => { if (p) p.style.display = 'none'; });
-    contactPage.style.display = 'block';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+function openMobileMenu() { document.getElementById('mobile-menu').classList.add('open'); }
+function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); }
 
-function switchHiwTab(tab) {
-  const custPane = document.getElementById('hiw-customer-pane');
-  const profPane = document.getElementById('hiw-professional-pane');
-  const custTab = document.querySelector('.hiw-tab:first-child');
-  const profTab = document.querySelector('.hiw-tab:last-child');
-  if (tab === 'customer') {
-    custPane?.classList.add('active');
-    profPane?.classList.remove('active');
-    custTab?.classList.add('active');
-    profTab?.classList.remove('active');
-  } else {
-    custPane?.classList.remove('active');
-    profPane?.classList.add('active');
-    custTab?.classList.remove('active');
-    profTab?.classList.add('active');
-  }
-}
-
-let testimonialIndex = 0;
-function slideTestimonial(dir) {
-  const track = document.getElementById('testimonial-track');
-  if (!track) return;
-  const cards = track.children;
-  const visible = window.innerWidth > 1024 ? 3 : 1;
-  const max = Math.max(0, cards.length - visible);
-  testimonialIndex = Math.max(0, Math.min(max, testimonialIndex + dir));
-  const cardWidth = cards[0]?.offsetWidth || 300;
-  track.style.transform = `translateX(-${testimonialIndex * (cardWidth + 32)}px)`;
-}
-
-// ========== 4.18: MOBILE MENU & SCROLL EFFECTS ==========
-function openMobileMenu() { document.getElementById('mobile-menu')?.classList.add('open'); }
-function closeMobileMenu() { document.getElementById('mobile-menu')?.classList.remove('open'); }
-
-// ========== 4.19: INITIALIZATION ==========
+// ========== INITIALIZATION ==========
 function init() {
   loadProvidersFromSupabase();
   renderCategories();
-  renderFilters();
-  renderProviders();
   renderOccasions();
-  renderTrustPoints();
-  renderTrustStats();
-  renderTestimonials();
   renderPlans();
   renderIncludedList();
   renderCustomerSteps();
   renderProfessionalSteps();
   renderTerms();
   initCheckboxGroups();
-  initProviderSelect();
   applyLanguage();
   setInterval(() => slideTestimonial(1), 8000);
-  window.addEventListener('scroll', () => {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) navbar?.classList.add('solid');
-    else navbar?.classList.remove('solid');
-  });
+  window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if(window.scrollY>50) navbar.classList.add('solid'); else navbar.classList.remove('solid'); });
   document.getElementById('booking-form')?.addEventListener('submit', submitBooking);
   document.getElementById('join-form')?.addEventListener('submit', submitJoin);
   document.getElementById('contact-form')?.addEventListener('submit', submitContact);
   navigateTo('home');
 }
-
 init();
-// ========== PHONE NUMBER REVEAL FEATURE ==========
-
-// Track which professionals the user has booked (saved in browser)
-let bookedProfessionals = JSON.parse(localStorage.getItem('velora_booked') || '{}');
-
-// Function to open quick booking modal
-function openQuickBookingModal(providerId) {
-  const provider = providers.find(p => p.id === providerId);
-  if (!provider) return;
-  
-  const modal = document.getElementById('quickBookingModal');
-  const content = document.getElementById('quickBookingContent');
-  
-  content.innerHTML = `
-    <div style="padding: 1rem;">
-      <h3 style="margin-bottom: 1rem; font-family: var(--font-serif);">
-        ${currentLang === 'ar' ? 'احجز الآن لرؤية رقم الهاتف' : 'Book Now to Reveal Phone Number'}
-      </h3>
-      <p style="margin-bottom: 1.5rem; color: var(--text-light);">
-        ${currentLang === 'ar' ? 'املأ النموذج أدناه لتأكيد حجزك. بعد الإرسال، سيظهر رقم هاتف المحترف ويمكنك الاتصال به مباشرة.' : 'Fill out the form below to confirm your booking. After submission, the professional\'s phone number will be revealed and you can call them directly.'}
-      </p>
-      <form id="quickBookingForm" class="quick-booking-form">
-        <div>
-          <label>${currentLang === 'ar' ? 'الاسم الكامل *' : 'Full Name *'}</label>
-          <input type="text" id="qbName" required placeholder="${currentLang === 'ar' ? 'أدخل اسمك الكامل' : 'Enter your full name'}">
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'البريد الإلكتروني *' : 'Email *'}</label>
-          <input type="email" id="qbEmail" required placeholder="your@email.com">
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'رقم الهاتف *' : 'Phone Number *'}</label>
-          <input type="tel" id="qbPhone" required placeholder="${currentLang === 'ar' ? 'مثال: 01012345678' : 'e.g., 01012345678'}">
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'نوع الفعالية *' : 'Event Type *'}</label>
-          <select id="qbEventType" required>
-            <option value="Wedding">${currentLang === 'ar' ? 'زفاف' : 'Wedding'}</option>
-            <option value="Engagement">${currentLang === 'ar' ? 'خطوبة' : 'Engagement'}</option>
-            <option value="Birthday">${currentLang === 'ar' ? 'عيد ميلاد' : 'Birthday'}</option>
-            <option value="Corporate">${currentLang === 'ar' ? 'فعالية مؤسسية' : 'Corporate Event'}</option>
-            <option value="Other">${currentLang === 'ar' ? 'أخرى' : 'Other'}</option>
-          </select>
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'تاريخ الفعالية *' : 'Event Date *'}</label>
-          <input type="date" id="qbEventDate" required>
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'موقع الفعالية *' : 'Event Location *'}</label>
-          <input type="text" id="qbLocation" required placeholder="${currentLang === 'ar' ? 'المدينة أو العنوان' : 'City or address'}">
-        </div>
-        <div>
-          <label>${currentLang === 'ar' ? 'تفاصيل إضافية' : 'Additional Notes'}</label>
-          <textarea id="qbNotes" rows="2" placeholder="${currentLang === 'ar' ? 'أخبرنا عن متطلباتك الخاصة...' : 'Tell us about your specific requirements...'}"></textarea>
-        </div>
-        <div class="checkbox-row">
-          <input type="checkbox" id="qbTerms" required>
-          <label style="font-size: 0.75rem;">${currentLang === 'ar' ? 'أوافق على ' : 'I agree to the '}<a onclick="navigateTo('terms')" style="color: var(--gold-deep);">${currentLang === 'ar' ? 'الشروط والسياسات' : 'Terms & Policies'}</a></label>
-        </div>
-        <button type="submit">${currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number'}</button>
-      </form>
-      <div id="bookingResult" style="display: none; margin-top: 1rem;"></div>
-    </div>
-  `;
-  
-  modal.classList.add('active');
-  
-  // Attach form submit handler
-  const form = document.getElementById('quickBookingForm');
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await submitQuickBooking(provider);
-  });
-}
-
-// Function to submit quick booking
-async function submitQuickBooking(provider) {
-  const btn = document.querySelector('#quickBookingForm button');
-  const resultDiv = document.getElementById('bookingResult');
-  const form = document.getElementById('quickBookingForm');
-  
-  btn.disabled = true;
-  btn.textContent = currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML = `<div style="color: var(--gold-deep);">${currentLang === 'ar' ? 'جاري حفظ معلوماتك...' : 'Saving your information...'}</div>`;
-  
-  try {
-    const bookingData = {
-      client_name: document.getElementById('qbName').value,
-      client_email: document.getElementById('qbEmail').value,
-      client_phone: document.getElementById('qbPhone').value,
-      event_type: document.getElementById('qbEventType').value,
-      event_date: document.getElementById('qbEventDate').value,
-      event_location: document.getElementById('qbLocation').value,
-      provider: provider.name,
-      professional_id: provider.id.toString(),
-      notes: document.getElementById('qbNotes').value,
-      status: 'new',
-      created_at: new Date().toISOString()
-    };
-    
-    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPA_KEY,
-        'Authorization': 'Bearer ' + SUPA_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(bookingData)
-    });
-    
-    if (res.ok) {
-      // Mark as booked
-      bookedProfessionals[provider.id] = {
-        bookedAt: new Date().toISOString(),
-        phone: provider.phone
-      };
-      localStorage.setItem('velora_booked', JSON.stringify(bookedProfessionals));
-      
-      resultDiv.innerHTML = `
-        <div class="booking-success-reveal">
-          <h4 style="color: var(--sage); margin-bottom: 1rem;">✓ ${currentLang === 'ar' ? 'تم الحجز بنجاح!' : 'Booking Successful!'}</h4>
-          <p>${currentLang === 'ar' ? 'تم إرسال طلبك إلى' : 'Your request has been sent to'} <strong>${provider.name}</strong></p>
-          <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-sm);">
-            <p style="font-weight: bold; margin-bottom: 0.5rem;">📞 ${currentLang === 'ar' ? 'رقم هاتف المحترف:' : 'Professional\'s Phone Number:'}</p>
-            <div class="phone-number">${provider.phone || '+20 123 456 7890'}</div>
-            <p style="font-size: 0.7rem; margin-top: 0.8rem;">
-              ${currentLang === 'ar' ? 'يمكنك الاتصال به مباشرة لتأكيد التفاصيل' : 'You can call them directly to confirm details'}
-            </p>
-          </div>
-          <button onclick="closeQuickBookingModalAndReveal(${provider.id}, '${provider.phone}')" style="margin-top: 1.5rem; background: var(--gold-deep); color: white; border: none; padding: 0.7rem 1.5rem; border-radius: var(--radius-full); cursor: pointer;">
-            ${currentLang === 'ar' ? 'إغلاق ورؤية الرقم في الملف الشخصي' : 'Close & Reveal Number in Profile'}
-          </button>
-        </div>
-      `;
-      form.style.display = 'none';
-    } else {
-      resultDiv.innerHTML = `<div style="color: #D9534F;">${currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error occurred. Please try again.'}</div>`;
-    }
-  } catch (err) {
-    resultDiv.innerHTML = `<div style="color: #D9534F;">${currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.'}</div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number';
-  }
-}
-
-// Close modal and reveal phone number
-function closeQuickBookingModalAndReveal(providerId, phoneNumber) {
-  closeQuickBookingModal();
-  
-  const phoneElement = document.getElementById(`phone-${providerId}`);
-  if (phoneElement) {
-    phoneElement.innerHTML = phoneNumber;
-    phoneElement.classList.add('phone-number-revealed');
-    phoneElement.classList.remove('phone-number-blurred');
-    phoneElement.style.cursor = 'default';
-  }
-  
-  const hintElement = document.getElementById(`phone-hint-${providerId}`);
-  if (hintElement) {
-    hintElement.innerHTML = currentLang === 'ar' ? '✓ رقم الهاتف متاح الآن' : '✓ Phone number is now available';
-    hintElement.style.color = 'var(--sage)';
-  }
-}
-
-function closeQuickBookingModal() {
-  const modal = document.getElementById('quickBookingModal');
-  if (modal) modal.classList.remove('active');
-}
 </script>
 </body>
 </html>
