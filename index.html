@@ -2121,26 +2121,60 @@ async function loadProvidersFromSupabase() {
       return;
     }
     
-    // Convert to providers format
-    providers = approvedData.map(app => ({
-      id: app.id,
-      name: app.business_name,
-      type: app.service_type || "Professional",
-      icon: getIconForService(app.service_type),
-      rating: 4.5,
-      reviews: 0,
-      badge: "",
-      price: app.price || 0,
-      phone: app.phone_number || app.phone || "",
-      email: app.email,
-      locations: app.locations || [app.city || "Cairo"],
-      services: app.services || [app.service_type],
-      bio: app.bio || "Professional service provider",
-      since: new Date(app.created_at).getFullYear().toString(),
-      portfolio: app.portfolio_link || "",
-      images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
-      testimonials: []
-    }));
+    // Convert to providers format - FIX locations to handle both array and string
+    providers = approvedData.map(app => {
+      // Handle locations - could be array or string
+      let locationsArray = [];
+      if (Array.isArray(app.locations)) {
+        locationsArray = app.locations;
+      } else if (typeof app.locations === 'string') {
+        // Try to parse JSON string
+        try {
+          locationsArray = JSON.parse(app.locations);
+        } catch(e) {
+          // If not JSON, split by comma
+          locationsArray = app.locations.split(',').map(l => l.trim());
+        }
+      } else if (app.city) {
+        locationsArray = [app.city];
+      } else {
+        locationsArray = ["Cairo"];
+      }
+      
+      // Handle services similarly
+      let servicesArray = [];
+      if (Array.isArray(app.services)) {
+        servicesArray = app.services;
+      } else if (typeof app.services === 'string') {
+        try {
+          servicesArray = JSON.parse(app.services);
+        } catch(e) {
+          servicesArray = app.services.split(',').map(s => s.trim());
+        }
+      } else {
+        servicesArray = [app.service_type || "Professional"];
+      }
+      
+      return {
+        id: app.id,
+        name: app.business_name,
+        type: app.service_type || "Professional",
+        icon: getIconForService(app.service_type),
+        rating: 4.5,
+        reviews: 0,
+        badge: "",
+        price: app.price || 0,
+        phone: app.phone_number || app.phone || "",
+        email: app.email,
+        locations: locationsArray,
+        services: servicesArray,
+        bio: app.bio || "Professional service provider",
+        since: new Date(app.created_at).getFullYear().toString(),
+        portfolio: app.portfolio_link || "",
+        images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
+        testimonials: []
+      };
+    });
     
     console.log('🎉 Providers loaded:', providers.length);
     
@@ -2223,8 +2257,32 @@ function renderFilters() {
 
 function renderProviders(filter = 'all') {
   const container = document.getElementById('providers-grid');
+  if (!container) return;
   const filtered = filter === 'all' ? providers : providers.filter(p => p.type === filter);
-  container.innerHTML = filtered.map(p => `<div class="provider-card" onclick="openProviderModal(${p.id})"><div class="provider-img">${p.icon}${p.badge ? `<span class="provider-badge">${p.badge}</span>` : ''}</div><div class="provider-info"><div class="provider-name">${p.name}</div><div class="provider-type">${p.type}</div><div class="provider-location"><i class="fas fa-map-marker-alt"></i> ${p.locations.slice(0, 2).join(', ')}${p.locations.length > 2 ? ' +' : ''}</div><div class="provider-stars">${'★'.repeat(Math.floor(p.rating))}${p.rating % 1 ? '½' : ''} (${p.reviews})</div><div class="provider-price">${currentLang === 'ar' ? 'من' : 'from'} <span>${p.price.toLocaleString()} EGP</span></div><button class="btn-book" onclick="event.stopPropagation(); openQuickBookingModal(${p.id})">${currentLang === 'ar' ? 'احجز الآن' : 'Book Now'}</button></div></div>`).join('');
+  container.innerHTML = filtered.map(p => {
+    // Safely get locations
+    let locationsDisplay = "";
+    if (p.locations && Array.isArray(p.locations)) {
+      locationsDisplay = p.locations.slice(0, 2).join(', ');
+      if (p.locations.length > 2) locationsDisplay += ' +';
+    } else if (typeof p.locations === 'string') {
+      locationsDisplay = p.locations;
+    } else {
+      locationsDisplay = "Cairo";
+    }
+    
+    return `<div class="provider-card" onclick="openProviderModal(${p.id})">
+      <div class="provider-img">${p.icon}${p.badge ? `<span class="provider-badge">${p.badge}</span>` : ''}</div>
+      <div class="provider-info">
+        <div class="provider-name">${p.name}</div>
+        <div class="provider-type">${p.type}</div>
+        <div class="provider-location"><i class="fas fa-map-marker-alt"></i> ${locationsDisplay}</div>
+        <div class="provider-stars">${'★'.repeat(Math.floor(p.rating))}${p.rating % 1 ? '½' : ''} (${p.reviews})</div>
+        <div class="provider-price">${currentLang === 'ar' ? 'من' : 'from'} <span>${p.price.toLocaleString()} EGP</span></div>
+        <button class="btn-book" onclick="event.stopPropagation(); openQuickBookingModal(${p.id})">${currentLang === 'ar' ? 'احجز الآن' : 'Book Now'}</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function filterProviders(type) {
@@ -2294,9 +2352,54 @@ function initProviderSelect() {
 function openProviderModal(id) {
   const provider = providers.find(p => p.id === id);
   const isBooked = bookedProfessionals[id];
-  const phoneHtml = isBooked ? `<div class="info-card"><h4>📞 ${currentLang === 'ar' ? 'رقم الهاتف' : 'Phone Number'}</h4><p class="phone-number-revealed">${provider.phone || (currentLang === 'ar' ? 'غير متوفر' : 'Not provided')}</p></div>` : `<div class="info-card"><h4>📞 ${currentLang === 'ar' ? 'رقم الهاتف' : 'Phone Number'}</h4><div id="phone-${id}" class="phone-number-blurred" onclick="openQuickBookingModal(${id})">🔒 ${currentLang === 'ar' ? 'احجز لرؤية الرقم' : 'Book to reveal'}</div><div id="phone-hint-${id}" class="phone-number-hint">✱ ${currentLang === 'ar' ? 'اضغط للحجز أولاً لرؤية رقم الهاتف' : 'Book first to reveal phone number'}</div></div>`;
+  
+  // Safely get locations display
+  let locationsDisplay = "";
+  if (provider.locations && Array.isArray(provider.locations)) {
+    locationsDisplay = provider.locations.join(', ');
+  } else if (typeof provider.locations === 'string') {
+    locationsDisplay = provider.locations;
+  } else {
+    locationsDisplay = "Cairo";
+  }
+  
+  // Safely get services display
+  let servicesDisplay = "";
+  if (provider.services && Array.isArray(provider.services)) {
+    servicesDisplay = provider.services.join(', ');
+  } else if (typeof provider.services === 'string') {
+    servicesDisplay = provider.services;
+  } else {
+    servicesDisplay = provider.type;
+  }
+  
+  const phoneHtml = isBooked ? 
+    `<div class="info-card"><h4>📞 ${currentLang === 'ar' ? 'رقم الهاتف' : 'Phone Number'}</h4><p class="phone-number-revealed">${provider.phone || (currentLang === 'ar' ? 'غير متوفر' : 'Not provided')}</p></div>` : 
+    `<div class="info-card"><h4>📞 ${currentLang === 'ar' ? 'رقم الهاتف' : 'Phone Number'}</h4><div id="phone-${id}" class="phone-number-blurred" onclick="openQuickBookingModal(${id})">🔒 ${currentLang === 'ar' ? 'احجز لرؤية الرقم' : 'Book to reveal'}</div><div id="phone-hint-${id}" class="phone-number-hint">✱ ${currentLang === 'ar' ? 'اضغط للحجز أولاً لرؤية رقم الهاتف' : 'Book first to reveal phone number'}</div></div>`;
+  
   const inner = document.getElementById('modal-content-inner');
-  inner.innerHTML = `<div class="modal-header"><div class="modal-avatar">${provider.icon}</div><div class="modal-title"><h2>${provider.name}</h2><p>${provider.type} • ${provider.rating} ★</p></div></div><div class="modal-body"><div class="modal-gallery">${provider.images.slice(0, 6).map(img => `<div class="gallery-item">${img}</div>`).join('')}</div><div class="info-grid"><div class="info-card"><h4>${currentLang === 'ar' ? 'نبذة' : 'About'}</h4><p>${provider.bio}</p></div><div class="info-card"><h4>${currentLang === 'ar' ? 'المواقع' : 'Locations'}</h4><p>${provider.locations.join(', ')}</p></div><div class="info-card"><h4>${currentLang === 'ar' ? 'الخدمات' : 'Services'}</h4><p>${provider.services.join(', ')}</p></div><div class="info-card"><h4>${currentLang === 'ar' ? 'السعر الابتدائي' : 'Starting Price'}</h4><p>${provider.price.toLocaleString()} EGP</p></div><div class="info-card"><h4>${currentLang === 'ar' ? 'انضم منذ' : 'Joined'}</h4><p>${provider.since}</p></div>${phoneHtml}</div><div class="availability-check"><h4>${currentLang === 'ar' ? 'تحقق من التوفر' : 'Check Availability'}</h4><input type="date" id="availability-date" class="date-input"><button class="check-availability-btn" onclick="checkAvailability()">${currentLang === 'ar' ? 'تحقق' : 'Check'}</button><div id="availability-result" class="availability-result"></div></div><div><h4>${currentLang === 'ar' ? 'التقييمات' : 'Reviews'}</h4><div class="testimonials-list">${provider.testimonials && provider.testimonials.length ? provider.testimonials.map(t => `<div class="testimonial-item"><div class="testimonial-stars">${'★'.repeat(t.rating)}</div><p>"${t.text}"</p><strong>- ${t.name}</strong></div>`).join('') : '<p>' + (currentLang === 'ar' ? 'لا توجد تقييمات بعد' : 'No reviews yet') + '</p>'}</div></div></div>`;
+  inner.innerHTML = `<div class="modal-header"><div class="modal-avatar">${provider.icon}</div><div class="modal-title"><h2>${provider.name}</h2><p>${provider.type} • ${provider.rating} ★</p></div></div>
+  <div class="modal-body">
+    <div class="modal-gallery">${provider.images.slice(0, 6).map(img => `<div class="gallery-item">${img}</div>`).join('')}</div>
+    <div class="info-grid">
+      <div class="info-card"><h4>${currentLang === 'ar' ? 'نبذة' : 'About'}</h4><p>${provider.bio}</p></div>
+      <div class="info-card"><h4>${currentLang === 'ar' ? 'المواقع' : 'Locations'}</h4><p>${locationsDisplay}</p></div>
+      <div class="info-card"><h4>${currentLang === 'ar' ? 'الخدمات' : 'Services'}</h4><p>${servicesDisplay}</p></div>
+      <div class="info-card"><h4>${currentLang === 'ar' ? 'السعر الابتدائي' : 'Starting Price'}</h4><p>${provider.price.toLocaleString()} EGP</p></div>
+      <div class="info-card"><h4>${currentLang === 'ar' ? 'انضم منذ' : 'Joined'}</h4><p>${provider.since}</p></div>
+      ${phoneHtml}
+    </div>
+    <div class="availability-check">
+      <h4>${currentLang === 'ar' ? 'تحقق من التوفر' : 'Check Availability'}</h4>
+      <input type="date" id="availability-date" class="date-input">
+      <button class="check-availability-btn" onclick="checkAvailability()">${currentLang === 'ar' ? 'تحقق' : 'Check'}</button>
+      <div id="availability-result" class="availability-result"></div>
+    </div>
+    <div>
+      <h4>${currentLang === 'ar' ? 'التقييمات' : 'Reviews'}</h4>
+      <div class="testimonials-list">${provider.testimonials && provider.testimonials.length ? provider.testimonials.map(t => `<div class="testimonial-item"><div class="testimonial-stars">${'★'.repeat(t.rating)}</div><p>"${t.text}"</p><strong>- ${t.name}</strong></div>`).join('') : '<p>' + (currentLang === 'ar' ? 'لا توجد تقييمات بعد' : 'No reviews yet') + '</p>'}</div>
+    </div>
+  </div>`;
   document.getElementById('provider-modal').classList.add('active');
 }
 
