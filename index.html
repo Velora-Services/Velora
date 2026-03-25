@@ -1176,6 +1176,71 @@ footer {
       </div>
       <div class="plan-note" style="text-align:center; margin-bottom:3rem; font-size:.75rem; color:var(--silver);">Clients NEVER pay a fee · Start with Basic free · Upgrade anytime</div>
 
+      <!-- JOIN FORM -->
+      <form id="join-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name / Business Name *</label>
+            <input class="form-input" type="text" id="j-name" required placeholder="Your name or business name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input class="form-input" type="email" id="j-email" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input class="form-input" type="tel" id="j-phone" required placeholder="+20 1XX XXX XXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service Type *</label>
+            <select class="form-select" id="j-service" required>
+              <option value="" disabled selected>Select your service</option>
+              <option>Photography</option>
+              <option>Videography</option>
+              <option>Photography & Videography</option>
+              <option>Makeup Artist</option>
+              <option>Event Planner</option>
+              <option>Wedding Venue / Hotel</option>
+              <option>Car Rental</option>
+              <option>Bridal Shop</option>
+              <option>DJ & Zaffa</option>
+              <option>Florist</option>
+              <option>Catering</option>
+              <option>Spa & Henna</option>
+              <option>Accessories & Jewelry</option>
+              <option>Honey Moon Travel</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Portfolio / Social Media Link *</label>
+            <input class="form-input" type="url" id="j-portfolio" required placeholder="https://yourwebsite.com or Instagram link">
+          </div>
+          <div class="form-group">
+            <label class="form-label">City *</label>
+            <input class="form-input" type="text" id="j-city" required placeholder="Your city">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country *</label>
+            <input class="form-input" type="text" id="j-country" required placeholder="Egypt" value="Egypt">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Tell Us About Your Business</label>
+            <textarea class="form-textarea" id="j-bio" placeholder="Years of experience, notable clients or events, pricing range, what makes your work special..."></textarea>
+          </div>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-gold btn-xl" id="join-submit"><span>Submit Application</span></button>
+        </div>
+        <p class="form-note">Applications are reviewed within 24–48 hours. If approved, your profile goes live and booking requests start arriving immediately. No payment required at this stage.</p>
+        <div class="success-msg" id="join-success">
+          <h3>Application Received</h3>
+          <p>We'll review your portfolio and reach out within 24–48 hours. Welcome to VELORA.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
     <script>
 // Fix Join Form - With Duplicate Email Handling
 (function() {
