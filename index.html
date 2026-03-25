@@ -302,6 +302,14 @@ html[lang="ar"] .logo {
         <div class="form-group full"><label class="form-label" data-key="join-business">Full Name / Business Name *</label><input type="text" id="j-business" class="form-input" required></div>
         <div class="form-group"><label class="form-label" data-key="join-email">Email Address *</label><input type="email" id="j-email" class="form-input" required></div>
         <div class="form-group"><label class="form-label" data-key="join-phone">Phone Number *</label><input type="tel" id="j-phone" class="form-input" required></div>
+        
+        <!-- NEW: Professional Business Phone Field -->
+        <div class="form-group full">
+          <label class="form-label" data-key="join-professional-phone">Business Phone Number (for clients) *</label>
+          <input type="tel" id="j-professional-phone" class="form-input" required placeholder="+20 123 456 7890">
+          <small style="font-size: 0.7rem; color: var(--color-text-light); margin-top: 0.2rem;">This number will be shown to clients after they book your services</small>
+        </div>
+        
         <div class="form-group full"><label class="form-label" data-key="join-service">Service Type *</label><select id="j-service" class="form-select" required><option value="">Select your service</option><option value="Photography">Photography</option><option value="Videography">Videography</option><option value="Photography & Videography">Photography & Videography</option><option value="Makeup Artist">Makeup Artist</option><option value="Event Planner">Event Planner</option><option value="Wedding Venue">Wedding Venue / Hotel</option><option value="Car Rental">Car Rental</option><option value="Bridal Shop">Bridal Shop</option><option value="DJ & Zaffa">DJ & Zaffa</option><option value="Florist">Florist</option><option value="Catering">Catering</option><option value="Spa & Henna">Spa & Henna</option><option value="Other">Other</option></select></div>
         <div class="form-group full"><label class="form-label" data-key="join-services-multiple">Services Provided (Select all that apply)</label><div class="checkbox-group" id="services-checkbox-group"></div></div>
         <div class="form-group full"><label class="form-label" data-key="join-locations-multiple">Service Locations (Select all that apply)</label><div class="checkbox-group" id="locations-checkbox-group"></div></div>
@@ -363,6 +371,15 @@ html[lang="ar"] .logo {
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div id="modal-content-inner"></div>
+  </div>
+</div>
+   <!-- Quick Booking Modal for Phone Number Reveal -->
+<div id="quickBookingModal" class="modal">
+  <div class="modal-content quick-booking-modal">
+    <button class="modal-close" onclick="closeQuickBookingModal()">✕</button>
+    <div id="quickBookingContent">
+      <!-- Content will be dynamically added by JavaScript -->
+    </div>
   </div>
 </div>
 
@@ -597,6 +614,129 @@ footer { background: var(--color-text-dark); color: var(--color-text-very-light)
   .modal-header { flex-direction: column; align-items: center; text-align: center; }
   .modal-gallery { grid-template-columns: repeat(2, 1fr); }
   .info-grid { grid-template-columns: 1fr; }
+}
+/* ========== PHONE NUMBER REVEAL FEATURE ========== */
+.phone-number-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.phone-number-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 0.3rem;
+}
+
+.phone-number-blurred {
+  filter: blur(5px);
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  background: rgba(198, 161, 91, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-family: monospace;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+}
+
+.phone-number-blurred:hover {
+  background: rgba(198, 161, 91, 0.2);
+  transform: scale(1.02);
+}
+
+.phone-number-revealed {
+  filter: blur(0);
+  background: rgba(155, 176, 161, 0.2);
+  color: var(--gold-deep);
+  font-weight: bold;
+  cursor: default;
+}
+
+.phone-number-hint {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  margin-top: 0.3rem;
+  text-align: center;
+}
+
+.booking-count-badge {
+  background: var(--gold-deep);
+  color: white;
+  border-radius: var(--radius-full);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+/* Quick Booking Modal */
+.quick-booking-modal {
+  max-width: 500px;
+  width: 90%;
+}
+
+.quick-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.quick-booking-form input,
+.quick-booking-form select,
+.quick-booking-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  background: var(--bg-white);
+}
+
+.quick-booking-form label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.quick-booking-form button {
+  background: var(--gold-deep);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.quick-booking-form button:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.booking-success-reveal {
+  text-align: center;
+  padding: 1rem;
+}
+
+.booking-success-reveal .phone-number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--gold-deep);
+  letter-spacing: 1px;
+  margin: 1rem 0;
+  padding: 0.8rem;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
 }
 </style>
 
@@ -966,7 +1106,7 @@ const translations = {
     book_submit: "Submit Booking Request", book_success_title: "✓ Request Sent Successfully", book_success_text: "The professional has been notified and will contact you shortly.",
     join_tag: "For Professionals", join_title: "List Your Business <em>Free</em>", join_desc: "Apply to be listed on VELORA. Your profile goes live within 24 hours and booking requests start arriving immediately.",
     join_business: "Full Name / Business Name *", join_email: "Email Address *", join_phone: "Phone Number *", join_service: "Service Type *", join_services_multiple: "Services Provided (Select all that apply)", join_locations_multiple: "Service Locations (Select all that apply)", join_price: "Starting Price (EGP) *", join_bio: "Tell Us About Your Business *", join_portfolio: "Portfolio / Social Media Link *", join_terms: "I confirm that all information provided is accurate. I understand VELORA is a marketplace and does not guarantee bookings. I agree to the Terms & Policies.",
-    join_submit: "Submit Application", join_success_title: "✓ Application Received", join_success_text: "We'll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.",
+    join_submit: "Submit Application", join_professional_phone: "Business Phone Number (for clients) *", join_success_title: "✓ Application Received", join_success_text: "We'll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.",
     contact_tag: "Get in Touch", contact_title: "We'd Love to <em>Hear From You</em>", contact_details: "Contact <em>Details</em>", contact_email: "Email", contact_whatsapp: "WhatsApp", contact_website: "Website", follow_us: "Follow Us", message_title: "Send a <em>Message</em>", contact_name: "Your Name *", contact_email_form: "Email *", contact_subject: "Subject", contact_message: "Message *", send_message: "Send Message", contact_success_title: "✓ Message Sent", contact_success_text: "We'll get back to you within 24 hours.",
     footer_desc: "Egypt's premier marketplace connecting clients with elite photographers, videographers, makeup artists, event planners and more. Always free for customers.",
     footer_platform: "Platform", footer_legal: "Legal", footer_contact: "Contact", footer_home: "Home", footer_providers: "Browse Professionals", footer_book: "Book Now", footer_join: "List Your Business", footer_terms: "Terms & Conditions", footer_privacy: "Privacy Policy", footer_disclaimer: "Disclaimer", footer_contact_link: "Contact Us", footer_copyright: "© 2025 VELORA · All rights reserved · VELORA is a marketplace platform. We do not provide services directly. All agreements are between clients and service providers.",
@@ -992,7 +1132,7 @@ const translations = {
     book_submit: "إرسال طلب الحجز", book_success_title: "✓ تم إرسال الطلب بنجاح", book_success_text: "تم إخطار المحترف وسيتواصل معك قريباً.",
     join_tag: "للمحترفين", join_title: "سجل نشاطك التجاري <em>مجاناً</em>", join_desc: "تقدم لتكون مدرجاً في فيلورا. يتم نشر ملفك الشخصي خلال 24 ساعة وتبدأ طلبات الحجز في الوصول فوراً.",
     join_business: "الاسم الكامل / اسم النشاط التجاري *", join_email: "البريد الإلكتروني *", join_phone: "رقم الهاتف *", join_service: "نوع الخدمة *", join_services_multiple: "الخدمات المقدمة (اختر كل ما ينطبق)", join_locations_multiple: "مواقع الخدمة (اختر كل ما ينطبق)", join_price: "السعر الابتدائي (جنيه) *", join_bio: "أخبرنا عن نشاطك التجاري *", join_portfolio: "رابط المعرض / وسائل التواصل الاجتماعي *", join_terms: "أؤكد أن جميع المعلومات المقدمة دقيقة. أفهم أن فيلورا هي منصة سوق ولا تضمن الحجوزات. أوافق على الشروط والسياسات.",
-    join_submit: "إرسال الطلب", join_success_title: "✓ تم استلام الطلب", join_success_text: "سنراجع معرض أعمالك ونتواصل معك خلال 24-48 ساعة. مرحباً بك في فيلورا.",
+    join_submit: "إرسال الطلب", join_professional_phone: "رقم هاتف العمل التجاري (للعملاء) *", join_success_title: "✓ تم استلام الطلب", join_success_text: "سنراجع معرض أعمالك ونتواصل معك خلال 24-48 ساعة. مرحباً بك في فيلورا.",
     contact_tag: "تواصل معنا", contact_title: "يسعدنا <em>سماع رأيك</em>", contact_details: "تفاصيل <em>الاتصال</em>", contact_email: "البريد الإلكتروني", contact_whatsapp: "واتساب", contact_website: "الموقع الإلكتروني", follow_us: "تابعنا", message_title: "أرسل <em>رسالة</em>", contact_name: "اسمك *", contact_email_form: "البريد الإلكتروني *", contact_subject: "الموضوع", contact_message: "الرسالة *", send_message: "إرسال الرسالة", contact_success_title: "✓ تم إرسال الرسالة", contact_success_text: "سنتواصل معك في غضون 24 ساعة.",
     footer_desc: "أكبر منصة لخدمات الفعاليات في مصر تربط العملاء بأفضل المصورين ومصوري الفيديو وفناني الماكياج ومنسقي الأحداث والمزيد. مجاني دائماً للعملاء.",
     footer_platform: "المنصة", footer_legal: "قانوني", footer_contact: "اتصل بنا", footer_home: "الرئيسية", footer_providers: "تصفح المحترفين", footer_book: "احجز الآن", footer_join: "سجل نشاطك التجاري", footer_terms: "الشروط والأحكام", footer_privacy: "سياسة الخصوصية", footer_disclaimer: "إخلاء المسؤولية", footer_contact_link: "اتصل بنا", footer_copyright: "© 2025 فيلورا · جميع الحقوق محفوظة · فيلورا هي منصة سوق. نحن لا نقدم خدمات مباشرة. جميع الاتفاقات بين العملاء ومقدمي الخدمات.",
@@ -1308,19 +1448,20 @@ async function submitJoin(e) {
   try {
     const selectedServices = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
     const selectedLocations = Array.from(document.querySelectorAll('input[name="locations"]:checked')).map(cb => cb.value);
-    const data = {
-      business_name: document.getElementById('j-business')?.value || '',
-      email: document.getElementById('j-email')?.value || '',
-      phone: document.getElementById('j-phone')?.value || '',
-      service_type: document.getElementById('j-service')?.value || '',
-      services: selectedServices,
-      locations: selectedLocations,
-      price: parseInt(document.getElementById('j-price')?.value) || 0,
-      bio: document.getElementById('j-bio')?.value || '',
-      portfolio_link: document.getElementById('j-portfolio')?.value || '',
-      status: 'pending',
-      created_at: new Date().toISOString()
-    };
+   const data = {
+  business_name: document.getElementById('j-business')?.value || '',
+  email: document.getElementById('j-email')?.value || '',
+  phone: document.getElementById('j-phone')?.value || '',
+  professional_phone: document.getElementById('j-professional-phone')?.value || '', // ← NEW FIELD
+  service_type: document.getElementById('j-service')?.value || '',
+  services: selectedServices,
+  locations: selectedLocations,
+  price: parseInt(document.getElementById('j-price')?.value) || 0,
+  bio: document.getElementById('j-bio')?.value || '',
+  portfolio_link: document.getElementById('j-portfolio')?.value || '',
+  status: 'pending',
+  created_at: new Date().toISOString()
+};
     const res = await fetch(`${SUPA_URL}/rest/v1/Applications`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
@@ -1495,6 +1636,178 @@ function init() {
 }
 
 init();
+// ========== PHONE NUMBER REVEAL FEATURE ==========
+
+// Track which professionals the user has booked (saved in browser)
+let bookedProfessionals = JSON.parse(localStorage.getItem('velora_booked') || '{}');
+
+// Function to open quick booking modal
+function openQuickBookingModal(providerId) {
+  const provider = providers.find(p => p.id === providerId);
+  if (!provider) return;
+  
+  const modal = document.getElementById('quickBookingModal');
+  const content = document.getElementById('quickBookingContent');
+  
+  content.innerHTML = `
+    <div style="padding: 1rem;">
+      <h3 style="margin-bottom: 1rem; font-family: var(--font-serif);">
+        ${currentLang === 'ar' ? 'احجز الآن لرؤية رقم الهاتف' : 'Book Now to Reveal Phone Number'}
+      </h3>
+      <p style="margin-bottom: 1.5rem; color: var(--text-light);">
+        ${currentLang === 'ar' ? 'املأ النموذج أدناه لتأكيد حجزك. بعد الإرسال، سيظهر رقم هاتف المحترف ويمكنك الاتصال به مباشرة.' : 'Fill out the form below to confirm your booking. After submission, the professional\'s phone number will be revealed and you can call them directly.'}
+      </p>
+      <form id="quickBookingForm" class="quick-booking-form">
+        <div>
+          <label>${currentLang === 'ar' ? 'الاسم الكامل *' : 'Full Name *'}</label>
+          <input type="text" id="qbName" required placeholder="${currentLang === 'ar' ? 'أدخل اسمك الكامل' : 'Enter your full name'}">
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'البريد الإلكتروني *' : 'Email *'}</label>
+          <input type="email" id="qbEmail" required placeholder="your@email.com">
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'رقم الهاتف *' : 'Phone Number *'}</label>
+          <input type="tel" id="qbPhone" required placeholder="${currentLang === 'ar' ? 'مثال: 01012345678' : 'e.g., 01012345678'}">
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'نوع الفعالية *' : 'Event Type *'}</label>
+          <select id="qbEventType" required>
+            <option value="Wedding">${currentLang === 'ar' ? 'زفاف' : 'Wedding'}</option>
+            <option value="Engagement">${currentLang === 'ar' ? 'خطوبة' : 'Engagement'}</option>
+            <option value="Birthday">${currentLang === 'ar' ? 'عيد ميلاد' : 'Birthday'}</option>
+            <option value="Corporate">${currentLang === 'ar' ? 'فعالية مؤسسية' : 'Corporate Event'}</option>
+            <option value="Other">${currentLang === 'ar' ? 'أخرى' : 'Other'}</option>
+          </select>
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'تاريخ الفعالية *' : 'Event Date *'}</label>
+          <input type="date" id="qbEventDate" required>
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'موقع الفعالية *' : 'Event Location *'}</label>
+          <input type="text" id="qbLocation" required placeholder="${currentLang === 'ar' ? 'المدينة أو العنوان' : 'City or address'}">
+        </div>
+        <div>
+          <label>${currentLang === 'ar' ? 'تفاصيل إضافية' : 'Additional Notes'}</label>
+          <textarea id="qbNotes" rows="2" placeholder="${currentLang === 'ar' ? 'أخبرنا عن متطلباتك الخاصة...' : 'Tell us about your specific requirements...'}"></textarea>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="qbTerms" required>
+          <label style="font-size: 0.75rem;">${currentLang === 'ar' ? 'أوافق على ' : 'I agree to the '}<a onclick="navigateTo('terms')" style="color: var(--gold-deep);">${currentLang === 'ar' ? 'الشروط والسياسات' : 'Terms & Policies'}</a></label>
+        </div>
+        <button type="submit">${currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number'}</button>
+      </form>
+      <div id="bookingResult" style="display: none; margin-top: 1rem;"></div>
+    </div>
+  `;
+  
+  modal.classList.add('active');
+  
+  // Attach form submit handler
+  const form = document.getElementById('quickBookingForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await submitQuickBooking(provider);
+  });
+}
+
+// Function to submit quick booking
+async function submitQuickBooking(provider) {
+  const btn = document.querySelector('#quickBookingForm button');
+  const resultDiv = document.getElementById('bookingResult');
+  const form = document.getElementById('quickBookingForm');
+  
+  btn.disabled = true;
+  btn.textContent = currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `<div style="color: var(--gold-deep);">${currentLang === 'ar' ? 'جاري حفظ معلوماتك...' : 'Saving your information...'}</div>`;
+  
+  try {
+    const bookingData = {
+      client_name: document.getElementById('qbName').value,
+      client_email: document.getElementById('qbEmail').value,
+      client_phone: document.getElementById('qbPhone').value,
+      event_type: document.getElementById('qbEventType').value,
+      event_date: document.getElementById('qbEventDate').value,
+      event_location: document.getElementById('qbLocation').value,
+      provider: provider.name,
+      professional_id: provider.id.toString(),
+      notes: document.getElementById('qbNotes').value,
+      status: 'new',
+      created_at: new Date().toISOString()
+    };
+    
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(bookingData)
+    });
+    
+    if (res.ok) {
+      // Mark as booked
+      bookedProfessionals[provider.id] = {
+        bookedAt: new Date().toISOString(),
+        phone: provider.phone
+      };
+      localStorage.setItem('velora_booked', JSON.stringify(bookedProfessionals));
+      
+      resultDiv.innerHTML = `
+        <div class="booking-success-reveal">
+          <h4 style="color: var(--sage); margin-bottom: 1rem;">✓ ${currentLang === 'ar' ? 'تم الحجز بنجاح!' : 'Booking Successful!'}</h4>
+          <p>${currentLang === 'ar' ? 'تم إرسال طلبك إلى' : 'Your request has been sent to'} <strong>${provider.name}</strong></p>
+          <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius-sm);">
+            <p style="font-weight: bold; margin-bottom: 0.5rem;">📞 ${currentLang === 'ar' ? 'رقم هاتف المحترف:' : 'Professional\'s Phone Number:'}</p>
+            <div class="phone-number">${provider.phone || '+20 123 456 7890'}</div>
+            <p style="font-size: 0.7rem; margin-top: 0.8rem;">
+              ${currentLang === 'ar' ? 'يمكنك الاتصال به مباشرة لتأكيد التفاصيل' : 'You can call them directly to confirm details'}
+            </p>
+          </div>
+          <button onclick="closeQuickBookingModalAndReveal(${provider.id}, '${provider.phone}')" style="margin-top: 1.5rem; background: var(--gold-deep); color: white; border: none; padding: 0.7rem 1.5rem; border-radius: var(--radius-full); cursor: pointer;">
+            ${currentLang === 'ar' ? 'إغلاق ورؤية الرقم في الملف الشخصي' : 'Close & Reveal Number in Profile'}
+          </button>
+        </div>
+      `;
+      form.style.display = 'none';
+    } else {
+      resultDiv.innerHTML = `<div style="color: #D9534F;">${currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error occurred. Please try again.'}</div>`;
+    }
+  } catch (err) {
+    resultDiv.innerHTML = `<div style="color: #D9534F;">${currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.'}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number';
+  }
+}
+
+// Close modal and reveal phone number
+function closeQuickBookingModalAndReveal(providerId, phoneNumber) {
+  closeQuickBookingModal();
+  
+  const phoneElement = document.getElementById(`phone-${providerId}`);
+  if (phoneElement) {
+    phoneElement.innerHTML = phoneNumber;
+    phoneElement.classList.add('phone-number-revealed');
+    phoneElement.classList.remove('phone-number-blurred');
+    phoneElement.style.cursor = 'default';
+  }
+  
+  const hintElement = document.getElementById(`phone-hint-${providerId}`);
+  if (hintElement) {
+    hintElement.innerHTML = currentLang === 'ar' ? '✓ رقم الهاتف متاح الآن' : '✓ Phone number is now available';
+    hintElement.style.color = 'var(--sage)';
+  }
+}
+
+function closeQuickBookingModal() {
+  const modal = document.getElementById('quickBookingModal');
+  if (modal) modal.classList.remove('active');
+}
 </script>
 </body>
 </html>
