@@ -2519,12 +2519,45 @@ function submitContact(e) {
 
 // ========== NAVIGATION ==========
 function navigateTo(page) {
-  const homeSections = ['home-hero', 'categories-section', 'howitworks-section', 'providers-section', 'occasions-section', 'trust-section', 'testimonials-section', 'provider-cta-section', 'pricing-section'];
-  const pages = { book: 'page-book', join: 'page-join', terms: 'page-terms', contact: 'page-contact' };
-  homeSections.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  Object.values(pages).forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
-  if (page === 'home') homeSections.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'block'; });
-  else { const el = document.getElementById(pages[page]); if (el) el.style.display = 'block'; }
+  // Hide all sections first
+  const allSections = document.querySelectorAll('.hero, .categories-section, .howitworks-section, .providers-section, .occasions-section, .trust-section, .testimonials-section, .provider-cta-section, .pricing-section');
+  allSections.forEach(section => {
+    if (section) section.style.display = 'none';
+  });
+  
+  // Hide all page containers
+  const allPages = document.querySelectorAll('#page-book, #page-join, #page-terms, #page-contact');
+  allPages.forEach(p => {
+    if (p) p.style.display = 'none';
+  });
+  
+  // Hide all page classes
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
+  if (page === 'home') {
+    // Show home sections
+    const homeSections = document.querySelectorAll('.hero, .categories-section, .howitworks-section, .providers-section, .occasions-section, .trust-section, .testimonials-section, .provider-cta-section, .pricing-section');
+    homeSections.forEach(section => {
+      if (section) section.style.display = 'block';
+    });
+  } else if (page === 'providers') {
+    // Show only providers section
+    const providersSection = document.getElementById('providers-section');
+    if (providersSection) providersSection.style.display = 'block';
+  } else if (page === 'book') {
+    const bookPage = document.getElementById('page-book');
+    if (bookPage) bookPage.style.display = 'block';
+  } else if (page === 'join') {
+    const joinPage = document.getElementById('page-join');
+    if (joinPage) joinPage.style.display = 'block';
+  } else if (page === 'terms') {
+    const termsPage = document.getElementById('page-terms');
+    if (termsPage) termsPage.classList.add('active');
+  } else if (page === 'contact') {
+    const contactPage = document.getElementById('page-contact');
+    if (contactPage) contactPage.style.display = 'block';
+  }
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
