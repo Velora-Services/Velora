@@ -2156,10 +2156,63 @@ async function loadProvidersFromSupabase() {
   }
 }
 
+// ========== HELPER FUNCTIONS ==========
+function getIconForService(serviceType) {
+  const icons = {
+    'Photography': '📸',
+    'Videography': '🎥',
+    'Makeup Artist': '💄',
+    'Event Planner': '🎪',
+    'Wedding Venue': '🏨',
+    'Car Rental': '🚗',
+    'DJ & Zaffa': '🎵',
+    'Florist': '💐',
+    'Catering': '🍽️',
+    'Spa & Henna': '💆',
+    'Bridal Shop': '👗',
+    'Accessories': '💍',
+    'Honeymoon Travel': '✈️',
+    'Invitation Designer': '💌',
+    'Lighting & Sound': '💡',
+    'Other': '✨'
+  };
+  return icons[serviceType] || '✨';
+}
+
+function loadDemoProviders() {
+  console.log('⚠️ Using demo providers (Supabase connection may have issues)');
+  providers = [
+    { id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", rating: 4.9, reviews: 47, badge: "Featured", price: 5000, phone: "+20 100 123 4567", locations: ["Cairo", "Giza"], services: ["Photography"], bio: "Professional photographer", since: "2018", images: ["📸"], testimonials: [] },
+    { id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, phone: "+20 122 345 6789", locations: ["Cairo", "Alexandria"], services: ["Makeup Artist"], bio: "Bridal makeup specialist", since: "2019", images: ["💄"], testimonials: [] },
+    { id: 3, name: "Elite Events Egypt", type: "Event Planner", icon: "🎪", rating: 4.8, reviews: 19, badge: "", price: 15000, phone: "+20 111 222 3333", locations: ["Cairo", "Giza", "Alexandria"], services: ["Event Planner"], bio: "Event planning company", since: "2015", images: ["🎪"], testimonials: [] }
+  ];
+  renderFilters();
+  renderProviders();
+  renderTrustStats();
+}
+
+function renderTrustStats() {
+  const container = document.getElementById('trust-stats');
+  if (container) {
+    container.innerHTML = `
+      <div class="trust-stat"><div class="trust-stat-n">${providers.length}+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'محترف معتمد' : 'Verified Pros'}</div></div>
+      <div class="trust-stat"><div class="trust-stat-n">FREE</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مجاني للعملاء' : 'For Customers'}</div></div>
+      <div class="trust-stat"><div class="trust-stat-n">24h</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مراجعة الملف' : 'Profile Review'}</div></div>
+      <div class="trust-stat"><div class="trust-stat-n">10K+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'فعالية/سنة' : 'Events/Year'}</div></div>
+    `;
+  }
+}
+
 // ========== RENDER FUNCTIONS ==========
 function renderCategories() {
   const container = document.getElementById('categories-grid');
-  container.innerHTML = SERVICE_TYPES.slice(0, 10).map(cat => `<div class="category-card" onclick="filterByCategory('${cat}')"><div class="category-icon">${cat === 'Photography' ? '📸' : cat === 'Videography' ? '🎥' : cat === 'Makeup Artist' ? '💄' : cat === 'Event Planner' ? '🎪' : cat === 'Wedding Venue' ? '🏨' : cat === 'Car Rental' ? '🚗' : cat === 'DJ & Zaffa' ? '🎵' : cat === 'Florist' ? '💐' : cat === 'Catering' ? '🍽️' : '✨'}</div><div class="category-name">${cat}</div></div>`).join('');
+  const categoriesList = ["Photography", "Videography", "Makeup Artist", "Event Planner", "Wedding Venue", "Car Rental", "DJ & Zaffa", "Florist", "Catering", "Spa & Henna"];
+  container.innerHTML = categoriesList.map(cat => `
+    <div class="category-card" onclick="filterByCategory('${cat}')">
+      <div class="category-icon">${getIconForService(cat)}</div>
+      <div class="category-name">${cat}</div>
+    </div>
+  `).join('');
 }
 
 function renderFilters() {
@@ -2189,11 +2242,6 @@ function renderOccasions() {
 function renderTrustPoints() {
   const container = document.getElementById('trust-points');
   container.innerHTML = trustPoints.map((pt, i) => `<div class="trust-pt"><div class="trust-icon">${pt.icon}</div><div><div class="trust-label">${pt.label}</div><p class="trust-text">${pt.text}</p></div></div>`).join('');
-}
-
-function renderTrustStats() {
-  const container = document.getElementById('trust-stats');
-  container.innerHTML = `<div class="trust-stat"><div class="trust-stat-n">${providers.length}+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'محترف معتمد' : 'Verified Pros'}</div></div><div class="trust-stat"><div class="trust-stat-n">FREE</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مجاني للعملاء' : 'For Customers'}</div></div><div class="trust-stat"><div class="trust-stat-n">24h</div><div class="trust-stat-l">${currentLang === 'ar' ? 'مراجعة الملف' : 'Profile Review'}</div></div><div class="trust-stat"><div class="trust-stat-n">10K+</div><div class="trust-stat-l">${currentLang === 'ar' ? 'فعالية/سنة' : 'Events/Year'}</div></div>`;
 }
 
 function renderTestimonials() {
