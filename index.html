@@ -2097,23 +2097,41 @@ window.addEventListener('scroll', () => { if (window.scrollY > 50) navbar.classL
 
 // ========== LOAD PROVIDERS FROM SUPABASE ==========
 async function loadProvidersFromSupabase() {
+  console.log('🔄 Loading professionals from Supabase...');
   try {
     const response = await fetch(`${SUPA_URL}/rest/v1/Applications?select=*`, {
-      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      }
     });
-    const data = await response.json();
-// Only show professionals with status = 'approved'
-const approvedProfessionals = data.filter(app => app.status === 'approved');
-providers = approvedProfessionals.map(app => ({
+    
+    const allData = await response.json();
+    console.log('📦 All data from Supabase:', allData);
+    console.log('📊 Total records:', allData.length);
+    
+    // Filter only approved professionals
+    const approvedData = allData.filter(app => app.status === 'approved');
+    console.log('✅ Approved professionals:', approvedData.length);
+    
+    if (approvedData.length === 0) {
+      console.log('⚠️ No approved professionals found. Check status values in Supabase.');
+      providers = [];
+      renderProviders();
+      return;
+    }
+    
+    // Convert to providers format
+    providers = approvedData.map(app => ({
       id: app.id,
       name: app.business_name,
-      type: app.service_type,
+      type: app.service_type || "Professional",
       icon: getIconForService(app.service_type),
       rating: 4.5,
       reviews: 0,
       badge: "",
       price: app.price || 0,
-      phone: app.phone_number || "",
+      phone: app.phone_number || app.phone || "",
       email: app.email,
       locations: app.locations || [app.city || "Cairo"],
       services: app.services || [app.service_type],
@@ -2123,23 +2141,19 @@ providers = approvedProfessionals.map(app => ({
       images: ["📸", "🎥", "✨", "💼", "🏆", "⭐"],
       testimonials: []
     }));
-    renderFilters(); renderProviders(); renderTrustStats(); initProviderSelect();
-    console.log(`✅ Loaded ${providers.length} professionals`);
-  } catch (error) { console.error('Error loading:', error); loadDemoProviders(); }
-}
-
-function getIconForService(service) {
-  const icons = { 'Photography': '📸', 'Videography': '🎥', 'Makeup Artist': '💄', 'Event Planner': '🎪', 'Wedding Venue': '🏨', 'Car Rental': '🚗', 'DJ & Zaffa': '🎵', 'Florist': '💐', 'Catering': '🍽️', 'Spa & Henna': '💆' };
-  return icons[service] || '✨';
-}
-
-function loadDemoProviders() {
-  providers = [
-    { id: 1, name: "Ahmed Hassan Photography", type: "Photography", icon: "📸", rating: 4.9, reviews: 47, badge: "Featured", price: 5000, phone: "+20 100 123 4567", locations: ["Cairo", "Giza"], services: ["Photography"], bio: "Award-winning wedding photographer", since: "2018", images: ["📸"], testimonials: [] },
-    { id: 2, name: "Nour Beauty", type: "Makeup Artist", icon: "💄", rating: 5.0, reviews: 61, badge: "Top Rated", price: 3500, phone: "+20 122 345 6789", locations: ["Cairo", "Alexandria"], services: ["Makeup Artist"], bio: "Bridal makeup specialist", since: "2019", images: ["💄"], testimonials: [] },
-    { id: 3, name: "Elite Events Egypt", type: "Event Planner", icon: "🎪", rating: 4.8, reviews: 19, badge: "", price: 15000, phone: "+20 111 222 3333", locations: ["Cairo", "Giza"], services: ["Event Planner"], bio: "Full-service event planning", since: "2015", images: ["🎪"], testimonials: [] }
-  ];
-  renderFilters(); renderProviders(); renderTrustStats(); initProviderSelect();
+    
+    console.log('🎉 Providers loaded:', providers.length);
+    
+    // Refresh the page
+    renderFilters();
+    renderProviders();
+    renderTrustStats();
+    initProviderSelect();
+    
+  } catch (error) {
+    console.error('❌ Error loading professionals:', error);
+    loadDemoProviders();
+  }
 }
 
 // ========== RENDER FUNCTIONS ==========
