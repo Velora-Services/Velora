@@ -2123,31 +2123,31 @@ async function loadProvidersFromSupabase() {
     
     // Convert to providers format
     providers = approvedData.map(app => {
-      // Handle locations - if NULL, use default
+      // Handle locations - simple text like "Cairo,Giza"
       let locationsArray = ["Cairo"];
-      if (app.locations) {
-        if (typeof app.locations === 'string') {
-          locationsArray = app.locations.split(',').map(l => l.trim());
-        } else if (Array.isArray(app.locations)) {
-          locationsArray = app.locations;
-        }
+      if (app.locations && typeof app.locations === 'string' && app.locations !== '') {
+        // Split by comma
+        locationsArray = app.locations.split(',').map(l => l.trim());
       }
+      if (locationsArray.length === 0) locationsArray = ["Cairo"];
       
-      // Handle services - if NULL, use service_type
+      // Handle services - simple text
       let servicesArray = [app.service_type || "Professional"];
-      if (app.services) {
-        if (typeof app.services === 'string') {
-          servicesArray = app.services.split(',').map(s => s.trim());
-        } else if (Array.isArray(app.services)) {
-          servicesArray = app.services;
-        }
+      if (app.services && typeof app.services === 'string' && app.services !== '') {
+        servicesArray = app.services.split(',').map(s => s.trim());
       }
+      if (servicesArray.length === 0) servicesArray = [app.service_type || "Professional"];
       
       // Handle price - convert to number
       let priceValue = 0;
       if (app.price) {
         priceValue = parseInt(app.price) || 0;
       }
+      
+      // Get phone number
+      let phoneValue = app.phone_number || app.phone || "";
+      
+      console.log(`📋 Loading: ${app.business_name} - ${app.service_type} - ${app.locations}`);
       
       return {
         id: app.id,
@@ -2158,7 +2158,7 @@ async function loadProvidersFromSupabase() {
         reviews: 0,
         badge: "",
         price: priceValue,
-        phone: app.phone_number || app.phone || "",
+        phone: phoneValue,
         email: app.email,
         locations: locationsArray,
         services: servicesArray,
@@ -2171,7 +2171,6 @@ async function loadProvidersFromSupabase() {
     });
     
     console.log('🎉 Providers loaded:', providers.length);
-    console.log('📋 First provider:', providers[0]);
     
     // Refresh the page
     renderFilters();
