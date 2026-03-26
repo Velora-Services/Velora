@@ -2606,7 +2606,15 @@ async function submitJoin(e) {
   try {
     const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
     const locations = Array.from(document.querySelectorAll('input[name="locations"]:checked')).map(cb => cb.value);
-    const data = {
+    // Upload images first
+let imageUrls = [];
+try {
+  imageUrls = await uploadImagesToSupabase();
+  console.log('Uploaded images:', imageUrls);
+} catch (err) {
+  console.error('Image upload failed:', err);
+}
+     const data = {
       business_name: document.getElementById('j-business').value,
       email: document.getElementById('j-email').value,
       phone: document.getElementById('j-phone').value,
@@ -2617,6 +2625,7 @@ async function submitJoin(e) {
       price: parseInt(document.getElementById('j-price').value) || 0,
       bio: document.getElementById('j-bio').value,
       portfolio_link: document.getElementById('j-portfolio').value,
+      images: imageUrls,
       status: 'pending',
       created_at: new Date().toISOString()
     };
@@ -2740,6 +2749,23 @@ function init() {
   navigateTo('home');
 }
 init();
+// ========== SETUP IMAGE UPLOAD BUTTONS ==========
+document.addEventListener('DOMContentLoaded', function() {
+  // Add more images button
+  const addButton = document.getElementById('add-more-images');
+  if (addButton) {
+    addButton.addEventListener('click', addImageUploadField);
+  }
+  
+  // Preview for first image field
+  const firstFileInput = document.getElementById('j-image-file-1');
+  if (firstFileInput) {
+    firstFileInput.addEventListener('change', function(e) {
+      previewImage(e, 'image-preview-1');
+    });
+  }
+});
+   
 </script>
 </body>
 </html>
