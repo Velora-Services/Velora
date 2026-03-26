@@ -2493,6 +2493,111 @@ async function submitBooking(e) {
   finally { btn.disabled = false; btn.innerHTML = `<span>${currentLang === 'ar' ? 'إرسال طلب الحجز' : 'Submit Booking Request'}</span>`; }
 }
 
+// ========== IMAGE UPLOAD FUNCTIONS ==========
+let imageCount = 1;
+const MAX_IMAGES = 3;
+const MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 500KB
+
+// Add more image upload fields
+function addImageUploadField() {
+  if (imageCount >= MAX_IMAGES) {
+    alert(`Maximum ${MAX_IMAGES} images allowed`);
+    return;
+  }
+  
+  imageCount++;
+  const container = document.getElementById('image-uploads');
+  const newId = `image-upload-${imageCount}`;
+  const fileId = `j-image-file-${imageCount}`;
+  const previewId = `image-preview-${imageCount}`;
+  
+  const newField = document.createElement('div');
+  newField.id = newId;
+  newField.style.marginTop = '1rem';
+  newField.innerHTML = `
+    <input type="file" id="${fileId}" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: white;">
+    <small style="font-size: 0.7rem; color: #6B5E5A;">Max 500KB per image</small>
+    <div id="${previewId}" style="margin-top: 0.5rem; display: none;"></div>
+  `;
+  
+  container.appendChild(newField);
+  
+  // Add preview for new field
+  document.getElementById(fileId).addEventListener('change', function(e) {
+    previewImage(e, previewId);
+  });
+}
+
+// Preview image before upload
+function previewImage(event, previewId) {
+  const file = event.target.files[0];
+  const previewDiv = document.getElementById(previewId);
+  
+  if (!file) {
+    previewDiv.style.display = 'none';
+    return;
+  }
+  
+  // Check file size
+  if (file.size > MAX_FILE_SIZE) {
+    alert(`File "${file.name}" exceeds 500KB limit. Please choose a smaller image.`);
+    event.target.value = '';
+    previewDiv.style.display = 'none';
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    previewDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100px; max-height: 100px; border-radius: 8px;">`;
+    previewDiv.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+// Upload images to Supabase Storage
+async function uploadImagesToSupabase() {
+  const uploadedUrls = [];
+  
+  for (let i = 1; i <= imageCount; i++) {
+    const fileInput = document.getElementById(`j-image-file-${i}`);
+    if (!fileInput || !fileInput.files || !fileInput.files[0]) continue;
+    
+    const file = fileInput.files[0];
+    
+    // Create unique filename
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(7);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${timestamp}_${random}.${fileExt}`;
+    const filePath = `professional_uploads/${fileName}`;
+    
+    try {
+      // Upload to Supabase Storage
+      const { data, error } = await supabase
+        .storage
+        .from('professional-images')
+        .upload(filePath, file);
+      
+      if (error) {
+        console.error('Upload error:', error);
+        continue;
+      }
+      
+      // Get public URL
+      const { data: urlData } = supabase
+        .storage
+        .from('professional-images')
+        .getPublicUrl(filePath);
+      
+      uploadedUrls.push(urlData.publicUrl);
+    } catch (err) {
+      console.error('Upload failed:', err);
+    }
+  }
+  
+  return uploadedUrls;
+}
+   
 async function submitJoin(e) {
   e.preventDefault();
   const btn = document.getElementById('join-submit-btn');
