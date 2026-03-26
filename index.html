@@ -2367,6 +2367,7 @@ function initProviderSelect() {
 // ========== PROVIDER MODAL ==========
 function openProviderModal(id) {
   const provider = providers.find(p => p.id === id);
+  window.currentProviderId = id; 
   const isBooked = bookedProfessionals[id];
   
   // Safely get locations display
@@ -2428,12 +2429,46 @@ function openProviderModal(id) {
 
 function closeModal() { document.getElementById('provider-modal').classList.remove('active'); }
 
-function checkAvailability() {
+async function checkAvailability() {
+  const provider = providers.find(p => p.id === window.currentProviderId);
   const date = document.getElementById('availability-date').value;
   const result = document.getElementById('availability-result');
-  if (!date) { result.innerHTML = currentLang === 'ar' ? 'الرجاء اختيار تاريخ' : 'Please select a date'; return; }
-  const available = Math.random() > 0.3;
-  result.innerHTML = available ? `<span class="available">✓ ${currentLang === 'ar' ? 'متاح في هذا التاريخ!' : 'Available on this date!'}</span>` : `<span class="unavailable">✗ ${currentLang === 'ar' ? 'غير متاح. يرجى اختيار تاريخ آخر.' : 'Not available. Please choose another date.'}</span>`;
+  
+  if (!date) {
+    result.innerHTML = currentLang === 'ar' ? 'الرجاء اختيار تاريخ' : 'Please select a date';
+    return;
+  }
+  
+  result.innerHTML = '<span style="color: var(--gold-deep);">Checking...</span>';
+  
+  try {
+    // Check if date is booked in Bookings table
+    const bookingsRes = await fetch(`${SUPA_URL}/rest/v1/Bookings?professional_id=eq.${provider.id}&event_date=eq.${date}&select=*`, {
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      }
+    });
+    const bookings = await bookingsRes.json();
+    
+    // Check if date is blocked in availability table
+    const availRes = await fetch(`${SUPA_URL}/rest/v1/professional_availability?professional_id=eq.${provider.id}&unavailable_date=eq.${date}&select=*`, {
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      }
+    });
+    const blockedDates = await availRes.json();
+    
+    if (bookings.length > 0 || blockedDates.length > 0) {
+      result.innerHTML = `<span class="unavailable">✗ ${currentLang === 'ar' ? 'غير متاح في هذا التاريخ' : 'Not available on this date'}</span>`;
+    } else {
+      result.innerHTML = `<span class="available">✓ ${currentLang === 'ar' ? 'متاح في هذا التاريخ!' : 'Available on this date!'}</span>`;
+    }
+  } catch (err) {
+    console.error('Availability check error:', err);
+    result.innerHTML = currentLang === 'ar' ? 'خطأ في التحقق' : 'Error checking availability';
+  }
 }
 
 // ========== QUICK BOOKING MODAL ==========
@@ -2467,6 +2502,27 @@ async function submitQuickBooking(provider) {
     if (res.ok) {
       bookedProfessionals[provider.id] = { bookedAt: new Date().toISOString(), phone: provider.phone };
       localStorage.setItem('velora_booked', JSON.stringify(bookedProfessionals));
+        // Add the booked date to availability table
+  try {
+    const availabilityData = {
+      professional_id: provider.id,
+      unavailable_date: document.getElementById('qbDate').value,
+      reason: "Booked by client"
+    };
+    
+    await fetch(`${SUPA_URL}/rest/v1/professional_availability`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY
+      },
+      body: JSON.stringify(availabilityData)
+    });
+    console.log('✅ Date added to availability');
+  } catch (err) {
+    console.error('Failed to add availability:', err);
+  } 
       document.getElementById('quickResult').innerHTML = `<div class="booking-success-reveal"><h4>✓ ${currentLang === 'ar' ? 'تم الحجز بنجاح!' : 'Booking Successful!'}</h4><div class="phone-number">${provider.phone || '+20 123 456 7890'}</div><button onclick="closeQuickBookingModalAndReveal(${provider.id}, '${provider.phone}')">${currentLang === 'ar' ? 'إغلاق ورؤية الرقم' : 'Close & Reveal'}</button></div>`;
       document.getElementById('quickForm').style.display = 'none';
     } else alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error occurred. Please try again.');
