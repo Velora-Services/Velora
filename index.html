@@ -1854,6 +1854,18 @@ footer {
         <div class="form-group"><label class="form-label" data-key="join-price">Starting Price (EGP) *</label><input type="number" id="j-price" class="form-input" required placeholder="e.g., 5000"></div>
         <div class="form-group full"><label class="form-label" data-key="join-bio">Tell Us About Your Business *</label><textarea id="j-bio" class="form-textarea" rows="4" required placeholder="Years of experience, notable clients, pricing range, what makes your work special..."></textarea></div>
         <div class="form-group full"><label class="form-label" data-key="join-portfolio">Portfolio / Social Media Link *</label><input type="url" id="j-portfolio" class="form-input" required placeholder="https://yourwebsite.com or Instagram link"></div>
+         <div class="form-group full">
+  <label class="form-label">Sample Images (3 max, each max 500KB)</label>
+  <div id="image-uploads">
+    <div id="image-upload-1">
+      <input type="file" id="j-image-file-1" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: white; margin-bottom: 0.5rem;">
+      <small style="font-size: 0.7rem; color: #6B5E5A;">Max 500KB per image (JPG, PNG, GIF)</small>
+      <div id="image-preview-1" style="margin-top: 0.5rem; display: none;"></div>
+    </div>
+  </div>
+  <button type="button" id="add-more-images" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: transparent; border: 1px solid #C6A15B; border-radius: 40px; color: #C6A15B; cursor: pointer;">+ Add Another Image (max 3)</button>
+  <small style="font-size: 0.7rem; color: #6B5E5A; display: block; margin-top: 0.5rem;">⚠️ Free tier storage limit: 50MB total. Please keep images under 500KB each.</small>
+</div>
         <div class="form-group full checkbox-row"><input type="checkbox" id="j-terms" required><label for="j-terms" data-key="join-terms">I confirm that all information provided is accurate. I understand VELORA is a marketplace and does not guarantee bookings. I agree to the <a onclick="navigateTo('terms')">Terms & Policies</a>.</label></div>
       </div>
       <div class="form-submit"><button type="submit" class="btn btn-primary btn-large" id="join-submit-btn"><span data-key="join-submit">Submit Application</span></button></div>
