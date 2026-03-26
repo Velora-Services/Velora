@@ -1859,7 +1859,7 @@ footer {
   <div id="image-uploads">
     <div id="image-upload-1">
       <input type="file" id="j-image-file-1" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: white; margin-bottom: 0.5rem;">
-      <small style="font-size: 0.7rem; color: #6B5E5A;">Max 500KB per image (JPG, PNG, GIF)</small>
+      <small style="font-size: 0.7rem; color: #6B5E5A;">Max 5MB per image (JPG, PNG, GIF)</small>
       <div id="image-preview-1" style="margin-top: 0.5rem; display: none;"></div>
     </div>
   </div>
@@ -2496,7 +2496,7 @@ async function submitBooking(e) {
 // ========== IMAGE UPLOAD FUNCTIONS ==========
 let imageCount = 1;
 const MAX_IMAGES = 3;
-const MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 500KB
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 // Add more image upload fields
 function addImageUploadField() {
@@ -2516,7 +2516,7 @@ function addImageUploadField() {
   newField.style.marginTop = '1rem';
   newField.innerHTML = `
     <input type="file" id="${fileId}" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: white;">
-    <small style="font-size: 0.7rem; color: #6B5E5A;">Max 500KB per image</small>
+    <small style="font-size: 0.7rem; color: #6B5E5A;">Max 5MB per image</small>
     <div id="${previewId}" style="margin-top: 0.5rem; display: none;"></div>
   `;
   
