@@ -171,28 +171,30 @@ window.addEventListener('scroll', () => { if (window.scrollY > 50) navbar.classL
 async function loadProvidersFromSupabase() {
   console.log('🔄 Loading professionals from Supabase...');
   try {
-    const response = await fetch(`${SUPA_URL}/rest/v1/Applications?select=*`, {
+    const response = await fetch(`${SUPA_URL}/rest/v1/Applications?select=*&limit=1000`, {
       headers: {
         'apikey': SUPA_KEY,
-        'Authorization': 'Bearer ' + SUPA_KEY
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Range': '0-999'
       }
     });
-    
+
     const allData = await response.json();
     console.log('📦 All data from Supabase:', allData);
     console.log('📊 Total records:', allData.length);
-    
-    // Filter only approved professionals
-    const approvedData = allData.filter(app => app.status === 'approved');
-    console.log('✅ Approved professionals:', approvedData.length);
-    
+    const statusBreakdown = allData.reduce((acc, a) => { acc[a.status || 'null'] = (acc[a.status || 'null'] || 0) + 1; return acc; }, {});
+    console.log('📋 Status breakdown:', statusBreakdown);
+
+    // Show all providers except explicitly rejected ones
+    const approvedData = allData.filter(app => app.status !== 'rejected');
+    console.log('✅ Visible professionals:', approvedData.length);
+
     if (approvedData.length === 0) {
-      console.log('⚠️ No approved professionals found. Check status values in Supabase.');
       providers = [];
       renderProviders();
       return;
     }
-    
+
     // Convert to providers format
     providers = approvedData.map(app => {
       // Handle locations - simple text like "Cairo,Giza"
@@ -524,29 +526,73 @@ async function checkAvailability() {
 
 // ========== QUICK BOOKING MODAL ==========
 function openQuickBookingModal(providerId) {
+  const user = (() => { try { return JSON.parse(localStorage.getItem('velora_user')); } catch(e) { return null; } })();
+  if (!user) {
+    navigateTo('login');
+    return;
+  }
   const provider = providers.find(p => p.id === providerId);
   const modal = document.getElementById('quickBookingModal');
   const content = document.getElementById('quickBookingContent');
-  content.innerHTML = `<div style="padding: 1rem;"><h3 style="margin-bottom: 1rem;">${currentLang === 'ar' ? 'احجز الآن لرؤية رقم الهاتف' : 'Book Now to Reveal Phone Number'}</h3><p style="margin-bottom: 1.5rem;">${currentLang === 'ar' ? 'املأ النموذج أدناه لتأكيد حجزك. بعد الإرسال، سيظهر رقم هاتف المحترف.' : 'Fill out the form below to confirm your booking. After submission, the professional\'s phone number will be revealed.'}</p><form id="quickForm" class="quick-booking-form"><div><label>${currentLang === 'ar' ? 'الاسم الكامل *' : 'Full Name *'}</label><input type="text" id="qbName" required></div><div><label>${currentLang === 'ar' ? 'البريد الإلكتروني *' : 'Email *'}</label><input type="email" id="qbEmail" required></div><div><label>${currentLang === 'ar' ? 'رقم الهاتف *' : 'Phone Number *'}</label><input type="tel" id="qbPhone" required></div><div><label>${currentLang === 'ar' ? 'نوع الفعالية *' : 'Event Type *'}</label><select id="qbEvent"><option value="Wedding">${currentLang === 'ar' ? 'زفاف' : 'Wedding'}</option><option value="Engagement">${currentLang === 'ar' ? 'خطوبة' : 'Engagement'}</option><option value="Birthday">${currentLang === 'ar' ? 'عيد ميلاد' : 'Birthday'}</option><option value="Corporate">${currentLang === 'ar' ? 'فعالية مؤسسية' : 'Corporate'}</option><option value="Other">${currentLang === 'ar' ? 'أخرى' : 'Other'}</option></select></div><div><label>${currentLang === 'ar' ? 'تاريخ الفعالية *' : 'Event Date *'}</label><input type="date" id="qbDate" required></div><div><label>${currentLang === 'ar' ? 'موقع الفعالية *' : 'Event Location *'}</label><input type="text" id="qbLocation" required></div><div class="checkbox-row"><input type="checkbox" id="qbTerms" required><label>${currentLang === 'ar' ? 'أوافق على الشروط' : 'I agree to the Terms'}</label></div><button type="submit">${currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number'}</button></form><div id="quickResult"></div></div>`;
+  content.innerHTML = `<div style="padding: 1rem;">
+    <h3 style="margin-bottom: 0.5rem;">${currentLang === 'ar' ? 'احجز الآن لرؤية رقم الهاتف' : 'Book Now to Reveal Phone Number'}</h3>
+    <p style="margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--color-text-light);">Booking as <strong>${user.full_name}</strong></p>
+    <form id="quickForm" class="quick-booking-form">
+      <div><label>${currentLang === 'ar' ? 'نوع الفعالية *' : 'Event Type *'}</label>
+        <select id="qbEvent" required>
+          <option value="Wedding">${currentLang === 'ar' ? 'زفاف' : 'Wedding'}</option>
+          <option value="Engagement">${currentLang === 'ar' ? 'خطوبة' : 'Engagement'}</option>
+          <option value="Birthday">${currentLang === 'ar' ? 'عيد ميلاد' : 'Birthday'}</option>
+          <option value="Corporate">${currentLang === 'ar' ? 'فعالية مؤسسية' : 'Corporate'}</option>
+          <option value="Graduation">Graduation</option>
+          <option value="Photo Session">Photo Session</option>
+          <option value="Other">${currentLang === 'ar' ? 'أخرى' : 'Other'}</option>
+        </select>
+      </div>
+      <div><label>${currentLang === 'ar' ? 'تاريخ الفعالية *' : 'Event Date *'}</label><input type="date" id="qbDate" required></div>
+      <div><label>${currentLang === 'ar' ? 'موقع الفعالية *' : 'Event Location *'}</label><input type="text" id="qbLocation" required placeholder="City, venue or address"></div>
+      <button type="submit">${currentLang === 'ar' ? 'احجز الآن وكشف الرقم' : 'Book Now & Reveal Number'}</button>
+    </form>
+    <div id="quickResult"></div>
+  </div>`;
   modal.classList.add('active');
   document.getElementById('quickForm').addEventListener('submit', async (e) => { e.preventDefault(); await submitQuickBooking(provider); });
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const icon = btn.querySelector('i');
+    icon.className = 'fas fa-check';
+    btn.style.color = 'var(--color-sage)';
+    setTimeout(() => { icon.className = 'fas fa-copy'; btn.style.color = ''; }, 2000);
+  });
+}
+
+function generateRef() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let ref = 'VEL-';
+  for (let i = 0; i < 8; i++) ref += chars[Math.floor(Math.random() * chars.length)];
+  return ref;
 }
 
 async function submitQuickBooking(provider) {
   const btn = document.querySelector('#quickForm button');
   btn.disabled = true;
   btn.textContent = currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...';
+  const user = (() => { try { return JSON.parse(localStorage.getItem('velora_user')); } catch(e) { return {}; } })();
+  const bookingRef = generateRef();
   try {
     const data = {
-      client_name: document.getElementById('qbName').value,
-      client_email: document.getElementById('qbEmail').value,
-      client_phone: document.getElementById('qbPhone').value,
+      client_name: user.full_name || '',
+      client_email: user.email || '',
+      client_phone: user.phone || '',
       event_type: document.getElementById('qbEvent').value,
       event_date: document.getElementById('qbDate').value,
       event_location: document.getElementById('qbLocation').value,
       provider: provider.name,
       professional_id: provider.id.toString(),
       status: 'new',
+      reference_number: bookingRef,
       created_at: new Date().toISOString()
     };
     const res = await fetch(`${SUPA_URL}/rest/v1/Bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }, body: JSON.stringify(data) });
@@ -574,7 +620,7 @@ async function submitQuickBooking(provider) {
   } catch (err) {
     console.error('Failed to add availability:', err);
   } 
-      document.getElementById('quickResult').innerHTML = `<div class="booking-success-reveal"><h4>✓ ${currentLang === 'ar' ? 'تم الحجز بنجاح!' : 'Booking Successful!'}</h4><div class="phone-number">${provider.phone || '+20 123 456 7890'}</div><button onclick="closeQuickBookingModalAndReveal(${provider.id}, '${provider.phone}')">${currentLang === 'ar' ? 'إغلاق ورؤية الرقم' : 'Close & Reveal'}</button></div>`;
+      document.getElementById('quickResult').innerHTML = `<div class="booking-success-reveal"><h4>✓ ${currentLang === 'ar' ? 'تم الحجز بنجاح!' : 'Booking Confirmed!'}</h4><div class="booking-ref-display">Ref: <strong>${bookingRef}</strong><button class="copy-btn" onclick="copyToClipboard('${bookingRef}', this)" title="Copy reference"><i class="fas fa-copy"></i></button></div><div class="phone-number">${provider.phone || '+20 123 456 7890'}</div><button class="btn btn-primary" style="width:100%; justify-content:center; margin-top:0.75rem;" onclick="closeQuickBookingModalAndReveal(${provider.id}, '${provider.phone}')">${currentLang === 'ar' ? 'إغلاق ورؤية الرقم' : 'Close & Reveal'}</button></div>`;
       document.getElementById('quickForm').style.display = 'none';
     } else alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error occurred. Please try again.');
   } catch (e) { alert(currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.'); }
@@ -590,7 +636,7 @@ function closeQuickBookingModalAndReveal(id, phone) {
 function closeQuickBookingModal() { document.getElementById('quickBookingModal').classList.remove('active'); }
 
 // ========== FORM HANDLERS ==========
-async function submitBooking(e) {
+async function submitSignup(e) {
   e.preventDefault();
   const password = document.getElementById('b-password').value;
   const confirmPassword = document.getElementById('b-confirm-password').value;
@@ -606,16 +652,163 @@ async function submitBooking(e) {
       full_name: document.getElementById('b-name').value,
       email: document.getElementById('b-email').value,
       phone: document.getElementById('b-phone').value,
+      password: document.getElementById('b-password').value,
       gender: document.getElementById('b-gender').value,
       birthdate: document.getElementById('b-birthdate').value,
       city: document.getElementById('b-city').value,
       created_at: new Date().toISOString()
     };
-    const res = await fetch(`${SUPA_URL}/rest/v1/Customers`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' }, body: JSON.stringify(data) });
+    const res = await fetch(`${SUPA_URL}/rest/v1/CustomerAccounts`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' }, body: JSON.stringify(data) });
     if (res.ok) { document.getElementById('book-success').classList.add('show'); document.getElementById('booking-form').reset(); setTimeout(() => document.getElementById('book-success').classList.remove('show'), 5000); }
-    else alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error creating account. Please try again.');
+    else { const errText = await res.text(); alert(currentLang === 'ar' ? 'حدث خطأ. يرجى المحاولة مرة أخرى.' : 'Error: ' + errText); }
   } catch (err) { alert(currentLang === 'ar' ? 'فشل الاتصال. يرجى المحاولة مرة أخرى.' : 'Connection failed. Please try again.'); }
   finally { btn.disabled = false; btn.innerHTML = `<span>${currentLang === 'ar' ? 'إنشاء حسابي' : 'Create My Account'}</span>`; }
+}
+
+// ========== LOGIN / ACCOUNT ==========
+async function submitLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('login-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Signing in...</span>';
+  const email = document.getElementById('l-email').value.trim();
+  const password = document.getElementById('l-password').value;
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/CustomerAccounts?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}&select=*`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      localStorage.setItem('velora_user', JSON.stringify(data[0]));
+      loadAccountPage(data[0]);
+    } else {
+      document.getElementById('login-error').classList.add('show');
+      setTimeout(() => document.getElementById('login-error').classList.remove('show'), 4000);
+    }
+  } catch (err) {
+    alert('Connection failed. Please try again.');
+  }
+  finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>Log In</span>';
+  }
+}
+
+function loadAccountPage(user) {
+  const firstName = user.full_name.split(' ')[0];
+  const providerWrap = document.getElementById('provider-dropdown-wrap');
+  if (providerWrap) providerWrap.style.display = 'none';
+  const btn = document.getElementById('signup-login-btn');
+  if (btn) btn.textContent = firstName;
+  const menu = document.querySelector('.signup-dropdown-menu');
+  if (menu) menu.innerHTML = `
+    <a onclick="navigateTo('account')"><i class="fas fa-user-circle"></i> My Account</a>
+    <a onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+  `;
+  document.getElementById('account-greeting').textContent = firstName;
+  document.getElementById('account-fields').innerHTML = `
+    <div class="account-field"><div class="account-field-label">Full Name</div><div class="account-field-value">${user.full_name}</div></div>
+    <div class="account-field"><div class="account-field-label">Email</div><div class="account-field-value">${user.email}</div></div>
+    <div class="account-field"><div class="account-field-label">Phone</div><div class="account-field-value">${user.phone}</div></div>
+    <div class="account-field"><div class="account-field-label">City</div><div class="account-field-value">${user.city}</div></div>
+    <div class="account-field"><div class="account-field-label">Gender</div><div class="account-field-value" style="text-transform: capitalize;">${user.gender}</div></div>
+    <div class="account-field"><div class="account-field-label">Date of Birth</div><div class="account-field-value">${user.birthdate}</div></div>
+  `;
+  const pencil = document.querySelector('.edit-profile-btn');
+  if (pencil) pencil.style.display = '';
+  navigateTo('account');
+  loadUserBookings(user.email);
+}
+
+function enableEditProfile() {
+  const user = JSON.parse(localStorage.getItem('velora_user') || '{}');
+  const cities = ['Cairo','Giza','Alexandria','Sharm El-Sheikh','Hurghada','Luxor','Aswan','Mansoura','Tanta','Ismailia','Port Said','Suez','Zagazig','Assiut','Fayoum','Minya','Beni Suef','Sohag','Qena','Damietta','Kafr El-Sheikh','Other'];
+  document.getElementById('account-fields').innerHTML = `
+    <div class="account-field"><div class="account-field-label">Full Name</div><input type="text" class="form-input" id="edit-fullname" value="${user.full_name}"></div>
+    <div class="account-field"><div class="account-field-label">Email <span class="field-locked">(cannot change)</span></div><input type="email" class="form-input field-disabled" value="${user.email}" disabled></div>
+    <div class="account-field"><div class="account-field-label">Phone <span class="field-locked">(cannot change)</span></div><input type="tel" class="form-input field-disabled" value="${user.phone}" disabled></div>
+    <div class="account-field"><div class="account-field-label">City</div><select class="form-select" id="edit-city">${cities.map(c => `<option${c===user.city?' selected':''}>${c}</option>`).join('')}</select></div>
+    <div class="account-field"><div class="account-field-label">Gender</div><select class="form-select" id="edit-gender"><option value="male"${user.gender==='male'?' selected':''}>Male</option><option value="female"${user.gender==='female'?' selected':''}>Female</option><option value="prefer_not"${user.gender==='prefer_not'?' selected':''}>Prefer not to say</option></select></div>
+    <div class="account-field"><div class="account-field-label">Date of Birth</div><input type="date" class="form-input" id="edit-birthdate" value="${user.birthdate}"></div>
+    <div class="edit-actions">
+      <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+      <button class="btn btn-outline" onclick="loadAccountPage(JSON.parse(localStorage.getItem('velora_user')))">Cancel</button>
+    </div>
+  `;
+  const pencil = document.querySelector('.edit-profile-btn');
+  if (pencil) pencil.style.display = 'none';
+}
+
+async function saveProfile() {
+  const user = JSON.parse(localStorage.getItem('velora_user') || '{}');
+  const updated = {
+    full_name: document.getElementById('edit-fullname').value.trim(),
+    city: document.getElementById('edit-city').value,
+    gender: document.getElementById('edit-gender').value,
+    birthdate: document.getElementById('edit-birthdate').value,
+  };
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/CustomerAccounts?email=eq.${encodeURIComponent(user.email)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify(updated)
+    });
+    if (res.ok) {
+      const newUser = { ...user, ...updated };
+      localStorage.setItem('velora_user', JSON.stringify(newUser));
+      loadAccountPage(newUser);
+    } else { alert('Failed to save. Please try again.'); }
+  } catch (err) { alert('Connection failed. Please try again.'); }
+}
+
+async function loadUserBookings(email) {
+  const container = document.getElementById('account-bookings');
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings?client_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.desc`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+    const bookings = await res.json();
+    if (!Array.isArray(bookings) || bookings.length === 0) {
+      container.innerHTML = '<p style="color: var(--color-text-light); font-size: 0.9rem;">No bookings yet. <a onclick="navigateTo(\'providers\')" style="color: var(--color-gold-deep); cursor:pointer;">Browse professionals →</a></p>';
+      return;
+    }
+    container.innerHTML = bookings.map(b => `
+      <div class="account-booking-item">
+        <div class="booking-event">${b.event_type || 'Event'} — ${b.provider_name || b.provider || 'Professional'}</div>
+        <div class="booking-meta">${b.event_date || ''} · ${b.event_location || ''}</div>
+        <div id="customer-booking-footer-${b.id}" style="display:flex; align-items:center; gap:0.5rem; margin-top:0.4rem; flex-wrap:wrap;">
+          ${b.status === 'confirmed' ? `
+            <span class="booking-status" style="background:var(--color-sage);color:white;">Confirmed</span>
+            ${b.reference_number ? `<span class="booking-ref">Ref: ${b.reference_number}</span><button class="copy-btn" onclick="copyToClipboard('${b.reference_number}', this)" title="Copy reference"><i class="fas fa-copy"></i></button>` : ''}
+            <button class="btn-cancel" onclick="showCancelModal(${b.id}, 'customer')">Cancel</button>
+          ` : b.status === 'cancelled' ? `
+            <span class="booking-status" style="background:#fed7d7;color:#e53e3e;">Cancelled</span>
+            ${b.cancellation_reason ? `<span style="font-size:0.72rem;color:var(--color-text-light);">(${b.cancellation_reason})</span>` : ''}
+          ` : `
+            <span class="booking-status">${b.status || 'new'}</span>
+            ${b.reference_number ? `<span class="booking-ref">Ref: ${b.reference_number}</span><button class="copy-btn" onclick="copyToClipboard('${b.reference_number}', this)" title="Copy reference"><i class="fas fa-copy"></i></button>` : ''}
+            <button class="btn-cancel" onclick="showCancelModal(${b.id}, 'customer')">Cancel</button>
+          `}
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<p style="color: var(--color-text-light);">Could not load bookings.</p>';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('velora_user');
+  const btn = document.getElementById('signup-login-btn');
+  if (btn) btn.textContent = 'Sign Up / Login';
+  const menu = document.querySelector('.signup-dropdown-menu');
+  if (menu) menu.innerHTML = `
+    <a onclick="navigateTo('book')"><i class="fas fa-user-plus"></i> Sign Up</a>
+    <a onclick="navigateTo('login')"><i class="fas fa-sign-in-alt"></i> Login</a>
+  `;
+  const providerWrap = document.getElementById('provider-dropdown-wrap');
+  if (providerWrap) providerWrap.style.display = '';
+  navigateTo('home');
 }
 
 // ========== IMAGE UPLOAD FUNCTIONS ==========
@@ -750,10 +943,14 @@ try {
 } catch (err) {
   console.error('Image upload failed:', err);
 }
+    const jPassword = document.getElementById('j-password').value;
+    const jConfirmPassword = document.getElementById('j-confirm-password').value;
+    if (jPassword !== jConfirmPassword) { alert('Passwords do not match.'); btn.disabled = false; btn.innerHTML = `<span>${currentLang === 'ar' ? 'إرسال الطلب' : 'Submit Application'}</span>`; return; }
      const data = {
       business_name: document.getElementById('j-business').value,
       email: document.getElementById('j-email').value,
       phone: document.getElementById('j-phone').value,
+      password: jPassword,
       phone_number: document.getElementById('j-professional-phone').value,
       service_type: document.getElementById('j-service').value,
       services: services,
@@ -780,6 +977,296 @@ function submitContact(e) {
   setTimeout(() => document.getElementById('contact-success').classList.remove('show'), 5000);
 }
 
+// ========== PROVIDER AUTH & DASHBOARD ==========
+
+async function submitProviderLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('provider-login-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Signing in...</span>';
+  const email = document.getElementById('pl-email').value.trim();
+  const password = document.getElementById('pl-password').value;
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}&select=*`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      localStorage.setItem('velora_provider', JSON.stringify(data[0]));
+      loadProviderDashboard(data[0]);
+    } else {
+      document.getElementById('provider-login-error').classList.add('show');
+      setTimeout(() => document.getElementById('provider-login-error').classList.remove('show'), 4000);
+    }
+  } catch (err) { alert('Connection failed. Please try again.'); }
+  finally { btn.disabled = false; btn.innerHTML = '<span>Login to Dashboard</span>'; }
+}
+
+function loadProviderDashboard(provider) {
+  // Hide customer signup/login button while provider is logged in
+  const signupWrap = document.getElementById('signup-dropdown-wrap');
+  if (signupWrap) signupWrap.style.display = 'none';
+  // Update nav button
+  const navBtn = document.getElementById('provider-nav-btn');
+  if (navBtn) navBtn.textContent = provider.business_name.split(' ')[0];
+  const menu = document.querySelector('.provider-dropdown-menu');
+  if (menu) menu.innerHTML = `
+    <a onclick="navigateTo('provider-dashboard')"><i class="fas fa-tachometer-alt"></i> My Dashboard</a>
+    <a onclick="providerLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+  `;
+  // Set heading
+  document.getElementById('provider-dashboard-name').textContent = provider.business_name;
+  // Render profile
+  renderProviderProfile(provider);
+  // Reset edit button
+  const editBtn = document.getElementById('provider-edit-btn');
+  if (editBtn) editBtn.style.display = '';
+  // Load bookings and photos
+  loadProviderBookings(provider.id);
+  renderProviderPhotos(provider.images || []);
+  navigateTo('provider-dashboard');
+}
+
+function renderProviderProfile(provider) {
+  document.getElementById('provider-profile-fields').innerHTML = `
+    <div class="account-field"><div class="account-field-label">Business Name</div><div class="account-field-value">${provider.business_name || '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Email <span class="field-locked">(cannot change)</span></div><div class="account-field-value">${provider.email || '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Phone <span class="field-locked">(cannot change)</span></div><div class="account-field-value">${provider.phone || '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Service Type</div><div class="account-field-value">${provider.service_type || '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Starting Price</div><div class="account-field-value">${provider.price ? provider.price.toLocaleString() + ' EGP' : '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Portfolio</div><div class="account-field-value">${provider.portfolio_link ? `<a href="${provider.portfolio_link}" target="_blank" style="color:var(--color-gold-deep);">View Portfolio</a>` : '—'}</div></div>
+    <div class="account-field"><div class="account-field-label">Bio</div><div class="account-field-value" style="white-space:pre-wrap;font-size:0.85rem;">${provider.bio || '—'}</div></div>
+  `;
+}
+
+function enableEditProviderProfile() {
+  const provider = JSON.parse(localStorage.getItem('velora_provider') || '{}');
+  const services = ['Photography','Videography','Photography & Videography','Makeup Artist','Event Planner','Wedding Venue / Hotel','Car Rental','Bridal Shop','DJ & Zaffa','Florist','Catering','Spa & Henna','Accessories & Jewelry','Honey Moon Travel','Other'];
+  document.getElementById('provider-profile-fields').innerHTML = `
+    <div class="account-field"><div class="account-field-label">Business Name</div><input type="text" class="form-input" id="pe-name" value="${provider.business_name || ''}"></div>
+    <div class="account-field"><div class="account-field-label">Email <span class="field-locked">(cannot change)</span></div><input type="email" class="form-input field-disabled" value="${provider.email || ''}" disabled></div>
+    <div class="account-field"><div class="account-field-label">Phone <span class="field-locked">(cannot change)</span></div><input type="tel" class="form-input field-disabled" value="${provider.phone || ''}" disabled></div>
+    <div class="account-field"><div class="account-field-label">Service Type</div><select class="form-select" id="pe-service">${services.map(s => `<option${s===provider.service_type?' selected':''}>${s}</option>`).join('')}</select></div>
+    <div class="account-field"><div class="account-field-label">Starting Price (EGP)</div><input type="number" class="form-input" id="pe-price" value="${provider.price || ''}"></div>
+    <div class="account-field"><div class="account-field-label">Portfolio Link</div><input type="url" class="form-input" id="pe-portfolio" value="${provider.portfolio_link || ''}" placeholder="https://..."></div>
+    <div class="account-field"><div class="account-field-label">Bio</div><textarea class="form-textarea" id="pe-bio" rows="4">${provider.bio || ''}</textarea></div>
+    <div class="edit-actions">
+      <button class="btn btn-primary" onclick="saveProviderProfile()">Save Changes</button>
+      <button class="btn btn-outline" onclick="loadProviderDashboard(JSON.parse(localStorage.getItem('velora_provider')))">Cancel</button>
+    </div>
+  `;
+  const editBtn = document.getElementById('provider-edit-btn');
+  if (editBtn) editBtn.style.display = 'none';
+}
+
+async function saveProviderProfile() {
+  const provider = JSON.parse(localStorage.getItem('velora_provider') || '{}');
+  const updated = {
+    business_name: document.getElementById('pe-name').value.trim(),
+    service_type: document.getElementById('pe-service').value,
+    price: parseInt(document.getElementById('pe-price').value) || 0,
+    portfolio_link: document.getElementById('pe-portfolio').value.trim(),
+    bio: document.getElementById('pe-bio').value.trim(),
+  };
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications?email=eq.${encodeURIComponent(provider.email)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify(updated)
+    });
+    if (res.ok) {
+      const newProvider = { ...provider, ...updated };
+      localStorage.setItem('velora_provider', JSON.stringify(newProvider));
+      loadProviderDashboard(newProvider);
+    } else { alert('Failed to save. Please try again.'); }
+  } catch (err) { alert('Connection failed. Please try again.'); }
+}
+
+async function loadProviderBookings(providerId) {
+  const container = document.getElementById('provider-bookings-list');
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings?professional_id=eq.${providerId}&select=*&order=created_at.desc`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY }
+    });
+    const bookings = await res.json();
+    if (!Array.isArray(bookings) || bookings.length === 0) {
+      container.innerHTML = '<p style="color:var(--color-text-light);font-size:0.9rem;">No bookings yet.</p>';
+      return;
+    }
+    container.innerHTML = bookings.map(b => `
+      <div class="provider-booking-card" id="pbc-${b.id}">
+        <div class="pb-event">${b.event_type || 'Event'} · ${b.event_date || ''}</div>
+        <div class="pb-meta"><i class="fas fa-map-marker-alt" style="color:var(--color-gold-deep);margin-right:4px;"></i>${b.event_location || ''}</div>
+        <div class="pb-client"><i class="fas fa-user" style="color:var(--color-gold-deep);margin-right:4px;"></i>${b.client_name || ''} · ${b.client_phone || ''}</div>
+        <div class="pb-footer" id="pb-footer-${b.id}">
+          ${b.reference_number ? `<span class="booking-ref">Ref: ${b.reference_number}</span>` : ''}
+          ${b.status === 'confirmed' ? `
+            <span class="confirmed-badge">Confirmed</span>
+            <button class="btn-cancel" onclick="showCancelModal(${b.id}, 'provider')">Cancel</button>
+          ` : b.status === 'cancelled' ? `
+            <span class="cancelled-badge">Cancelled</span>
+            ${b.cancellation_reason ? `<span style="font-size:0.72rem;color:var(--color-text-light);margin-left:0.25rem;">(${b.cancellation_reason})</span>` : ''}
+          ` : `
+            <button class="btn-confirm" onclick="confirmBooking(${b.id}, this)">Confirm Booking</button>
+          `}
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<p style="color:var(--color-text-light);">Could not load bookings.</p>';
+  }
+}
+
+async function confirmBooking(bookingId, btn) {
+  btn.disabled = true;
+  btn.textContent = 'Confirming...';
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings?id=eq.${bookingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'confirmed' })
+    });
+    if (res.ok) {
+      const footer = document.getElementById(`pb-footer-${bookingId}`);
+      if (footer) {
+        const ref = footer.querySelector('.booking-ref') ? footer.querySelector('.booking-ref').outerHTML : '';
+        footer.innerHTML = ref + `
+          <span class="confirmed-badge">Confirmed</span>
+          <button class="btn-cancel" onclick="showCancelModal(${bookingId}, 'provider')">Cancel</button>
+        `;
+      }
+    } else { btn.disabled = false; btn.textContent = 'Confirm Booking'; alert('Failed to confirm. Please try again.'); }
+  } catch (err) { btn.disabled = false; btn.textContent = 'Confirm Booking'; alert('Connection failed.'); }
+}
+
+let _cancelTarget = null;
+
+function showCancelModal(bookingId, source) {
+  _cancelTarget = { bookingId, source };
+  const input = document.getElementById('cancel-reason-input');
+  if (input) input.value = '';
+  const modal = document.getElementById('cancelModal');
+  if (modal) { modal.classList.add('active'); modal.style.display = 'flex'; }
+}
+
+function closeCancelModal() {
+  const modal = document.getElementById('cancelModal');
+  if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
+  _cancelTarget = null;
+}
+
+async function submitCancellation() {
+  if (!_cancelTarget) return;
+  const { bookingId, source } = _cancelTarget;
+  const reason = (document.getElementById('cancel-reason-input').value || '').trim();
+  if (!reason) { alert('Please enter a reason for cancellation.'); return; }
+  const btn = document.getElementById('cancel-submit-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Cancelling...'; }
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Bookings?id=eq.${bookingId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'cancelled', cancellation_reason: reason })
+    });
+    if (res.ok) {
+      closeCancelModal();
+      if (source === 'provider') {
+        const footer = document.getElementById(`pb-footer-${bookingId}`);
+        if (footer) {
+          const ref = footer.querySelector('.booking-ref') ? footer.querySelector('.booking-ref').outerHTML : '';
+          footer.innerHTML = ref + `
+            <span class="cancelled-badge">Cancelled</span>
+            <span style="font-size:0.72rem;color:var(--color-text-light);margin-left:0.25rem;">(${reason})</span>
+          `;
+        }
+      } else {
+        const card = document.getElementById(`customer-booking-footer-${bookingId}`);
+        if (card) {
+          card.innerHTML = `<span class="booking-status" style="background:#fed7d7;color:#e53e3e;">Cancelled</span>
+            <span style="font-size:0.72rem;color:var(--color-text-light);margin-left:0.25rem;">(${reason})</span>`;
+        }
+      }
+    } else {
+      alert('Failed to cancel. Please try again.');
+    }
+  } catch (err) { alert('Connection failed.'); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = 'Confirm Cancellation'; } }
+}
+
+function renderProviderPhotos(images) {
+  const grid = document.getElementById('provider-photos-grid');
+  if (!grid) return;
+  if (!images || images.length === 0) {
+    grid.innerHTML = '<p style="color:var(--color-text-light);font-size:0.85rem;grid-column:1/-1;">No photos yet. Upload your first photo.</p>';
+    return;
+  }
+  grid.innerHTML = images.map((url, i) => `
+    <div class="provider-photo-item">
+      <img src="${url}" alt="Photo ${i+1}" loading="lazy">
+      <button class="provider-photo-delete" onclick="deleteProviderPhoto('${url}')" title="Delete"><i class="fas fa-times"></i></button>
+    </div>
+  `).join('');
+}
+
+async function uploadProviderPhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  if (file.size > 5 * 1024 * 1024) { alert('File exceeds 5MB limit.'); return; }
+  const provider = JSON.parse(localStorage.getItem('velora_provider') || '{}');
+  const timestamp = Date.now();
+  const ext = file.name.split('.').pop();
+  const filePath = `professional_uploads/${timestamp}_${Math.random().toString(36).substring(7)}.${ext}`;
+  try {
+    const { data, error } = await window.supabase.storage.from('professional-images').upload(filePath, file);
+    if (error) { alert('Upload failed: ' + error.message); return; }
+    const { data: urlData } = window.supabase.storage.from('professional-images').getPublicUrl(filePath);
+    const newImages = [...(provider.images || []), urlData.publicUrl];
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications?email=eq.${encodeURIComponent(provider.email)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ images: newImages })
+    });
+    if (res.ok) {
+      const updated = { ...provider, images: newImages };
+      localStorage.setItem('velora_provider', JSON.stringify(updated));
+      renderProviderPhotos(newImages);
+    }
+  } catch (err) { alert('Upload failed. Please try again.'); }
+  input.value = '';
+}
+
+async function deleteProviderPhoto(url) {
+  if (!confirm('Delete this photo?')) return;
+  const provider = JSON.parse(localStorage.getItem('velora_provider') || '{}');
+  const newImages = (provider.images || []).filter(u => u !== url);
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/Applications?email=eq.${encodeURIComponent(provider.email)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ images: newImages })
+    });
+    if (res.ok) {
+      const updated = { ...provider, images: newImages };
+      localStorage.setItem('velora_provider', JSON.stringify(updated));
+      renderProviderPhotos(newImages);
+    }
+  } catch (err) { alert('Failed to delete photo.'); }
+}
+
+function providerLogout() {
+  localStorage.removeItem('velora_provider');
+  const navBtn = document.getElementById('provider-nav-btn');
+  if (navBtn) navBtn.textContent = 'List Your Business';
+  const signupWrap = document.getElementById('signup-dropdown-wrap');
+  if (signupWrap) signupWrap.style.display = '';
+  const menu = document.querySelector('.provider-dropdown-menu');
+  if (menu) menu.innerHTML = `
+    <a onclick="navigateTo('join')"><i class="fas fa-building"></i> Sign Up as Provider</a>
+    <a onclick="navigateTo('provider-login')"><i class="fas fa-sign-in-alt"></i> Login as Provider</a>
+  `;
+  navigateTo('home');
+}
+
 // ========== NAVIGATION ==========
 function navigateTo(page) {
   // Hide all sections first
@@ -789,7 +1276,7 @@ function navigateTo(page) {
   });
   
   // Hide all page containers
-  const allPages = document.querySelectorAll('#page-book, #page-join, #page-terms, #page-contact');
+  const allPages = document.querySelectorAll('#page-book, #page-join, #page-terms, #page-contact, #page-login, #page-account, #page-provider-login, #page-provider-dashboard');
   allPages.forEach(p => {
     if (p) p.style.display = 'none';
   });
@@ -798,15 +1285,34 @@ function navigateTo(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   
   if (page === 'home') {
-    // Show home sections
     const homeSections = document.querySelectorAll('.hero, .categories-section, .howitworks-section, .providers-section, .occasions-section, .trust-section, .testimonials-section, .provider-cta-section, .pricing-section');
     homeSections.forEach(section => {
       if (section) section.style.display = 'block';
     });
+    // Restore "Featured Professionals" heading
+    const tag = document.getElementById('providers-section-tag');
+    const title = document.getElementById('providers-section-title');
+    const backBtn = document.getElementById('providers-back-btn');
+    const viewAllWrap = document.getElementById('view-all-btn-wrap');
+    if (tag) tag.textContent = 'Featured Professionals';
+    if (title) title.innerHTML = 'Handpicked <em>Masters</em>';
+    if (backBtn) backBtn.style.display = 'none';
+    if (viewAllWrap) viewAllWrap.style.display = 'block';
   } else if (page === 'providers') {
-    // Show only providers section
     const providersSection = document.getElementById('providers-section');
     if (providersSection) providersSection.style.display = 'block';
+    // Switch heading to "All Professionals" mode
+    const tag = document.getElementById('providers-section-tag');
+    const title = document.getElementById('providers-section-title');
+    const backBtn = document.getElementById('providers-back-btn');
+    const viewAllWrap = document.getElementById('view-all-btn-wrap');
+    if (tag) tag.textContent = 'All Professionals';
+    if (title) title.innerHTML = 'Browse <em>All Masters</em>';
+    if (backBtn) backBtn.style.display = 'block';
+    if (viewAllWrap) viewAllWrap.style.display = 'none';
+    renderFilters();
+    renderProviders();
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   } else if (page === 'book') {
     const bookPage = document.getElementById('page-book');
     if (bookPage) bookPage.style.display = 'block';
@@ -819,8 +1325,20 @@ function navigateTo(page) {
   } else if (page === 'contact') {
     const contactPage = document.getElementById('page-contact');
     if (contactPage) contactPage.style.display = 'block';
+  } else if (page === 'login') {
+    const loginPage = document.getElementById('page-login');
+    if (loginPage) loginPage.style.display = 'block';
+  } else if (page === 'account') {
+    const accountPage = document.getElementById('page-account');
+    if (accountPage) accountPage.style.display = 'block';
+  } else if (page === 'provider-login') {
+    const p = document.getElementById('page-provider-login');
+    if (p) p.style.display = 'block';
+  } else if (page === 'provider-dashboard') {
+    const p = document.getElementById('page-provider-dashboard');
+    if (p) p.style.display = 'block';
   }
-  
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -879,10 +1397,14 @@ function init() {
   initCheckboxGroups();
   applyLanguage();
   setInterval(() => slideTestimonial(1), 8000);
-  document.getElementById('booking-form')?.addEventListener('submit', submitBooking);
+  document.getElementById('booking-form')?.addEventListener('submit', submitSignup);
   document.getElementById('join-form')?.addEventListener('submit', submitJoin);
   document.getElementById('contact-form')?.addEventListener('submit', submitContact);
-  navigateTo('home');
+  const savedUser = localStorage.getItem('velora_user');
+  const savedProvider = localStorage.getItem('velora_provider');
+  if (savedProvider) { try { loadProviderDashboard(JSON.parse(savedProvider)); } catch(e) { localStorage.removeItem('velora_provider'); navigateTo('home'); } }
+  else if (savedUser) { try { loadAccountPage(JSON.parse(savedUser)); } catch(e) { localStorage.removeItem('velora_user'); navigateTo('home'); } }
+  else { navigateTo('home'); }
 }
 init();
 // ========== SETUP IMAGE UPLOAD BUTTONS ==========
