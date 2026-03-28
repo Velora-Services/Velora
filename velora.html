@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="VELORA — Egypt's premier marketplace connecting clients with elite photographers, videographers, makeup artists, event planners and more. Always free for customers.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="VELORA — Find Your Perfect Professional">
+<meta property="og:description" content="Egypt's most trusted event services marketplace. Free for customers. 1,000+ verified professionals.">
+<meta property="og:type" content="website">
+<title>VELORA — Find Your Perfect Professional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="velora.css">
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- PROGRESS BAR -->
+<div id="scroll-bar"></div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <a class="logo" onclick="navigateTo('home')">VEL<span>O</span>RA</a>
+  <ul class="nav-links">
+    <li><a onclick="navigateTo('home')" data-key="nav-home">Home</a></li>
+    <li><a onclick="navigateTo('providers')" data-key="nav-providers">Professionals</a></li>
+    <li><a onclick="navigateTo('book')" data-key="nav-book">Sign Up</a></li>
+    <li><a onclick="navigateTo('join')" data-key="nav-join">Join Us</a></li>
+    <li><a onclick="navigateTo('terms')" data-key="nav-terms">Policies</a></li>
+    <li><a onclick="navigateTo('contact')" data-key="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-cta">
+    <button class="btn btn-outline" onclick="navigateTo('join')" data-key="btn-list">List Your Business</button>
+    <button class="btn btn-primary" onclick="navigateTo('book')" data-key="btn-book">Sign Up Free</button>
+    <button class="lang-switcher" onclick="toggleLanguage()" id="lang-btn">🇪🇬 العربية</button>
+  </div>
+  <button class="nav-ham" onclick="openMobileMenu()"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu">
+  <button class="mob-close" onclick="closeMobileMenu()">✕</button>
+  <a onclick="navigateTo('home');closeMobileMenu()" data-key="nav-home">Home</a>
+  <a onclick="navigateTo('providers');closeMobileMenu()" data-key="nav-providers">Professionals</a>
+  <a onclick="navigateTo('book');closeMobileMenu()" data-key="nav-book">Sign Up</a>
+  <a onclick="navigateTo('join');closeMobileMenu()" data-key="nav-join">Join Us</a>
+  <a onclick="navigateTo('terms');closeMobileMenu()" data-key="nav-terms">Policies</a>
+  <a onclick="navigateTo('contact');closeMobileMenu()" data-key="nav-contact">Contact</a>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero" id="home-hero">
+  <div class="hero-inner">
+    <div class="hero-badge" data-key="hero-badge">✨ Egypt's Premier Event Marketplace ✨</div>
+    <h1 class="hero-title"><span data-key="hero-title">Find Your Perfect</span> <em data-key="hero-em">Professional</em><span class="sub-serif" data-key="hero-sub">For Every Occasion</span></h1>
+    <p class="hero-desc" data-key="hero-desc">Browse, compare and contact Egypt's top photographers, videographers, makeup artists, venues and more — all in one place. Always free for customers.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary btn-large" onclick="navigateTo('providers')" data-key="hero-browse">Browse Professionals</button>
+      <button class="btn btn-outline btn-large" onclick="navigateTo('book')" data-key="hero-book">Sign Up Free</button>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><div class="hero-scroll-line"></div><span data-key="scroll-hint">Scroll</span></div>
+  <div class="hero-stats">
+    <div><div class="hero-stat-num">1,000+</div><div class="hero-stat-lbl" data-key="stat-pros">Verified Pros</div></div>
+    <div><div class="hero-stat-num">FREE</div><div class="hero-stat-lbl" data-key="stat-free">For Customers</div></div>
+    <div><div class="hero-stat-num">60s</div><div class="hero-stat-lbl" data-key="stat-book">To Book</div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-track" id="ticker-track"></div></div>
+
+<!-- CATEGORIES SECTION -->
+<section class="categories-section" id="categories-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="categories-tag">Browse by Category</span>
+    <h2 class="section-title" data-key="categories-title">All Services.<br><em>One Platform.</em></h2>
+  </div>
+  <div class="categories-grid" id="categories-grid"></div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="howitworks-section" id="howitworks-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="hiw-tag">Simple Process</span>
+    <h2 class="section-title" data-key="hiw-title">How <em>VELORA</em> Works</h2>
+  </div>
+  <div class="hiw-tabs">
+    <button class="hiw-tab active" onclick="switchHiwTab('customer')" data-key="tab-customers">For Customers</button>
+    <button class="hiw-tab" onclick="switchHiwTab('professional')" data-key="tab-professionals">For Professionals</button>
+  </div>
+  <div id="hiw-customer-pane" class="hiw-pane active">
+    <div class="hiw-steps" id="customer-steps"></div>
+    <div class="hiw-visual" id="customer-visual"></div>
+  </div>
+  <div id="hiw-professional-pane" class="hiw-pane">
+    <div class="hiw-steps" id="professional-steps"></div>
+    <div class="hiw-visual" id="professional-visual"></div>
+  </div>
+</section>
+
+<!-- PROVIDERS SECTION -->
+<section class="providers-section" id="providers-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="featured-tag">Featured Professionals</span>
+    <h2 class="section-title" data-key="featured-title">Handpicked <em>Masters</em></h2>
+  </div>
+  <div class="filters" id="filters-container"></div>
+  <div class="providers-grid" id="providers-grid"></div>
+  <div class="text-center mt-4">
+    <button class="btn btn-outline" onclick="navigateTo('providers')" data-key="view-all">View All Professionals →</button>
+  </div>
+</section>
+
+<!-- OCCASIONS SECTION -->
+<section class="occasions-section" id="occasions-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="occasions-tag">Perfect For</span>
+    <h2 class="section-title" data-key="occasions-title">Every <em>Occasion</em></h2>
+  </div>
+  <div class="occasions-grid" id="occasions-grid"></div>
+</section>
+
+<!-- TRUST SECTION -->
+<section class="trust-section" id="trust-section">
+  <div class="trust-layout">
+    <div>
+      <span class="section-tag" data-key="why-tag">Why VELORA</span>
+      <h2 class="section-title" data-key="why-title">Safe. Verified.<br><em>Always Free.</em></h2>
+      <div class="gold-rule"></div>
+      <div class="trust-points" id="trust-points"></div>
+    </div>
+    <div class="trust-visual">
+      <div class="trust-big">0%</div>
+      <div class="trust-stats" id="trust-stats"></div>
+      <div class="trust-quote"><p data-key="trust-quote">"One platform. Every top professional in Egypt. Browse, compare, contact — always free."</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="testimonials-section" id="testimonials-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="testimonials-tag">Real Stories</span>
+    <h2 class="section-title" data-key="testimonials-title">What Our <em>Clients Say</em></h2>
+  </div>
+  <div class="testimonial-slider">
+    <div class="testimonial-track" id="testimonial-track"></div>
+    <div class="testimonial-nav">
+      <button class="testimonial-btn" onclick="slideTestimonial(-1)">←</button>
+      <button class="testimonial-btn" onclick="slideTestimonial(1)">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROVIDER CTA SECTION -->
+<section class="provider-cta-section" id="provider-cta-section">
+  <div class="pcta-layout">
+    <div>
+      <span class="section-tag" data-key="provider-cta-tag">For Professionals</span>
+      <h2 class="section-title" data-key="provider-cta-title">Grow Your Business.<br><em>Start Free.</em></h2>
+      <div class="gold-rule"></div>
+      <p class="section-body" data-key="provider-cta-desc">Join Egypt's fastest-growing event services marketplace. Your profile goes live in 24 hours and booking requests start arriving immediately — no upfront cost, no commissions on what you earn.</p>
+      <div class="cta-buttons" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem;">
+        <button class="btn btn-primary btn-large" onclick="navigateTo('join')" data-key="apply-join">Apply to Join Free</button>
+        <button class="btn btn-outline btn-large" onclick="navigateTo('contact')" data-key="talk-us">Talk to Us First</button>
+      </div>
+    </div>
+    <div class="pcta-box">
+      <div class="pcta-title" data-key="included-title">What's Included — Free</div>
+      <div class="pcta-list" id="included-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING SECTION -->
+<section class="pricing-section" id="pricing-section">
+  <div class="section-header">
+    <span class="section-tag" data-key="pricing-tag">Plans & Pricing</span>
+    <h2 class="section-title" data-key="pricing-title">Choose the <em>Right Plan</em> for You</h2>
+  </div>
+  <div class="plans-grid" id="plans-grid"></div>
+  <div class="plan-note" data-key="plan-note">Clients NEVER pay a fee · Start with Basic free · Upgrade anytime</div>
+</section>
+
+<!-- BOOKING PAGE -->
+<div id="page-book" class="page-form">
+  <div class="page-header">
+    <span class="section-tag" data-key="book-tag">Free Forever</span>
+    <h1 class="section-title" data-key="book-title">Create Your <em>Account</em></h1>
+    <div class="gold-rule" style="margin: 1rem auto;"></div>
+    <p data-key="book-desc">Join thousands of customers discovering Egypt's top event professionals. Sign up free — no credit card required.</p>
+  </div>
+  <div class="form-container">
+    <form id="booking-form">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label" data-key="book-name">Full Name *</label><input type="text" id="b-name" class="form-input" required placeholder="Your full name"></div>
+        <div class="form-group"><label class="form-label" data-key="book-email">Email Address *</label><input type="email" id="b-email" class="form-input" required placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label" data-key="book-phone">Phone Number *</label><input type="tel" id="b-phone" class="form-input" required placeholder="+20 1XX XXX XXXX"></div>
+        <div class="form-group"><label class="form-label" data-key="book-password">Password *</label><input type="password" id="b-password" class="form-input" required placeholder="Minimum 8 characters" minlength="8"></div>
+        <div class="form-group"><label class="form-label" data-key="book-confirm-password">Confirm Password *</label><input type="password" id="b-confirm-password" class="form-input" required placeholder="Re-enter your password"></div>
+        <div class="form-group"><label class="form-label" data-key="book-gender">Gender *</label><select id="b-gender" class="form-select" required><option value="" disabled selected>Select gender</option><option value="male">Male</option><option value="female">Female</option><option value="prefer_not">Prefer not to say</option></select></div>
+        <div class="form-group"><label class="form-label" data-key="book-birthdate">Date of Birth *</label><input type="date" id="b-birthdate" class="form-input" required></div>
+        <div class="form-group full"><label class="form-label" data-key="book-city">City *</label><select id="b-city" class="form-select" required><option value="" disabled selected>Select your city</option><option>Cairo</option><option>Giza</option><option>Alexandria</option><option>Sharm El-Sheikh</option><option>Hurghada</option><option>Luxor</option><option>Aswan</option><option>Mansoura</option><option>Tanta</option><option>Ismailia</option><option>Port Said</option><option>Suez</option><option>Zagazig</option><option>Assiut</option><option>Fayoum</option><option>Minya</option><option>Beni Suef</option><option>Sohag</option><option>Qena</option><option>Damietta</option><option>Kafr El-Sheikh</option><option>Other</option></select></div>
+        <div class="form-group full checkbox-row"><input type="checkbox" id="b-terms" required><label for="b-terms" data-key="book-terms">I have read and agree to the <a onclick="navigateTo('terms')">Terms &amp; Privacy Policy</a>. I understand VELORA is a marketplace connecting customers with verified professionals.</label></div>
+      </div>
+      <div class="form-submit"><button type="submit" class="btn btn-primary btn-large" id="book-submit-btn"><span data-key="book-submit">Create My Account</span></button></div>
+      <p class="form-note" data-key="book-note">100% free for customers. Your data is safe and never shared without your consent.</p>
+      <div class="success-msg" id="book-success"><h3 data-key="book-success-title">✓ Account Created Successfully</h3><p data-key="book-success-text">Welcome to VELORA! You can now browse and connect with Egypt's top event professionals.</p></div>
+    </form>
+  </div>
+</div>
+
+<!-- JOIN PAGE -->
+<div id="page-join" class="page-form">
+  <div class="page-header">
+    <span class="section-tag" data-key="join-tag">For Professionals</span>
+    <h1 class="section-title" data-key="join-title">List Your Business <em>Free</em></h1>
+    <div class="gold-rule" style="margin: 1rem auto;"></div>
+    <p data-key="join-desc">Apply to be listed on VELORA. Your profile goes live within 24 hours and booking requests start arriving immediately.</p>
+  </div>
+  <div class="form-container">
+    <form id="join-form">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label" data-key="join-business">Full Name / Business Name *</label><input type="text" id="j-business" class="form-input" required placeholder="Your name or business name"></div>
+        <div class="form-group"><label class="form-label" data-key="join-email">Email Address *</label><input type="email" id="j-email" class="form-input" required placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label" data-key="join-phone">Phone Number *</label><input type="tel" id="j-phone" class="form-input" required placeholder="+20 1XX XXX XXXX"></div>
+        <div class="form-group full">
+  <label class="form-label" data-key="join-professional-phone">Business Phone Number (for clients) *</label>
+  <input type="tel" id="j-professional-phone" class="form-input" required placeholder="+20 123 456 7890">
+  <small style="font-size: 0.7rem; color: var(--color-text-light); margin-top: 0.2rem;">This number will be shown to clients after they book your services</small>
+</div>
+        <div class="form-group full"><label class="form-label" data-key="join-service">Service Type *</label><select id="j-service" class="form-select" required><option value="" disabled selected>Select your service</option><option>Photography</option><option>Videography</option><option>Photography &amp; Videography</option><option>Makeup Artist</option><option>Event Planner</option><option>Wedding Venue / Hotel</option><option>Car Rental</option><option>Bridal Shop</option><option>DJ &amp; Zaffa</option><option>Florist</option><option>Catering</option><option>Spa &amp; Henna</option><option>Accessories &amp; Jewelry</option><option>Honey Moon Travel</option><option>Other</option></select></div>
+        <div class="form-group full"><label class="form-label" data-key="join-services-multiple">Services Provided (Select all that apply)</label><div class="checkbox-group" id="services-checkbox-group"></div></div>
+        <div class="form-group full"><label class="form-label" data-key="join-locations-multiple">Service Locations (Select all that apply)</label><div class="checkbox-group" id="locations-checkbox-group"></div></div>
+        <div class="form-group"><label class="form-label" data-key="join-price">Starting Price (EGP) *</label><input type="number" id="j-price" class="form-input" required placeholder="e.g., 5000"></div>
+        <div class="form-group full"><label class="form-label" data-key="join-bio">Tell Us About Your Business *</label><textarea id="j-bio" class="form-textarea" rows="4" required placeholder="Years of experience, notable clients, pricing range, what makes your work special..."></textarea></div>
+        <div class="form-group full"><label class="form-label" data-key="join-portfolio">Portfolio / Social Media Link *</label><input type="url" id="j-portfolio" class="form-input" required placeholder="https://yourwebsite.com or Instagram link"></div>
+         <div class="form-group full">
+  <label class="form-label">Sample Images (3 max, each max 500KB)</label>
+  <div id="image-uploads">
+    <div id="image-upload-1">
+      <input type="file" id="j-image-file-1" accept="image/*" style="width: 100%; padding: 0.8rem; border: 1px solid var(--color-border); border-radius: 12px; background: white; margin-bottom: 0.5rem;">
+      <small style="font-size: 0.7rem; color: #6B5E5A;">Max 5MB per image (JPG, PNG, GIF)</small>
+      <div id="image-preview-1" style="margin-top: 0.5rem; display: none;"></div>
+    </div>
+  </div>
+  <button type="button" id="add-more-images" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: transparent; border: 1px solid #C6A15B; border-radius: 40px; color: #C6A15B; cursor: pointer;">+ Add Another Image (max 3)</button>
+  <small style="font-size: 0.7rem; color: #6B5E5A; display: block; margin-top: 0.5rem;">⚠️ Free tier storage limit: 50MB total. Please keep images under 500KB each.</small>
+</div>
+        <div class="form-group full checkbox-row"><input type="checkbox" id="j-terms" required><label for="j-terms" data-key="join-terms">I confirm that all information provided is accurate. I understand VELORA is a marketplace and does not guarantee bookings. I agree to the <a onclick="navigateTo('terms')">Terms &amp; Policies</a>.</label></div>
+      </div>
+      <div class="form-submit"><button type="submit" class="btn btn-primary btn-large" id="join-submit-btn"><span data-key="join-submit">Submit Application</span></button></div>
+      <p class="form-note" data-key="join-note">Applications are reviewed within 24–48 hours. If approved, your profile goes live and booking requests start arriving immediately. No payment required at this stage.</p>
+      <div class="success-msg" id="join-success"><h3 data-key="join-success-title">✓ Application Received</h3><p data-key="join-success-text">We'll review your portfolio and reach out within 24-48 hours. Welcome to VELORA.</p></div>
+    </form>
+  </div>
+</div>
+
+<!-- TERMS PAGE -->
+<div id="page-terms" class="page-terms">
+  <div class="page-header">
+    <span class="section-tag" data-key="terms-tag">Legal</span>
+    <h1 class="section-title" data-key="terms-title">Booking &amp; <em>Cancellation Policy</em></h1>
+    <div class="gold-rule" style="margin: 1rem auto;"></div>
+  </div>
+  <div class="terms-container" id="terms-content"></div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div id="page-contact" class="page-form">
+  <div class="page-header">
+    <span class="section-tag" data-key="contact-tag">Get in Touch</span>
+    <h1 class="section-title" data-key="contact-title">We'd Love to <em>Hear From You</em></h1>
+    <div class="gold-rule" style="margin: 1rem auto;"></div>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <h2 data-key="contact-details">Contact <em>Details</em></h2>
+      <div class="gold-rule"></div>
+      <div class="contact-item"><div class="contact-icon">✉</div><div><div class="contact-lbl" data-key="contact-email">Email</div><div class="contact-val"><a href="mailto:hello@velora.studio">hello@velora.studio</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">💬</div><div><div class="contact-lbl" data-key="contact-whatsapp">WhatsApp</div><div class="contact-val"><a href="https://wa.me/201234567890" target="_blank">+20 123 456 7890</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">🌐</div><div><div class="contact-lbl" data-key="contact-website">Website</div><div class="contact-val"><a href="https://velora.studio" target="_blank">velora.studio</a></div></div></div>
+      <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-lbl" data-key="contact-based">Based In</div><div class="contact-val" data-key="contact-based-value">Egypt · Expanding Globally</div></div></div>
+      <div class="contact-lbl" data-key="follow-us">Follow Us</div>
+      <div class="social-row"><a href="#" class="social-link"><i class="fab fa-instagram"></i> Instagram</a><a href="#" class="social-link"><i class="fab fa-facebook"></i> Facebook</a><a href="#" class="social-link"><i class="fab fa-tiktok"></i> TikTok</a><a href="#" class="social-link"><i class="fab fa-linkedin"></i> LinkedIn</a></div>
+    </div>
+    <div>
+      <h2 data-key="message-title">Send a <em>Message</em></h2>
+      <div class="gold-rule"></div>
+      <form id="contact-form" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+        <div class="form-group"><label data-key="contact-name">Your Name *</label><input type="text" id="c-name" class="form-input" required></div>
+        <div class="form-group"><label data-key="contact-email-form">Email *</label><input type="email" id="c-email" class="form-input" required></div>
+        <div class="form-group"><label data-key="contact-subject">Subject</label><input type="text" id="c-subject" class="form-input"></div>
+        <div class="form-group"><label data-key="contact-message">Message *</label><textarea id="c-message" class="form-textarea" rows="4" required></textarea></div>
+        <button type="submit" class="btn btn-primary" data-key="send-message">Send Message</button>
+        <div class="success-msg" id="contact-success"><h3 data-key="contact-success-title">✓ Message Sent</h3><p data-key="contact-success-text">We'll get back to you within 24 hours.</p></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- PROVIDER MODAL -->
+<div id="provider-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content-inner"></div>
+  </div>
+</div>
+
+<!-- QUICK BOOKING MODAL -->
+<div id="quickBookingModal" class="modal">
+  <div class="modal-content quick-booking-modal">
+    <button class="modal-close" onclick="closeQuickBookingModal()">✕</button>
+    <div id="quickBookingContent"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><div class="footer-logo">VEL<span>O</span>RA</div><p class="footer-desc" data-key="footer-desc">Egypt's premier marketplace connecting clients with elite photographers, videographers, makeup artists, event planners and more. Always free for customers.</p><div class="social-row" style="margin-top: 1rem;"><a href="#" class="social-link">Instagram</a><a href="#" class="social-link">Facebook</a><a href="#" class="social-link">TikTok</a></div></div>
+    <div><div class="footer-heading" data-key="footer-platform">Platform</div><ul class="footer-links"><li><a onclick="navigateTo('home')" data-key="footer-home">Home</a></li><li><a onclick="navigateTo('providers')" data-key="footer-providers">Browse Professionals</a></li><li><a onclick="navigateTo('book')" data-key="footer-book">Sign Up Free</a></li><li><a onclick="navigateTo('join')" data-key="footer-join">List Your Business</a></li></ul></div>
+    <div><div class="footer-heading" data-key="footer-services">Services</div><ul class="footer-links" id="footer-services-links"></ul></div>
+    <div><div class="footer-heading" data-key="footer-company">Company</div><ul class="footer-links"><li><a onclick="navigateTo('terms')" data-key="footer-policy">Booking Policy</a></li><li><a onclick="navigateTo('terms')" data-key="footer-cancel">Cancellation Policy</a></li><li><a onclick="navigateTo('terms')" data-key="footer-privacy">Privacy Policy</a></li><li><a onclick="navigateTo('contact')" data-key="footer-contact">Contact Us</a></li><li><a href="mailto:hello@velora.studio">hello@velora.studio</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><div class="footer-copy" data-key="footer-copyright">© 2025 VELORA · All rights reserved · velora.studio</div><div class="footer-legal"><a onclick="navigateTo('terms')" data-key="footer-legal-privacy">Privacy</a><a onclick="navigateTo('terms')" data-key="footer-legal-terms">Terms</a><a onclick="navigateTo('terms')" data-key="footer-legal-policies">Policies</a></div></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="velora.js"></script>
+</body>
+</html>
